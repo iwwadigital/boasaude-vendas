@@ -1,0 +1,46 @@
+<form [formGroup]="form">
+    <div class="row row-group">
+        <div class="item  item-active-border-md  item-margin-sm-min col-md-6 item-rua">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Rua</mat-label>
+                <input matInput formControlName="rua" placeholder="Insira o rua">
+            </mat-form-field>
+        </div>
+        <div class="item item-border-md item-margin-sm-min col-sm-4 col-md-3 ">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Cep</mat-label>
+                <input matInput mMarkInputs="99999-999" formControlName="cep" placeholder="Insira sua cep">
+            </mat-form-field>
+        </div>
+        <div class="item item-border-sm item-border-md  item-margin-sm-min col-sm-4 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Número</mat-label>
+                <input matInput formControlName="numero" placeholder="Insira o número">
+            </mat-form-field>
+        </div>
+        <div class="item item-active-border-md item-border-sm  item-margin-sm-min col-sm-4 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Bairro</mat-label>
+                <input matInput formControlName="bairro" placeholder="Insira o bairro">
+            </mat-form-field>
+        </div>
+        <div class="item   item-border-md  item-margin-sm-min col-sm-4 col-md-3 ">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Cidade</mat-label>
+                <input matInput formControlName="cidade" placeholder="Insira o cidade">
+            </mat-form-field>
+        </div>
+        <div class="item  item-border-sm  item-margin-sm-min col-sm-4 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Estado</mat-label>
+                <input matInput formControlName="estado" placeholder="Insira o uf">
+            </mat-form-field>
+        </div>
+        <div class="item item-border-sm item-margin-xs-min col-sm-4 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Complemento</mat-label>
+                <input matInput formControlName="complemento" placeholder="Insira o complemento">
+            </mat-form-field>
+        </div>
+    </div>
+</form>

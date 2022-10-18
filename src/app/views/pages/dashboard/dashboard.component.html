@@ -1,0 +1,32 @@
+<div class="content-info">
+	<kt-meta-usuario class="meta"></kt-meta-usuario>
+	<div class="banner"  *ngIf="!is_admin_geral">
+		<kt-slide-banner></kt-slide-banner>
+	</div>
+	<div class="progress-equipe-dashboard" *ngIf="is_admin_geral">
+		<kt-progress-equipes></kt-progress-equipes>
+	</div>
+</div>
+<kt-portlet>
+	<kt-portlet-body [class]="'kt-portlet__body--fit kt-portlet__body--custom'">
+		<div class="header-dashboard header-table">
+			<h3 class="sub-title h3">Lista de propostas</h3>
+			<form [formGroup]="form" class="form-order" (ngSubmit)="clickSearch()">
+				<div class="m-inputs">
+					<input  formControlName="search" placeholder="Pesquisar a proposta ">
+					<button class="btn btn-search" type="submit">
+						<mat-icon>search</mat-icon>
+					</button>
+				</div>
+			</form>
+			<!-- <form [formGroup]="form" (ngSubmit)="clickSearch()">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Pesquisar<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="search">
+					<mat-icon (click)="clickSearch()" matSuffix>search</mat-icon>
+				</mat-form-field>
+			</form> -->
+		</div>
+		<kt-table-proposta *ngIf="!is_contrato" [setSearch]="search"></kt-table-proposta>
+	</kt-portlet-body>
+</kt-portlet>

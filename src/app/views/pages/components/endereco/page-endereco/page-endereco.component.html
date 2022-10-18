@@ -1,0 +1,33 @@
+
+
+<kt-portlet>
+	<kt-portlet-body [class]="'kt-portlet__body--fit kt-portlet__body--custom'">
+		<div class="form-search">
+			<div class="header-table">
+				<h3 class="sub-title h3">Lista de endereço restrito</h3>
+			</div>
+			<form [formGroup]="form" class="form-order" (ngSubmit)="searchClick()">
+				<div class="m-inputs">
+					<input  formControlName="q" placeholder="Pesquisar endereço">
+					<button class="btn btn-search" type="submit">
+						<mat-icon>search</mat-icon>
+					</button>
+				</div>
+		
+			</form>
+			<button class="btn  btn-add" (click)="openModal()" *ngIf="functions.verificarPermissao(['endereco-criar'])">
+				<span>Adicionar endereço</span>
+				<mat-icon>add</mat-icon>
+			</button>
+		</div>
+		
+
+		<kt-table-geral 
+			[setTables_config]='table_config' 
+			[setRefresh]="is_refresh" 
+			[setSearch]="search"
+			(getRefresh)="changeRefresh($event)"></kt-table-geral>
+	</kt-portlet-body>
+</kt-portlet>
+
+

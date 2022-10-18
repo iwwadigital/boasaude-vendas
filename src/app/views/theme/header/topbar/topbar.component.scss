@@ -1,0 +1,33 @@
+:host {
+	::ng-deep {
+		// override default version style
+		.kt-header__topbar {
+			> :last-child:not([role="tooltip"]) {
+				.kt-header__topbar-item {
+					margin-right: 0 !important;
+				}
+			}
+			.kt-header__topbar-item {
+				margin-right: 0.36rem !important;
+			}
+		}
+
+		.mat-form-field-infix{
+			width: 100px;
+		}
+		.mat-form-field-appearance-fill .mat-form-field-flex {
+			background-color: #fff;
+		}
+		.mat-form-field{
+			margin-top: 1.34375em;
+		}
+		
+	}
+}
+
+
+form{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

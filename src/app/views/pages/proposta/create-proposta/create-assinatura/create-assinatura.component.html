@@ -1,0 +1,18 @@
+<div class="assinatura col-lg-12 justify-content-center">
+	<h3 class="h3 title">Assinatura do Responsável</h3>
+	<div id="content-canvas">
+		<!-- <canvas id="MySing" #canvas></canvas> -->
+		<kt-canvas-assinatura [getImageCanvas]="image_get" (sendImage)="setImage($event)"></kt-canvas-assinatura>
+		<div class="row">
+			<!-- <div class="item">
+				<button class="btn-link">
+					<img src="./assets/vitalmed/icone-impressora.svg" alt="Logo Vitalmed">
+					<span>Assinatura na versão impressa</span>
+				</button>
+			</div> -->
+			<div class="item">
+				<button class="btn btn-success" (click)="create()">Enviar</button>	
+			</div>
+		</div>
+	</div>
+</div>

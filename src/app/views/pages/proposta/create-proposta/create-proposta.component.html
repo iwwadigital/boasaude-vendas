@@ -1,0 +1,1373 @@
+
+<div class="kt-portlet kt-proposta">
+	<div class="kt-portlet__head">
+		<h3 class="kt-portlet__head-title">
+			Proposta de admissão pessoa física
+		</h3>
+	</div>
+	<div class="kt-portlet__body">
+		<div class="loading loading-proposta" *ngIf="isLoading" @fade>
+			<mat-spinner></mat-spinner>
+		</div>
+
+		<div class="show-page">
+			<div class="bullet-page" [ngClass]="current >= 1 ? 'active' : ''">
+				<span *ngIf="current == 1">1</span>
+				<mat-icon *ngIf="current > 1">done</mat-icon>
+			</div>
+			<div class="bullet-page" [ngClass]="current >= 2 ? 'active' : ''">
+				<span *ngIf="current <= 2">2</span>
+				<mat-icon *ngIf="current > 2">done</mat-icon>
+			</div>
+			<div class="bullet-page" [ngClass]="current >= 3 ? 'active' : ''">
+				<span *ngIf="current <= 3">3</span>
+				<mat-icon *ngIf="current > 3">done</mat-icon>
+			</div>
+			<div class="bullet-page" [ngClass]="current >= 4 ? 'active' : ''">
+				<span *ngIf="current <= 4">4</span>
+				<mat-icon *ngIf="current > 4">done</mat-icon>
+			</div>
+			<div class="bullet-page" [ngClass]="current >= 5 ? 'active' : ''">
+				<span *ngIf="current <= 5">5</span>
+				<mat-icon *ngIf="current > 5">done</mat-icon>
+			</div>
+			<div class="bullet-page" [ngClass]="current == 6 || current == 7 ? 'active' : ''">
+				<span>6</span>
+			</div>
+		</div>
+        <form [formGroup]="form" (ngSubmit)="create()" >
+            <div *ngIf="current == 1" id="1" class="current-page">
+                <h3 class="title h3">Dados gerais</h3>
+                <div class="general-data form-dados">
+                    <div class="header-general">
+                        <div class="text">
+                            <mat-icon>insert_invitation</mat-icon>
+                            <span>{{date_actual | date:"dd/MM/yyyy"}}</span>
+                        </div>
+
+                    </div>
+                    <div class="content-general col-lg-12">
+                        <div class="row row-group">
+							<!-- <div class="item item-radius-tl-all item-radius-tr-xs-max  item-radius-bl-lg-min col-sm-6 col-lg-3"> -->
+							<div class="item item-radius-tl-all item-radius-tr-xs-max   col-sm-6">
+								<!-- <mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Filial<b class="inputRequired">*</b></mat-label>
+									<input type="text"  formControlName="filial" aria-label="Number" matInput  [matAutocomplete]="filial">
+									<mat-autocomplete autoActiveFirstOption #filial="matAutocomplete" >
+										<mat-option *ngFor="let filial of list_filiais"  [value]="filial">
+											{{ filial }}
+										</mat-option>
+									</mat-autocomplete>
+									<mat-error *ngIf="form.get('filial').errors !== null && form.get('filial').errors.required">Filial não foi escolhida.</mat-error>
+                                </mat-form-field> -->
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Filial</mat-label>
+									<input matInput  formControlName="filial" readonly>
+                                </mat-form-field>
+							</div>
+							<!-- <div class="item  item-radius-tr-md item-border-sm  item-radius-tr-sm  col-sm-6 col-lg-3"> -->
+							<div class="item  item-radius-tr-md item-border-sm  item-radius-tr-sm item-radius-tr-lg-min col-sm-6">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Canal de vendas<b class="inputRequired">*</b></mat-label>
+									<input type="text" placeholder="Escolha uma tabela" formControlName="canal_vendas" aria-label="Number" matInput  [matAutocomplete]="canal_venda">
+									<mat-autocomplete autoActiveFirstOption #canal_venda="matAutocomplete" [displayWith]="displayFn">
+										<mat-option *ngFor="let canal_vendas of canais_vendas"  [value]="canal_vendas">
+											{{ canal_vendas.nome }}
+										</mat-option>
+									</mat-autocomplete>
+									<mat-error *ngIf="form.get('canal_vendas').errors !== null && form.get('canal_vendas').errors.required">Canal de vendas não foi escolhida.</mat-error>
+                                </mat-form-field>
+							</div>
+                            <!-- <div class="item item-radius-bl-md item-radius-bl-sm item-margin-md-max item-border-lg  col-sm-6 col-lg-3"> -->
+                            <div class="item item-margin-sm-min item-radius-bl-lg-min  col-sm-6 col-lg-4">
+                                <mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Tipo de serviço<b class="inputRequired">*</b></mat-label>
+									<input type="text" placeholder="Escolha um tipo de serviço" formControlName="tipo_servico" aria-label="Number" matInput  [matAutocomplete]="tipo_serv">
+									<mat-autocomplete autoActiveFirstOption #tipo_serv="matAutocomplete" [displayWith]="displayFn">
+										<mat-option *ngFor="let tipo of tipos_servico"  [value]="tipo">
+											{{ tipo.nome }}
+										</mat-option>
+									</mat-autocomplete>
+									<mat-error *ngIf="form.get('tipo_servico').errors !== null && form.get('tipo_servico').errors.required">Tipo de serviço não foi escolhida.</mat-error>
+								</mat-form-field>
+							</div>
+                            <div class="item  remove-arrow item-margin-sm-min item-border-sm  col-sm-6 col-lg-4">
+								<mat-form-field appearance="outline" class="m-inputs" matTooltip="Insira o número de matricula caso seja um titular pré existente">
+									<mat-label>Matricula do titular</mat-label>
+									<input matInput type="number" formControlName="matricula_titular" >
+                                </mat-form-field>
+							</div>
+                            <!-- <div class="item item-margin-md-max item-border-sm item-radius-bl-xs-max item-radius-br-xs-max item-radius-tr-lg-min item-radius-br-sm-min col-sm-6 col-lg-3"> -->
+                            <div class="item item-margin-sm-min item-radius-bl-md-max item-border-lg item-radius-bl-xs-max item-radius-br-xs-max  item-radius-br-sm-min col-sm-12 col-lg-4">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Tabela de Preço<b class="inputRequired">*</b></mat-label>
+									<input type="text" placeholder="Escolha uma tabela" formControlName="tabela" aria-label="Number" matInput  [matAutocomplete]="auto">
+									<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+										<mat-option *ngFor="let tabela of tabelas"  [value]="tabela">
+											{{ tabela.nome }}
+										</mat-option>
+									</mat-autocomplete>
+									<mat-error *ngIf="form.get('tabela').errors !== null && form.get('tabela').errors.required">Tabela não foi escolhida.</mat-error>
+                                </mat-form-field>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="current == 2" id="2" class="current-page">
+                <h3 class="title h3">Titular</h3>
+                <div class="first">
+                    <div class="content col-lg-12">
+                        <div class="row row-group">
+                            <div class="item item-radius-tl-all item-radius-tr-md-max col-sm-12 col-lg-6">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Nome completo<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_nome" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_nome').errors !== null && form.get('titular_nome').errors.required">Nome não foi preenchida.</mat-error>
+									<mat-error *ngIf="form.get('titular_nome').errors !== null && form.get('titular_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-md-max item-border-lg col-sm-4 col-lg-2">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>CPF<b class="inputRequired">*</b></mat-label>
+									<input  matInput formControlName="titular_cpf" mMarkInputs="999.999.999-99" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_cpf').errors !== null && form.get('titular_cpf').errors.required">CPF não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_cpf').errors !== null && form.get('titular_cpf').errors.validCpf">CPF não é valido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-md-max item-border-sm col-sm-4 col-lg-2">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>RG</mat-label>
+									<input matInput type="number" formControlName="titular_rg" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_rg').errors !== null && form.get('titular_rg').errors.required">RG não foi preenchido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-radius-tr-lg-min item-margin-md-max item-border-sm col-sm-4 col-lg-2">
+                                <mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Sexo<b class="inputRequired">*</b></mat-label>
+									<mat-select formControlName="titular_sexo" placeholder="Escolha a opção" [disableControl]="is_matricula_titular ? true : false">
+										<mat-option value="Masculino">
+											M
+										</mat-option>
+										<mat-option value="Feminino">
+											F
+										</mat-option>
+									</mat-select>
+									<mat-error *ngIf="form.get('titular_sexo').errors !== null && form.get('titular_sexo').errors.required">Sexo não foi escolhido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content col-lg-12">
+                        <div class="row row-group">
+							<div class="item item-margin-xs-min col-sm-6 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>E-mail</mat-label>
+									<input matInput formControlName="titular_urgencia_email" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_urgencia_email').errors !== null && form.get('titular_urgencia_email').errors.email">E-mail inválido.</mat-error>
+									<mat-error *ngIf="form.get('titular_urgencia_email').errors !== null && form.get('titular_urgencia_email').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Estado civil</mat-label>
+									<mat-select formControlName="titular_estado_civil" placeholder="Escolha a opção" [disableControl]="is_matricula_titular ? true : false">
+										<mat-option *ngFor="let item of lista_estado_civil | keyvalue;" [value]="item.value">
+											{{ item.key }}
+										</mat-option>
+									</mat-select>
+									<mat-error *ngIf="form.get('titular_estado_civil').errors !== null && form.get('titular_estado_civil').errors.required">Estado civil não foi escolhido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-sm-min item-border-lg col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+                                    <mat-label>Data nascimento<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_data_nascimento" [min]="data_minima" [max]="data_maxima" [matDatepicker]="myDatepicker" [disableControl]="is_matricula_titular ? true : false">
+									<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+									<mat-datepicker #myDatepicker></mat-datepicker>
+									<mat-error *ngIf="form.get('titular_data_nascimento').errors !== null && form.get('titular_data_nascimento').errors.required">Data de nascimento não foi preenchido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-sm-min item-border-sm col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>CEP<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_cep" mMarkInputs="99999-999" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_cep').errors !== null && form.get('titular_cep').errors.required">CEP não foi preenchido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+					</div>
+
+					<div class="content col-lg-12">
+						<div class="row row-group">
+							<div class="item item-margin-xs-min col-sm-8 col-lg-9">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_endereco_rua" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_endereco_rua').errors !== null && form.get('titular_endereco_rua').errors.required">Rua não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_endereco_rua').errors !== null && form.get('titular_endereco_rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-sm-min item-border-sm col-sm-4 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Nº<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_numero" [readonly]="is_matricula_titular" >
+									<mat-error *ngIf="form.get('titular_numero').errors !== null && form.get('titular_numero').errors.required">Número não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_numero').errors !== null && form.get('titular_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+
+                    <div class="content col-lg-12">
+                        <div class="row row-group">
+                            <div class="item item-margin-xs-min col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Ponto de Ref<b class="inputRequired">*</b></mat-label>
+                                    <input matInput formControlName="titular_endereco_referencia" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_endereco_referencia').errors !== null && form.get('titular_endereco_referencia').errors.required">Ponto de Ref não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_endereco_referencia').errors !== null && form.get('titular_endereco_referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-sm-min item-border-sm col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_endereco_bairro" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_endereco_bairro').errors !== null && form.get('titular_endereco_bairro').errors.required">Bairro não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_endereco_bairro').errors !== null && form.get('titular_endereco_bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-sm-min item-border-lg col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_cidade" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_cidade').errors !== null && form.get('titular_cidade').errors.required">Cidade não foi preenchida.</mat-error>
+									<mat-error *ngIf="form.get('titular_cidade').errors !== null && form.get('titular_cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-margin-sm-min item-border-sm col-sm-6 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Estado<b class="inputRequired">*</b></mat-label>
+									<mat-select formControlName="titular_uf" placeholder="Escolha a opção" [disableControl]="is_matricula_titular ? true : false">
+										<mat-option [value]="item" *ngFor="let item of list_estado">
+											{{ item }}
+										</mat-option>
+									</mat-select>
+									<mat-error *ngIf="form.get('titular_uf').errors !== null && form.get('titular_uf').errors.required">Estado não foi escolhido.</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content col-lg-12">
+						<div class="row row-group">
+							<div class="item item-margin-xs-min col-sm-12 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Complemento<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_endereco_complemento" maxlength="20" [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_endereco_complemento').errors !== null && form.get('titular_endereco_complemento').errors.required">Complemento não foi preenchida.</mat-error>
+									<mat-error *ngIf="form.get('titular_endereco_complemento').errors !== null && form.get('titular_endereco_complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-xs-min item-border-lg col-sm-4 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Telefone<b class="inputRequired">*</b></mat-label>
+									<input matInput formControlName="titular_tel_residencial" ngxPhoneMaskBr [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_tel_residencial').errors !== null && form.get('titular_tel_residencial').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-sm-min item-border-sm item-border-lg col-sm-4 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Tel.Cel</mat-label>
+									<input matInput formControlName="titular_tel_celular" ngxPhoneMaskBr [readonly]="is_matricula_titular">
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-sm-min item-border-sm item-border-lg col-sm-4 col-lg-3">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Tel.Com</mat-label>
+									<input matInput formControlName="titular_tel_comercial" ngxPhoneMaskBr [readonly]="is_matricula_titular">
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-xs-min col-sm-6">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Nome do preposto</mat-label>
+									<input matInput formControlName="nome_preposto" [readonly]="is_matricula_titular">
+								</mat-form-field>
+							</div>
+							<div class="item item-margin-sm-min item-border-sm col-sm-6">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>CPF do preposto</mat-label>
+									<input matInput mMarkInputs="999.999.999-99" formControlName="cpf_preposto" [readonly]="is_matricula_titular" >
+								</mat-form-field>
+							</div>
+							<div class="item remove-arrow item-radius-bl-md item-radius-bl-sm item-radius-bl-lg-min item-margin-xs-min item-radius-bottom-left-sm col-sm-6">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Matrícula Empresa</mat-label>
+									<input matInput type="number" formControlName="matricula_empresa"  [readonly]="is_matricula_titular">
+								</mat-form-field>
+							</div>
+							<div class="item item-radius-bl-xs-max item-radius-br-all item-margin-sm-min item-border-sm item-radius-bottom-right-sm col-sm-6">
+								<!-- <mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Seguro saúde</mat-label>
+									<input matInput formControlName="titular_seguro_saude" [readonly]="is_matricula_titular">
+								</mat-form-field> -->
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Seguro saúde<b class="inputRequired">*</b></mat-label>
+									<input type="text" placeholder="Escolha um seguro saúde" formControlName="seguro_saude" aria-label="Number" matInput  [matAutocomplete]="auto">
+									<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFnSeguroSaude">
+										<mat-option *ngFor="let item of seguros_saude"  [value]="item">
+											{{ item.codigo }} - {{ item.nome }}
+										</mat-option>
+									</mat-autocomplete>
+                                </mat-form-field>
+							</div>
+						</div>
+
+						<div class="row row-group">
+							<div class="item item-radius-tl-all item-radius-tr-xs-max  item-radius-bl-md-min item-radius-bl-sm   item-border-md-min item-radius-top-left-sm  col-sm-6 col-lg-9">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>Nome do responsável em caso de emergência</mat-label>
+                                    <input matInput formControlName="titular_urgencia_contato_nome" [readonly]="is_matricula_titular">
+                                    <mat-error *ngIf="form.get('titular_urgencia_contato_nome').errors !== null && form.get('titular_urgencia_contato_nome').errors.required">Nome para emergência não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('titular_urgencia_contato_nome').errors !== null && form.get('titular_urgencia_contato_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="item item-radius-br-all item-radius-bl-xs-max item-radius-tr-lg-min item-border-sm  item-radius-tr-sm-min item-radius-top-right-sm item-radius-bottom-right-sm col-sm-6 col-lg-3">
+                                <mat-form-field appearance="outline" class="m-inputs">
+                                    <mat-label>DDD + Telefone</mat-label>
+                                    <input matInput formControlName="titular_urgencia_telefone" ngxPhoneMaskBr [readonly]="is_matricula_titular">
+									<mat-error *ngIf="form.get('titular_urgencia_telefone').errors !== null && form.get('titular_urgencia_telefone').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="form.get('matricula_titular').value"  >
+					<h3 class="title h3" style="margin-top: 15px;">Cobrança</h3>
+					<div class="row">
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item  item-radius-tl-all item-radius-tr-md-max col-sm-12 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nome completo<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_responsavel_nome" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-lg item-margin-md-max col-sm-3 col-lg-2" [ngClass]="form.value.cobranca_tipo_pessoa != 2 ? 'col-sm-3 col-lg-2': 'col-sm-4 col-lg-2'">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tipo pessoa</mat-label>
+										<mat-select formControlName="cobranca_tipo_pessoa" placeholder="Escolha a opção" [disableControl]="true" >
+											<mat-option value="1">
+												Pessoa Física
+											</mat-option>
+											<mat-option value="2">
+												Pessoa Jurídica
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-md-max  col-sm-3 col-lg-3" *ngIf="form.value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CPF<b class="inputRequired">*</b></mat-label>
+										<input  matInput formControlName="cobranca_cpf" mMarkInputs="999.999.999-99" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-md-max  col-sm-4 col-lg-3" *ngIf="form.value.cobranca_tipo_pessoa == 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CNPJ<b class="inputRequired">*</b></mat-label>
+										<input  matInput formControlName="cobranca_cnpj" mMarkInputs="99.999.999/9999-99" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-md-max col-sm-3 col-lg-2" *ngIf="form.value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>RG</mat-label>
+										<input matInput type="number" formControlName="cobranca_rg" readonly >
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-md-max  item-radius-tr-lg-min col-sm-3 col-lg-1" *ngIf="form.value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Sexo</mat-label>
+										<mat-select formControlName="cobranca_sexo" placeholder="Escolha a opção" [disableControl]="true">
+											<mat-option value="Masculino">
+												M
+											</mat-option>
+											<mat-option value="Feminino">
+												F
+											</mat-option>
+											<mat-option value="3">
+												Não declarado
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min col-sm-6 col-lg-3" *ngIf="form.value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Data nascimento<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_nascimento" [min]="data_minima" [max]="data_maxima" [matDatepicker]="cobranca_nascimento" [disableControl]="true">
+										<mat-datepicker-toggle matSuffix [for]="cobranca_nascimento"></mat-datepicker-toggle>
+										<mat-datepicker #cobranca_nascimento></mat-datepicker>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min " [ngClass]="form.value.cobranca_tipo_pessoa != 2 ? 'item-border-sm col-sm-6 col-lg-3': 'item-border-sm item-border-lg-min col-sm-4 col-lg-3'">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CEP<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_cep" mMarkInputs="99999-999" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min  col-sm-10" [ngClass]="form.value.cobranca_tipo_pessoa != 2 ? 'item-border-lg col-lg-5': 'col-lg-11'">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_rua" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-2 col-lg-1">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nº<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_numero" readonly>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min  col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Complemento<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_complemento" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Ponto de referência<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_referencia" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_bairro" readonly>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min  col-sm-6 col-lg-6">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_cidade" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-6">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Estado<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_uf" readonly>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min item-radius-bl-lg-min col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>E-mail</mat-label>
+										<input matInput formControlName="cobranca_email" readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Telefone</mat-label>
+										<input matInput formControlName="cobranca_tel_residencial" ngxPhoneMaskBr readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-radius-bl-sm item-radius-bl-md item-border-lg col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tel.Cel</mat-label>
+										<input matInput formControlName="cobranca_tel_celular" ngxPhoneMaskBr readonly>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-radius-bl-xs-max item-radius-br-all item-border-sm col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tel.Com</mat-label>
+										<input matInput formControlName="cobranca_tel_comercial" ngxPhoneMaskBr readonly>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+
+            <div *ngIf="current == 3" id="3" class="associated current-page">
+				<h3 class="h3 title">Associados</h3>
+				<div class="is_matricula" *ngIf="is_matricula_titular">
+					<span><b>Proposta antiga:</b> {{ tabela_antiga.nome}} </span>
+					<div class="tabela">
+						<mat-form-field appearance="outline" class="m-inputs">
+							<mat-label>Tabela de Preço<b class="inputRequired">*</b></mat-label>
+							<input type="text" placeholder="Escolha uma tabela" formControlName="tabela_matricula_titular" aria-label="Number" matInput  [matAutocomplete]="tabela_matricula">
+							<mat-autocomplete autoActiveFirstOption #tabela_matricula="matAutocomplete" [displayWith]="displayFn">
+								<mat-option *ngFor="let tabela of tabelas"  [value]="tabela">
+									{{ tabela.nome }}
+								</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="col-lg-12" *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas" [ngClass]="vida.value.is_titular == 1 ? 'titular' : 'dependent'">
+					<div class="row group-inputs-ass" [formGroupName]="i">
+						<!-- <div class="col-sm-12 col-lg-10"> -->
+						<div class="col-sm-12">
+							<div class="header-associate">
+								<span class="associated-title">{{ vida.value.is_titular == 1 ? "Titular" : "Dependente "+i }}</span>
+								<span class="add-address" *ngIf="vida.value.is_titular != 1" (click)="openModalEndereco(i)">Adicionar informações obrigatórias<mat-icon>add_circle</mat-icon></span>
+							</div>
+							<div class="row row-group">
+								<div class="item item-radius-bl-lg-min item-radius-tr-md-max col-sm-12 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="nome" [readonly]="vida.value.is_titular == 1 ? true : false">
+										<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.required">Nome não foi preenchido.</mat-error>
+										<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-md-max item-border-lg col-sm-6 col-lg-2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CPF<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cpf" mMarkInputs="999.999.999-99" [readonly]="vida.value.is_titular == 1 ? true : false">
+										<mat-error *ngIf="vidas.controls[i].get('cpf').errors !== null && vidas.controls[i].get('cpf').errors.required">CPF não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-md-max item-border-sm col-sm-6 col-lg-2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Sexo<b class="inputRequired">*</b></mat-label>
+										<mat-select placeholder="Escolha a opção" formControlName="sexo" [disableControl]="vida.value.is_titular == 1 ? true : false">
+											<mat-option value="Masculino">
+												M
+											</mat-option>
+											<mat-option value="Feminino">
+												F
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="vidas.controls[i].get('sexo').errors !== null && vidas.controls[i].get('sexo').errors.required">Sexo não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-md-max item-border-lg  item-radius-bl-md  item-radius-bl-sm col-sm-6 col-lg-2">
+									<mat-form-field appearance="outline" class="m-inputs" (click)="data_nasc.open()">
+										<mat-label>Data Nasc<b class="inputRequired">*</b></mat-label>
+										<input matInput [matDatepicker]="data_nasc" [min]="data_minima" [max]="data_maxima" formControlName="data_nascimento" [disableControl]="vida.value.is_titular == 1 ? true : false">
+										<mat-datepicker-toggle matSuffix [for]="data_nasc"></mat-datepicker-toggle>
+										<mat-datepicker #data_nasc></mat-datepicker>
+										<mat-error *ngIf="vidas.controls[i].get('data_nascimento').errors !== null && vidas.controls[i].get('data_nascimento').errors.required">Data de nascimento não foi preenchida.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-md-max item-border-sm item-radius-tr-lg-min item-radius-br-all item-radius-bl-xs-max col-sm-6 col-lg-2 block-remove">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Valor</mat-label>
+										<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
+									</mat-form-field>
+									<button type="button" class="remove-dependent btn" *ngIf="vida.value.is_titular != 1" (click)="removeDependented(vida.value.id)" >
+										<mat-icon>remove_circle</mat-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="item-button col-sm-4 col-lg-2">
+							<button type="button" class="btn btn-primary clinical-data" (click)="openModal(i)">
+								<mat-icon>add_circle</mat-icon>
+								<span>Dados clinicos</span>
+							</button>
+						</div> -->
+					</div>
+				</div>
+				<button class="btn btn-add-dependent" type="button" (click)="addDepented()">
+					<mat-icon>add_circle</mat-icon>
+					<span>Adicionar Dependente</span>
+				</button>
+            </div>
+
+            <div *ngIf="current == 4" id="4"  formGroupName="adesao" class="current-page">
+				<h3 class="h3 title">Autorização para adesão</h3>
+                <div class="content col-lg-12">
+					<div class="row row-group">
+						<div class="item item-radius-tr-md-max item-radius-tl-all col-sm-12 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Valor<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
+							</mat-form-field>
+						</div>
+						<div class="item  item-radius-tr-lg-min col-sm-12 item-pagamento item-border-lg item-margin-md-max col-lg-9">
+							<span>Forma de pagamento<b class="inputRequired">*</b>:</span>
+							<mat-radio-group formControlName="pagamento_tipo" >
+								<ng-container *ngFor="let pagamento_tipo of lista_adesao" >
+									<mat-radio-button 
+										(change)="changeFormPagamento($event,'adesao')"   
+										[value]="pagamento_tipo" 
+										*ngIf="pagamento_tipo.id != corretora_id || (pagamento_tipo.id == corretora_id && usuario.e_corretora == 1)"
+									>
+										{{ pagamento_tipo.nome }}
+									</mat-radio-button>
+								</ng-container>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('adesao').value.pagamento_tipo,'cadastramento_online')">
+					<div class="row row-group">
+						<div class="item  col-sm-12 item-pagamento item-margin-xs-min item-margin-md-max col-lg-12">
+							<span>Você está optando pela forma de adesão em que o cliente irá preencher os dados.</span>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="form.get('adesao').value.pagamento_tipo && form.get('adesao').value.pagamento_tipo.id == 4">
+					<div class="row row-group">
+						<div class="item item-radius-bl-lg-min item-margin-xs-min col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Banco<b class="inputRequired">*</b></mat-label>
+								<mat-select formControlName="banco" placeholder="Escolha a opção" >
+									<mat-option *ngFor="let banco of lista_bancos_other" [value]="banco">
+										{{banco}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.adesao.get('banco').errors !== null && form.controls.adesao.get('banco').errors.required">Banco não foi escolhido.</mat-error>
+							</mat-form-field>
+						</div>
+						<div  class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº de agência<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="numero_agencia" >
+								<mat-error *ngIf="form.controls.adesao.get('numero_agencia').errors !== null && form.controls.adesao.get('numero_agencia').errors.required">Nº de agência não foi preenchida.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('numero_agencia').errors !== null && form.controls.adesao.get('numero_agencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div *ngIf="handleTipoConta('adesao')" class="item item-radius-bl-md item-radius-bl-sm item-margin-xs-min item-border-lg col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Tipo da conta<b class="inputRequired">*</b></mat-label>
+								<mat-select formControlName="conta_tipo" placeholder="Escolha a opção" >
+									<mat-option *ngFor="let item of lista_tipo_conta" [value]="item.value">
+										{{item.nome}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.adesao.get('conta_tipo').errors !== null && form.controls.adesao.get('conta_tipo').errors.required">Tipo da conta não foi escolhida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div  [ngClass]="handleTipoConta('adesao') ? 'item-border-sm col-sm-6 col-lg-5' : 'item-radius-bl-md-max item-border-lg col-sm-12 col-lg-7'" class="item item-radius-bl-xs-max item-radius-br-all item-margin-xs-min ">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº da conta corrente<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="numero_conta" >
+								<mat-error *ngIf="form.controls.adesao.get('numero_conta').errors !== null && form.controls.adesao.get('numero_conta').errors.required">Nº da conta corrente não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('numero_conta').errors !== null && form.controls.adesao.get('numero_conta').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('adesao').value.pagamento_tipo,'dinheiro')">
+					<div class="row row-group">
+						<div class="item  col-sm-12 item-pagamento item-margin-xs-min item-margin-md-max col-lg-12">
+							<span>Quem vai pagar?<b class="inputRequired">*</b></span>
+							<mat-radio-group formControlName="fiador" >
+								<mat-radio-button  value="1">
+									Titular
+								</mat-radio-button>
+								<mat-radio-button  value="2">
+									Outra pessoa
+								</mat-radio-button>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('adesao').value.pagamento_tipo,'dinheiro') && form.get('adesao').value.fiador == '2'">
+					<div class="row row-group">
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item  item-margin-xs-min col-sm-12 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="nome_pagador" >
+										<mat-error *ngIf="form.controls.adesao.get('nome_pagador').errors !== null && form.controls.adesao.get('nome_pagador').errors.required">Nome não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.adesao.get('nome_pagador').errors !== null && form.controls.adesao.get('nome_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-lg col-sm-6 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Telefone<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="telefone_pagador" ngxPhoneMaskBr>
+										<mat-error *ngIf="form.controls.adesao.get('telefone_pagador').errors !== null && form.controls.adesao.get('telefone_pagador').errors.required">Telefone não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CEP<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cep_pagador" mMarkInputs="99999-999" >
+										<mat-error *ngIf="form.controls.adesao.get('cep_pagador').errors !== null && form.controls.adesao.get('cep_pagador').errors.required">CEP não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min col-sm-12 col-lg-6">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="rua_pagador" >
+										<mat-error *ngIf="form.controls.adesao.get('rua_pagador').errors !== null && form.controls.adesao.get('rua_pagador').errors.required">Rua não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.adesao.get('rua_pagador').errors !== null && form.controls.adesao.get('rua_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-lg col-sm-6 col-lg-2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Número<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="numero_endereco_pagador" >
+										<mat-error *ngIf="form.controls.adesao.get('numero_endereco_pagador').errors !== null && form.controls.adesao.get('numero_endereco_pagador').errors.required">Número não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.adesao.get('numero_endereco_pagador').errors !== null && form.controls.adesao.get('numero_endereco_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Complemento</mat-label>
+										<input matInput formControlName="complemento_pagador" maxlength="20">
+										<mat-error *ngIf="form.controls.adesao.get('complemento_pagador').errors !== null && form.controls.adesao.get('complemento_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-radius-bl-lg-min item-margin-xs-min col-sm-4 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="bairro_pagador" >
+										<mat-error *ngIf="form.controls.adesao.get('bairro_pagador').errors !== null && form.controls.adesao.get('bairro_pagador').errors.required">Bairro não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.adesao.get('bairro_pagador').errors !== null && form.controls.adesao.get('bairro_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-4 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cidade_pagador" >
+										<mat-error *ngIf="form.controls.adesao.get('cidade_pagador').errors !== null && form.controls.adesao.get('cidade_pagador').errors.required">Cidade não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.adesao.get('cidade_pagador').errors !== null && form.controls.adesao.get('cidade_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-radius-bl-xs-max item-radius-br-all item-margin-xs-min item-border-sm col-sm-4 col-lg-4">
+									<!-- <mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Estado</mat-label>
+										<input matInput formControlName="estado_pagador" >
+									</mat-form-field> -->
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Estado<b class="inputRequired">*</b></mat-label>
+										<mat-select formControlName="estado_pagador" placeholder="Escolha a opção">
+											<mat-option [value]="item" *ngFor="let item of list_estado">
+												{{ item }}
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.controls.adesao.get('estado_pagador').errors !== null && form.controls.adesao.get('estado_pagador').errors.required">Estado não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="form.get('adesao').value.pagamento_tipo && form.get('adesao').value.pagamento_tipo.id == 3">
+					<div class="row row-group">
+						<div class="item item-radius-bl-lg-min item-margin-xs-min col-sm-12 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nome (igual o cartão)</mat-label>
+								<input matInput formControlName="cartao_nome" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_nome').errors !== null && form.controls.adesao.get('cartao_nome').errors.required">Nome não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_nome').errors !== null && form.controls.adesao.get('cartao_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-lg  item-margin-xs-min  col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº do cartão</mat-label>
+								<input matInput formControlName="cartao_numero" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_numero').errors !== null && form.controls.adesao.get('cartao_numero').errors.required">Nº do cartão não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_numero').errors !== null && form.controls.adesao.get('cartao_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-lg   item-border-sm col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Validade</mat-label>
+								<input matInput formControlName="cartao_validade" mMarkInputs="99/99" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_validade').errors !== null && form.controls.adesao.get('cartao_validade').errors.required">Validade não foi preenchida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-bl-md item-radius-bl-sm item-border-lg item-margin-xs-min  col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Bandeira</mat-label>
+								<mat-select placeholder="Escolha a opção" formControlName="cartao_bandeira">
+									<mat-option [value]="item" *ngFor="let item of lista_bandeiras">
+										{{item}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_bandeira').errors !== null && form.controls.adesao.get('cartao_bandeira').errors.required">Bandeira não foi escolhida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-bl-xs-max item-radius-br-all item-border-sm  item-margin-xs-min item-border-lg col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>CVV</mat-label>
+								<input matInput type="number" formControlName="cartao_cvv"  >
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="form.get('adesao').value.pagamento_tipo && form.get('adesao').value.pagamento_tipo.id == 6">
+					<div class="row row-group">
+						<div class="item item-radius-bl-lg-min item-margin-xs-min col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nome (igual o cartão)</mat-label>
+								<input matInput formControlName="cartao_nome" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_nome').errors !== null && form.controls.adesao.get('cartao_nome').errors.required">Nome não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_nome').errors !== null && form.controls.adesao.get('cartao_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-lg item-border-sm item-margin-xs-min  col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº do cartão</mat-label>
+								<input matInput formControlName="cartao_numero" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_numero').errors !== null && form.controls.adesao.get('cartao_numero').errors.required">Nº do cartão não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_numero').errors !== null && form.controls.adesao.get('cartao_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-bl-md item-radius-bl-sm item-margin-xs-min item-border-lg  col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Validade</mat-label>
+								<input matInput formControlName="cartao_validade" mMarkInputs="99/99" >
+								<mat-error *ngIf="form.controls.adesao.get('cartao_validade').errors !== null && form.controls.adesao.get('cartao_validade').errors.required">Validade não foi preenchida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-bl-xs-max item-radius-br-all item-border-sm  item-margin-xs-min item-border-lg   col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Bandeira</mat-label>
+								<mat-select placeholder="Escolha a opção" formControlName="cartao_bandeira">
+									<mat-option [value]="item" *ngFor="let item of lista_bandeiras">
+										{{item}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.adesao.get('cartao_bandeira').errors !== null && form.controls.adesao.get('cartao_bandeira').errors.required">Bandeira não foi escolhida.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('adesao').value.pagamento_tipo,'repasse')">
+					<div class="row row-group">
+						<div class="item item-margin-xs-min col-sm-12 col-lg-12">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº de matrícula da empresa<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="n_matricula_empresa" >
+								<mat-error *ngIf="form.controls.adesao.get('n_matricula_empresa').errors !== null && form.controls.adesao.get('n_matricula_empresa').errors.required">Nº de matrícula não foi preenchida.</mat-error>
+								<mat-error *ngIf="form.controls.adesao.get('n_matricula_empresa').errors !== null && form.controls.adesao.get('n_matricula_empresa').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+
+                <div class="content-pagamento">
+                    <p>
+                        {{regra_negocio_adesao}}
+                    </p>
+                </div>
+            </div>
+
+            <div *ngIf="current == 5" id="5" formGroupName="mensalidade" class="current-page">
+				<h3 class="h3 title">Autorização para mensalidade</h3>
+				<div class="content col-lg-12">
+					<div class="row row-group">
+						<div class="item item-radius-tr-md-max item-radius-tl-all col-sm-12 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Valor</mat-label>
+								<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-tr-lg-min item-pagamento item-border-lg item-margin-md-max col-sm-12 col-lg-9">
+							<span>Forma de pagamento*: </span>
+							<mat-radio-group formControlName="pagamento_tipo" >
+								<ng-container *ngFor="let pagamento_tipo of pagamentos_tipos">
+									<mat-radio-button (change)="changeFormPagamento($event,'mensalidade')" *ngIf="verificaCobrancaRepasseDFolha(pagamento_tipo)"   [value]="pagamento_tipo">
+										{{ pagamento_tipo.nome }}
+									</mat-radio-button>
+								</ng-container>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'cadastramento_online')">
+					<div class="row row-group">
+						<div class="item  col-sm-12 item-pagamento item-margin-xs-min item-margin-md-max col-lg-12">
+							<span>Você está optando pela forma de mensalidade em que o cliente irá preencher os dados.</span>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'conta') && form.get('mensalidade').value.pagamento_online == 0">
+					<div class="row row-group">
+						<div class="item item-margin-xs-min col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Banco<b class="inputRequired">*</b></mat-label>
+								<mat-select formControlName="banco" placeholder="Escolha a opção" >
+									<mat-option *ngFor="let banco of lista_bancos_other" [value]="banco">
+										{{banco}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.mensalidade.get('banco').errors !== null && form.controls.mensalidade.get('banco').errors.required">Banco não foi escolhido.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº de agência<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="numero_agencia" >
+								<mat-error *ngIf="form.controls.mensalidade.get('numero_agencia').errors !== null && form.controls.mensalidade.get('numero_agencia').errors.required">Nº de agência não foi preenchida.</mat-error>
+								<mat-error *ngIf="form.controls.mensalidade.get('numero_agencia').errors !== null && form.controls.mensalidade.get('numero_agencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div *ngIf="handleTipoConta('mensalidade')" class="item item-margin-xs-min item-border-lg col-sm-6 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Tipo da conta<b class="inputRequired">*</b></mat-label>
+								<mat-select formControlName="conta_tipo" placeholder="Escolha a opção" >
+									<mat-option *ngFor="let item of lista_tipo_conta" [value]="item.value">
+										{{item.nome}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.mensalidade.get('conta_tipo').errors !== null && form.controls.mensalidade.get('conta_tipo').errors.required">Tipo da conta não foi escolhida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div  [ngClass]="handleTipoConta('mensalidade') ? 'col-sm-6 col-lg-5' : 'col-sm-12 col-lg-7'" class="item item-margin-xs-min item-border-sm  ">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº da conta corrente<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="numero_conta" >
+								<mat-error *ngIf="form.controls.mensalidade.get('numero_conta').errors !== null && form.controls.mensalidade.get('numero_conta').errors.required">Nº da conta corrente não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.mensalidade.get('numero_conta').errors !== null && form.controls.mensalidade.get('numero_conta').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'repasse')">
+					<div class="row row-group">
+						<div class="item item-margin-xs-min col-sm-12 col-lg-12">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº de matrícula da empresa<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="n_matricula_empresa" >
+								<mat-error *ngIf="form.controls.mensalidade.get('n_matricula_empresa').errors !== null && form.controls.mensalidade.get('n_matricula_empresa').errors.required">Nº de matrícula da empresa não foi preenchida.</mat-error>
+								<mat-error *ngIf="form.controls.mensalidade.get('n_matricula_empresa').errors !== null && form.controls.mensalidade.get('n_matricula_empresa').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'cartao') && form.get('mensalidade').value.pagamento_online == 0">
+					<div class="row row-group">
+						<div class="item item-margin-xs-min  col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nome (igual o cartão)<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="cartao_nome" >
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_nome').errors !== null && form.controls.mensalidade.get('cartao_nome').errors.required">Nome não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_nome').errors !== null && form.controls.mensalidade.get('cartao_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-sm item-border-lg  col-sm-6  col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Nº do cartão<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="cartao_numero" >
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_numero').errors !== null && form.controls.mensalidade.get('cartao_numero').errors.required">Nº do cartão não foi preenchido.</mat-error>
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_numero').errors !== null && form.controls.mensalidade.get('cartao_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-lg col-sm-6 col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Validade<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="cartao_validade" mMarkInputs="99/99" >
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_validade').errors !== null && form.controls.mensalidade.get('cartao_validade').errors.required">Validade não foi preenchida.</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="item item-margin-xs-min item-border-sm item-border-lg  col-sm-6  col-lg-3">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Bandeira<b class="inputRequired">*</b></mat-label>
+								<mat-select placeholder="Escolha a opção" formControlName="cartao_bandeira">
+									<mat-option [value]="item" *ngFor="let item of lista_bandeiras">
+										{{item}}
+									</mat-option>
+								</mat-select>
+								<mat-error *ngIf="form.controls.mensalidade.get('cartao_bandeira').errors !== null && form.controls.mensalidade.get('cartao_bandeira').errors.required">Bandeira não foi escolhida.</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'cartao') || verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'conta') || verificaTipoPagamento(form.get('mensalidade').value.pagamento_tipo,'boleto')">
+					<div class="row row-group">
+						<div class="item item-pagamento item-margin-xs-min col-sm-12">
+							<mat-checkbox (change)="changePagamentoOnline($event)" formControlName="pagamento_online">A mensalidade será cobrada Online?</mat-checkbox>
+						</div>
+					</div>
+				</div>
+				<div class="content col-lg-12">
+					<div class="row row-group">
+						<div class="item item-pagamento item-margin-xs-min col-sm-12 col-lg-10">
+							<span>Responsável pela cobrança:</span>
+							<mat-radio-group formControlName="correspondencia" (change)="changeCorrespondencia($event)">
+								<mat-radio-button value="titular">
+									Titular
+								</mat-radio-button>
+								<mat-radio-button value="outra_pessoa">
+									Outra pessoa
+								</mat-radio-button>
+								<mat-error *ngIf="form.controls.mensalidade.get('correspondencia').errors !== null && form.controls.mensalidade.get('correspondencia').errors.required">Responsável pela cobrança não foi escolhido.</mat-error>
+							</mat-radio-group>
+							<ng-container @hide *ngIf="form.get('mensalidade').value.correspondencia === 'outra_pessoa'">
+								<div class="btn-copy btn btn-light" (click)="copyTitular()">
+									Mesmo endereço do titular?
+								</div>
+							</ng-container>
+						</div>
+						<div class="item item-border-lg item-margin-xs-min col-sm-12 col-lg-2">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Vencimento<b class="inputRequired">*</b></mat-label>
+								<mat-select placeholder="Escolha a opção" formControlName="pagamento_data_vencimento">
+									<!-- <ng-container *ngIf="form.get('tipo_servico').value.id == 230">
+										<mat-option value="2">
+											2
+										</mat-option>
+									</ng-container> -->
+									<mat-option *ngFor="let item of data_vencimento" [value]="item">
+										{{item}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div @hide class="content col-lg-12" *ngIf="form.get('mensalidade').value.correspondencia === 'outra_pessoa'"  >
+					<div class="row">
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min col-sm-12 col-lg-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nome completo<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_responsavel_nome" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_responsavel_nome').errors !== null && form.controls.mensalidade.get('cobranca_responsavel_nome').errors.required">Nome não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_responsavel_nome').errors !== null && form.controls.mensalidade.get('cobranca_responsavel_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-lg item-margin-xs-min col-sm-3 col-lg-2" [ngClass]="form.get('mensalidade').value.cobranca_tipo_pessoa != 2 ? 'col-sm-3 col-lg-2': 'col-sm-4 col-lg-2'" >
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tipo pessoa</mat-label>
+										<mat-select formControlName="cobranca_tipo_pessoa" placeholder="Escolha a opção" (selectionChange)="changeTipoPessoaCobranca($event)">
+											<mat-option value="1">
+												Pessoa Física
+											</mat-option>
+											<mat-option value="2">
+												Pessoa Jurídica
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_tipo_pessoa').errors !== null && form.controls.mensalidade.get('cobranca_tipo_pessoa').errors.required">Tipo de pessoa não foi escolhida.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-xs-min col-sm-3 col-lg-3" *ngIf="form.get('mensalidade').value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CPF<b class="inputRequired">*</b></mat-label>
+										<input  matInput formControlName="cobranca_cpf" mMarkInputs="999.999.999-99">
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_cpf').errors !== null && form.controls.mensalidade.get('cobranca_cpf').errors.required">CPF não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-xs-min col-sm-4 col-lg-3" *ngIf="form.get('mensalidade').value.cobranca_tipo_pessoa == 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CNPJ<b class="inputRequired">*</b></mat-label>
+										<input  matInput formControlName="cobranca_cnpj" mMarkInputs="99.999.999/9999-99">
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_cnpj').errors !== null && form.controls.mensalidade.get('cobranca_cnpj').errors.required">CNPJ não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-xs-min col-sm-3 col-lg-2" *ngIf="form.get('mensalidade').value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>RG</mat-label>
+										<input matInput type="number" formControlName="cobranca_rg" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_rg').errors !== null && form.controls.mensalidade.get('cobranca_rg').errors.required">RG não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-border-sm item-margin-xs-min col-sm-3 col-lg-1" *ngIf="form.get('mensalidade').value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Sexo</mat-label>
+										<mat-select formControlName="cobranca_sexo" placeholder="Escolha a opção" >
+											<mat-option value="Masculino">
+												M
+											</mat-option>
+											<mat-option value="Feminino">
+												F
+											</mat-option>
+											<mat-option value="3">
+												Não declarado
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_sexo').errors !== null && form.controls.mensalidade.get('cobranca_sexo').errors.required">Sexo não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min col-sm-6 col-lg-3" *ngIf="form.get('mensalidade').value.cobranca_tipo_pessoa != 2">
+									<mat-form-field appearance="outline" class="m-inputs" (click)="cobranca_nascimento.open()">
+										<mat-label>Data nascimento<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_nascimento" [min]="data_minima" [max]="data_maxima" [matDatepicker]="cobranca_nascimento">
+										<mat-datepicker-toggle matSuffix [for]="cobranca_nascimento"></mat-datepicker-toggle>
+										<mat-datepicker #cobranca_nascimento></mat-datepicker>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_nascimento').errors !== null && form.controls.mensalidade.get('cobranca_nascimento').errors.required">Data de nascimento não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min " [ngClass]="form.get('mensalidade').value.cobranca_tipo_pessoa != 2 ? 'item-border-sm col-sm-6 col-lg-3': 'item-border-sm item-border-lg-min col-sm-4 col-lg-3'">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>CEP<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_cep" mMarkInputs="99999-999" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_cep').errors !== null && form.controls.mensalidade.get('cobranca_cep').errors.required">CEP não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min  col-sm-10" [ngClass]="form.get('mensalidade').value.cobranca_tipo_pessoa != 2 ? 'item-border-lg col-lg-5': 'col-lg-11'">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_rua" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_rua').errors !== null && form.controls.mensalidade.get('cobranca_endereco_rua').errors.required">Rua não foi preenchida.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_rua').errors !== null && form.controls.mensalidade.get('cobranca_endereco_rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-2 col-lg-1">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Nº<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_numero" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_numero').errors !== null && form.controls.mensalidade.get('cobranca_endereco_numero').errors.required">Nº não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_numero').errors !== null && form.controls.mensalidade.get('cobranca_endereco_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min  col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Complemento<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_complemento" maxlength="20">
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_complemento').errors !== null && form.controls.mensalidade.get('cobranca_endereco_complemento').errors.required">Complemento não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_complemento').errors !== null && form.controls.mensalidade.get('cobranca_endereco_complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Ponto de referência<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_referencia" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_referencia').errors !== null && form.controls.mensalidade.get('cobranca_endereco_referencia').errors.required">Ponto de referência não foi preenchida.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_referencia').errors !== null && form.controls.mensalidade.get('cobranca_endereco_referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-4">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_endereco_bairro" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_bairro').errors !== null && form.controls.mensalidade.get('cobranca_endereco_bairro').errors.required">Bairro não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_endereco_bairro').errors !== null && form.controls.mensalidade.get('cobranca_endereco_bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min  col-sm-6 col-lg-6">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_cidade" >
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_cidade').errors !== null && form.controls.mensalidade.get('cobranca_cidade').errors.required">Cidade não foi preenchida.</mat-error>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_cidade').errors !== null && form.controls.mensalidade.get('cobranca_cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-6">
+									<!-- <mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Estado<b class="inputRequired">*</b></mat-label>
+										<input matInput formControlName="cobranca_uf" >
+										<mat-error *ngIf="form.get('cobranca_uf').errors !== null && form.get('cobranca_uf').errors.required">Estado não foi preenchida.</mat-error>
+									</mat-form-field> -->
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Estado<b class="inputRequired">*</b></mat-label>
+										<mat-select formControlName="cobranca_uf" placeholder="Escolha a opção">
+											<mat-option [value]="item" *ngFor="let item of list_estado">
+												{{ item }}
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.controls.mensalidade.get('cobranca_uf').errors !== null && form.controls.mensalidade.get('cobranca_uf').errors.required">Estado não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="content col-lg-12">
+							<div class="row row-group">
+								<div class="item item-margin-xs-min col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>E-mail</mat-label>
+										<input matInput formControlName="cobranca_email">
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Telefone</mat-label>
+										<input matInput formControlName="cobranca_tel_residencial" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-lg col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tel.Cel</mat-label>
+										<input matInput formControlName="cobranca_tel_celular" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="item item-margin-xs-min item-border-sm col-sm-6 col-lg-3">
+									<mat-form-field appearance="outline" class="m-inputs">
+										<mat-label>Tel.Com</mat-label>
+										<input matInput formControlName="cobranca_tel_comercial" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="content col-lg-12">
+					<div class="row row-group">
+						<!-- <div class="item item-radius-bl-all item-radius-br-all item-margin-xs-min item-pagamento col-lg-12"> -->
+						<div class="item item-pagamento item-margin-xs-min col-sm-12">
+							<span>Periodicidade<b class="inputRequired">*</b></span>
+							<mat-radio-group formControlName="periodicidade" >
+								<mat-radio-button value="mensal">
+									Mensal
+								</mat-radio-button>
+								<mat-radio-button value="semestral" *ngIf="form.get('filial').value == 'Salvador'">
+									Semestral
+								</mat-radio-button>
+								<mat-radio-button value="anual" *ngIf="form.get('filial').value == 'Salvador'">
+									Anual
+								</mat-radio-button>
+							</mat-radio-group>
+						</div>
+					</div>
+				</div>
+				<div class="content col-lg-12">
+					<div class="row row-group">
+						<div class="item item-radius-bl-all item-radius-br-all item-margin-xs-min col-lg-12">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Observações</mat-label>
+								<input matInput formControlName="observacao"  >
+								<!-- <textarea matInput formControlName="observacao"></textarea> -->
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+				<div class="content-pagamento">
+                    <p>
+                        {{regra_negocio_mensalidade}}
+                    </p>
+                </div>
+			</div>
+
+			<div class="footer show-buttons col-lg-12" *ngIf="current <= limit" >
+				<div class="row justify-content-between">
+					<button type="button" [disabled]="current == 1"  (click)="prev()" class="btn btn-primary">
+						<mat-icon>keyboard_arrow_left</mat-icon>
+					</button>
+					<button type="button" *ngIf="(is_matricula_titular && current != 3) || (!is_matricula_titular && current != limit)" (click)="next()" class="btn btn-primary">
+						<mat-icon>keyboard_arrow_right</mat-icon>
+					</button>
+					<div class="opt-submit"  *ngIf="(is_matricula_titular && current == 3) || (!is_matricula_titular && current == limit)">
+						<button type="button" (click)="savePropostaRascunho()" [disabled]="btn_block_click"  class="btn btn-rascunho">Salvar como Rascunho</button>
+						<button type="submit"   class="btn btn-success create" [disabled]="btn_block_click">Finalizar Proposta</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div *ngIf="current == 6" id="6" class="current-page option-proposta" >
+			<div class="sing">
+				<div class="payment-pay" *ngIf="has_payment">
+					<h3 class="h3 title">Pagamento:</h3>
+					<kt-btn-payment-online 
+						[setProposta]="proposta"
+						[setAdesao]="adesao"
+						[setMensalidade]="mensalidade"
+						[setTiposPagamentos]="tipos_pagamento"
+						[refresh]="refreshPayment"
+						(resetRefresh)="resetRefresh($event)"
+					></kt-btn-payment-online>
+				</div>
+				<h3 class="h3 title">Escolha uma das opções:</h3>
+				<div class="options">
+					<button class="btn " (click)="accordion('assinatura')" [ngClass]="is_assinatura ? 'active'  : ''">
+						Assinatura Digital
+					</button>
+					<button class="btn " (click)="accordion('aceite_voz')" [ngClass]="is_aceite_voz ? 'active'  : ''">
+						Aceite de Voz
+					</button>
+					<button class="btn " (click)="accordion('assinatura_presencial')" [ngClass]="is_assinatura_presencial ? 'active'  : ''">
+						Assinatura Impressa
+					</button>
+					<button class="btn " (click)="accordion('anexa_arquivos')" [ngClass]="is_anexa_arquivos ? 'active'  : ''">
+						Anexar arquivos
+					</button>
+					<ng-container *ngIf="show_btn_ficha_visita">
+						<button class="btn " (click)="accordion('ficha_visita')" [ngClass]="is_ficha_visita ? 'active'  : ''">
+							Ficha de visita
+						</button>
+					</ng-container>
+				</div>
+				<div class="accordion">
+					<div class="item" >
+						<div *ngIf="is_aceite_voz" @hide>
+							<kt-create-aceite-voz [setProposta_id]="proposta_id" ></kt-create-aceite-voz>
+						</div>
+					</div>
+					<div class="item">
+						<div *ngIf="is_assinatura" @hide >
+							<kt-create-assinatura [setProposta_id]="proposta_id" ></kt-create-assinatura>
+						</div>
+					</div>
+					<div class="item">
+						<div *ngIf="is_assinatura_presencial" class="modal-dados-clinicos sing-print" @hide>
+							<form [formGroup]="form_assinatura" (ngSubmit)="assinatura_create()">
+								<div class="option">
+									<span>Essa assinatura será do tipo impressa?</span>
+									<mat-slide-toggle formControlName="is_assinatura_presencial"></mat-slide-toggle>
+								</div>
+								<div class="item">
+									<button class="btn btn-success">Enviar</button>	
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="item">
+						<div class="attachment" *ngIf="is_anexa_arquivos">
+							<h3 class="h3 title">Inserir um anexo:</h3>
+							<div class="anexoArquivo">
+								<form [formGroup]="form" enctype="multipart/form-data">
+									<div class="box" title="Anexar arquivos">
+										<input  type="file" name="file-7[]" id="file-7" class="inputfile inputfile-6" (change)="addFile($event)"  data-multiple-caption="{count} files selected" multiple  accept=".pdf,image/*"/>
+										<label for="file-7">
+											<strong>
+												<mat-icon matSuffix>attach_file</mat-icon>
+											</strong>
+											Anexar comprovantes
+										</label>
+									</div>
+								</form>
+							</div>
+							<div class="list" *ngIf="midias.length > 0">
+								<div class="item" *ngFor="let item of midias;let i=index">
+									<span>{{ item.name }}</span>
+									<button class="btn btn-remove" type="button" (click)="removeMidia(i)">
+										<mat-icon>
+											remove_circle
+										</mat-icon>
+									</button>
+								</div>
+							</div>
+							<button (click)="insertMedia()" class="btn btn-success">Inserir Anexos</button>	
+						</div>
+					</div>
+					<div class="item" *ngIf="show_btn_ficha_visita"  @hide>
+						<div *ngIf="is_ficha_visita" @hide>
+							<kt-ficha-visita [setProposta]="form.value" [proposta_id]="proposta_id" (event_return)="outputFichaVisita($event)"></kt-ficha-visita>
+						</div>
+					</div>
+					<div id="sing_anchor"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+

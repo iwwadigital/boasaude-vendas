@@ -1,0 +1,48 @@
+.has_file{
+	opacity: 0;
+	position: absolute;
+	top:0;
+	left: 0;
+}
+#audio {
+
+    width: 100%;
+    // height: 25px;
+}
+audio::-webkit-media-controls-enclosure{
+	background: transparent;
+}
+.close-file{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: -20px;
+	.mat-icon{
+		font-size: 30px !important;
+		color: #16498B;
+	}
+}
+
+// ACEITE
+.form-aceite{
+	.row-group{
+		justify-content: center;
+	}
+	
+	.row-button{
+		justify-content: center;
+		
+		.btn-success{
+			margin-top: 40px;
+		}
+	}
+}
+
+
+:host{
+	::ng-deep{
+		.ng-invalid .form-control::placeholder{
+			color: #fd397a;
+		}
+	}
+}

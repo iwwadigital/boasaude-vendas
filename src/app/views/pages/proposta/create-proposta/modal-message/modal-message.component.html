@@ -1,0 +1,9 @@
+<div mat-dialog-content>
+	<div class="content" [ngClass]="is_assinatura ? 'content-sing' : 'content-icon'">
+		<img [src]="icon" alt="">
+		<span [innerHTML]="message"></span>
+	</div>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

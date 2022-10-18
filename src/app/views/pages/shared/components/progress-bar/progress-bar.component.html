@@ -1,0 +1,8 @@
+<div *ngIf="is_percent">
+    <span class="percent">{{percent  | number:'1.1' }}/100%</span>
+</div>
+<div class="life_create" *ngIf="!is_percent">
+    <span class="percent">{{percent  | number:'1.1' }}% de vidas cadastradas</span>
+    <span class="percent">100%</span>
+</div>
+<mat-progress-bar  matTooltip="{{percent | number:'1.1-2'}}%" [value]="percent"></mat-progress-bar>

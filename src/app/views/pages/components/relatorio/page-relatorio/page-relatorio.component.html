@@ -1,0 +1,147 @@
+<kt-portlet >
+    <kt-portlet-body [class]="'kt-portlet__body--fit'">
+        <div class="relatory">
+            <h3 class="sub-title">Emissão de Relatórios</h3>
+            <div class="relatory-btn">
+                <!-- <button class="btn btn-print" (click)="openModal('recusada')">
+                    <span>
+                        Propostas recusadas
+                    </span>
+                    <mat-icon>print</mat-icon>
+                </button>
+                 <button class="btn btn-print" (click)="openModal('propostas_importadas')">
+                    <span>
+                        Propostas Aprovadas
+                    </span>
+                    <mat-icon>print</mat-icon>
+                </button> -->
+                <button class="btn btn-print" (click)="openModal('canal_vendas')">
+                    <span>
+                        Canais de vendas
+                    </span>
+                    <mat-icon>print</mat-icon>
+                </button>
+               
+                <button class="btn btn-print" (click)="openModal('diario')">
+                    <span>
+                        Proposta Diárias
+                    </span>
+                    <mat-icon>trending_up</mat-icon>
+                </button>
+                <button class="btn btn-print" (click)="openModal('fechamento_caixa')">
+                    <span>
+                        Fechamento de caixa
+                    </span>
+                    <mat-icon>trending_up</mat-icon>
+                </button>
+                <button class="btn btn-print" (click)="openModal('ficha_visita')">
+                    <span>
+                        Ficha de visita
+                    </span>
+                    <mat-icon>trending_up</mat-icon>
+                </button>
+                <button class="btn btn-print" (click)="openModal('assinatura')">
+                    <span>
+                        Assinatura
+                    </span>
+                    <mat-icon>trending_up</mat-icon>
+                </button>
+            </div>
+        </div>
+        <h3 class="sub-title">Relatório Geral</h3>
+        <form class="search col-lg-12" [formGroup]="form" (ngSubmit)="search_proposta()">
+            <div class="row row-filtro-relatorio">
+                <div class="item">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status" placeholder="Escolha a opção" >
+                            <mat-option value="Recusado">
+                                Recusado
+                            </mat-option>
+                            <mat-option value="Em Aprovação">
+                                Em Aprovação
+                            </mat-option>
+                            <mat-option value="Pendente">
+                                Pendente
+                            </mat-option>
+                            <mat-option value="Aprovado">
+                                Aprovada
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="item">
+                    <mat-form-field appearance="outline"  class="m-inputs">
+                        <mat-label>Equipe</mat-label>
+                        <input formControlName="equipe" type="text" placeholder="Escolha uma equipe" formControlName="equipe" aria-label="Number" matInput  [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let equipe of equipes"  [value]="equipe">
+                                {{ equipe.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="item">
+                    <mat-form-field appearance="outline"  class="m-inputs">
+                        <mat-label>Usuario</mat-label>
+                        <input formControlName="usuario" type="text" placeholder="Escolha um usuario" formControlName="usuario" aria-label="Number" matInput  [matAutocomplete]="usuario_auto">
+                        <mat-autocomplete autoActiveFirstOption #usuario_auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let usuario of usuarios"  [value]="usuario">
+                                {{ usuario.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="item">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Adesão</mat-label>
+                        <mat-select placeholder="Escolha a opção" formControlName="adesao"> 
+                            <mat-option value="1">
+                                Pago (online)
+                            </mat-option>
+                            <mat-option value="0">
+                                Outros
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="item">
+                    <mat-form-field appearance="outline"  class="m-inputs" (click)="myDatepicker.open()">
+                        <mat-label>Data Inicial</mat-label>
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                        <input  matInput formControlName="data_inicio" [matDatepicker]="myDatepicker">
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="item">
+                    <mat-form-field appearance="outline"  class="m-inputs" (click)="data_fim.open()">
+                        <mat-label>Data Final</mat-label>
+                        <mat-datepicker-toggle matSuffix [for]="data_fim"></mat-datepicker-toggle>
+                        <input  matInput formControlName="data_fim" [matDatepicker]="data_fim">
+                        <mat-datepicker #data_fim></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="option">
+                <button class="btn btn-search">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button type="button" class="btn btn-print" (click)="print()">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </div>
+        </form>
+        <div class="statistics" *ngIf="statistics">
+            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/icon-lives.svg'" [title_text]="statistics.vidas_total" [sub_title_text]="'Vidas cadastradas'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/icone-valor-total.svg'" [title_text]="statistics.valor_total ? (statistics.valor_total | currency : 'BRL') : '0' " [sub_title_text]="'Valor Total'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/clipboard-verification-outlined-sign.svg'" [title_text]="statistics.propostas_aprovadas_total" [sub_title_text]="'Propostas Aprovadas'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/clipboard-warning-button.svg'" [title_text]="statistics.proposta_pendencia_total" [sub_title_text]="'Propostas com Pendências'"></kt-portlet-relatorio>
+        </div>
+        <div class="kt-portlet__body-custom">
+            <div class="header-dashboard header-table">
+                <!-- <h3 class="sub-title h3">Lista de propostas</h3> -->
+            </div>
+            <kt-table-proposta [setSearch]="search"></kt-table-proposta>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>

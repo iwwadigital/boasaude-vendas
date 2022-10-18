@@ -1,0 +1,47 @@
+:host {
+	::ng-deep {
+        .kt-portlet{
+            height: 100%;
+        }
+    }
+}
+
+
+.meta{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: transparent linear-gradient(360deg, #2766B7 0%, #009BE0 100%) 0% 0% no-repeat padding-box;
+
+    .meta-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        .data-info{
+            color: var( --color-base);
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+
+            @media only screen and (max-width: 1023px){
+                font-size: 24px;
+            }
+        }
+
+        .sub-title-info{
+            color: var( --color-base);
+            font-size: 16px;
+            font-weight: 400;
+            text-align: center;
+            width: 120px;
+            min-height: 48px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+    }
+}

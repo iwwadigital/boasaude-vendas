@@ -1,0 +1,1282 @@
+<kt-portlet class="single-proposta">
+	<kt-portlet-body [class]="'kt-portlet__body--fit'">
+		<div class="single-proposta" [ngClass]="!is_ready_input ? 'active' : ''">
+			<div class="loading loading-out" *ngIf="proposta && isLoading">
+				<mat-spinner></mat-spinner>
+			</div>
+			<div class="kt-portlet__head">
+				<h2 class="kt-portlet__head-title">Proposta de admissão pessoa física ao serviço de atendimento pré-Hospitalar móvel</h2>
+				<div class="tab">
+					<span>Número de série: {{ proposta ? proposta.id : ''}}</span>
+				</div>
+			</div>
+			<div class="option">
+				<button class="btn btn-outline-primary" *ngIf="proposta && proposta.status !== 'Aprovado' && proposta.status !== 'Recusado' && functions.verificarPermissao(['proposta-editar'])"  (click)="switchEditProposta()">
+					<mat-icon>{{ is_ready_input ? 'create' : 'cancel'}}</mat-icon>
+					<span>{{ is_ready_input ? 'Editar Proposta' : 'Cancelar Edição' }} </span>
+				</button>
+				<button class="btn btn-outline-primary" *ngIf="proposta" (click)="print()">
+					<mat-icon>print</mat-icon>
+					<span>Imprimir</span>
+				</button>
+				<button class="btn btn-outline-primary" *ngIf="proposta && adesao.pagamento_tipo_id == 103 && functions.verificarPermissao(['btn-obtencao-pagamento'])" (click)="handleBtnForcePayment()">
+					<mat-icon>attach_money</mat-icon>
+					<!-- <span>Obtenção de pagamento</span> -->
+					<span>Obter Pagamento</span>
+				</button>
+				<ng-container *ngIf="proposta">
+					<kt-btn-payment-online 
+						[setProposta]="proposta"
+						[setAdesao]="adesao"
+						[setMensalidade]="mensalidade"
+						[setTiposPagamentos]="tipos_pagamento"
+						[refresh]="refreshPayment"
+						(resetRefresh)="resetRefresh($event)"
+					></kt-btn-payment-online>
+				</ng-container>
+				<!-- <button class="btn btn-success btn-pay" *ngIf="has_payment && proposta.status !== 'Aprovado' && proposta.status !== 'Recusado'" (click)="clickPayment()">
+					<span>Adesão Online</span>
+				</button> -->
+			</div>
+			<div class="proposta_aproved" *ngIf="proposta && proposta.status == 'Aprovado'">
+				<div class="option" (click)="open_acordion()" [ngClass]="is_show_associate ? 'open' : ''">
+					<mat-icon>arrow_drop_down</mat-icon>
+					<h3 class="h3">Tabelas de Associados</h3>
+				</div>
+				<div class="table-acordion-associate" *ngIf="is_show_associate" @hide>
+					<div class="table">
+						<mat-table  #table [dataSource]="data_source">
+							<ng-container  matColumnDef="nome">
+								<mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+								<mat-cell  *matCellDef="let element">
+									{{element.nome}}
+								</mat-cell>
+								<mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+							</ng-container>
+							<ng-container  matColumnDef="idade">
+								<mat-header-cell *matHeaderCellDef> Idade </mat-header-cell>
+								<mat-cell  *matCellDef="let element">
+									{{element.idade}}
+								</mat-cell>
+								<mat-footer-cell *matFooterCellDef></mat-footer-cell>
+							</ng-container>
+							<ng-container  matColumnDef="valor">
+								<mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+								<mat-cell  *matCellDef="let element">
+									{{element.valor | currency : 'BRL' }}
+								</mat-cell>
+								<mat-footer-cell *matFooterCellDef>{{getTotalCost() | currency : 'BRL'}}</mat-footer-cell>
+							</ng-container>
+							<mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
+							<mat-row *matRowDef="let row; columns: colunas;"></mat-row>
+							<mat-footer-row *matFooterRowDef="colunas"></mat-footer-row>
+						</mat-table>
+					</div>
+					<div class="mobile-table" *ngIf="data_source && data_source.filteredData.length > 0 else noItensMobile">
+						<div class="header-table">
+							<span>Nome</span>
+						</div>
+						<div class="item-table" *ngFor="let item of data_source.data">
+							<div class="header" (click)="toggleMobile(item)" [ngClass]="item.is_mobile_dropdown ? 'active' : ''">
+								<div class="title">
+									<button class="btn-down">
+										<mat-icon>arrow_drop_down</mat-icon>
+									</button>
+									<span>{{item.nome}}</span>
+								</div>
+							</div>
+							<div class="content" *ngIf="item.is_mobile_dropdown" @hide>
+								<div class="linha">
+									<b>Idade :</b> <span>{{item.idade}}</span>
+								</div>
+								<div class="linha">
+									<b>Valor :</b> <span>{{item.valor | currency : 'BRL' }}</span>
+								</div>
+							</div>
+						</div>
+						<div class="footer-table">
+							<span>Valor</span>
+							<span>{{getTotalCost() | currency : 'BRL'}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<form class="col-lg-12" *ngIf="proposta ; else noItens" [formGroup]="form" (ngSubmit)="update()">
+				<div class="row">
+					<div class="col-lg-9 info col-md-12" *ngIf="proposta" >
+						<div class="separate">
+							<h3 class="sub-title h3">Dados Gerais</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Data de criação</span>
+									<span class="info-answer">{{proposta.proposta_data | date: 'dd/MM/yyyy HH:mm'}}</span>
+								</div>
+								<div class="block-info" *ngIf="proposta.data_proposta_aprovacao">
+									<span class="info-title">Data de aprovação</span>
+									<span class="info-answer">{{ proposta.data_proposta_aprovacao | date: 'dd/MM/yyyy HH:mm' }}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Promotor</span>
+									<span class="info-answer">{{proposta.vendedor.nome}}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Canal de venda</span>
+									<span class="info-answer">{{ proposta.canal_vendas ?  proposta.canal_vendas.nome : 'Nenhum canal escolhido' }}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Código do associado</span>
+									<span class="info-answer">{{ proposta.vendedor.inscricao }}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Cód</span>
+									<span class="info-answer">{{ proposta.codigo_proposta }}</span>
+								</div>
+								<ng-container *ngIf="proposta.id >= 9758 && proposta.id <= 13628 && proposta.filial != 'Salvador'">
+									<div class="block-info">
+										<span class="info-title">Cód. Antigo</span>
+										<span class="info-answer">{{ proposta.id }}</span>
+									</div>
+								</ng-container>
+								<div class="block-info">
+									<span class="info-title">Filial</span>
+									<span class="info-answer">{{ proposta.filial }}</span>
+								</div>
+								<div class="block-info" *ngIf="proposta.ip_usuario">
+									<span class="info-title">IP de acesso do Cliente</span>
+									<span class="info-answer">{{ proposta.ip_usuario }}</span>
+								</div>
+								<div class="block-info" *ngIf="proposta.data_usuario">
+									<span class="info-title">Data de acesso</span>
+									<span class="info-answer">{{ proposta.data_usuario | date: 'dd/MM/yyyy HH:mm' }}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Observação</span>
+									<mat-form-field  class="m-inputs">
+										<textarea matInput 
+										formControlName="observacoes"  
+										[readonly]="is_ready_input"
+										cdkTextareaAutosize
+										cdkAutosizeMinRows="1"
+										cdkAutosizeMaxRows="5"
+										></textarea>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="separate">
+							<h3 class="sub-title h3">Produto contratado</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Tabela de preços</span>
+									<span class="info-answer">{{ proposta.tabela && proposta.tabela.nome }}</span>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Tipo de Serviço</span>
+									<!-- <span class="info-answer">{{ proposta.tipo_servico ? proposta.tipo_servico.nome : '' }}</span> -->
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="tipo_servico"  [matAutocomplete]="tipo_servico" [readonly]="is_ready_input">
+										<mat-autocomplete autoActiveFirstOption #tipo_servico="matAutocomplete" [displayWith]="displayFn">
+											<mat-option *ngFor="let tipo_servico of tipos_servico"  [value]="tipo_servico" >
+												{{ tipo_servico.nome }}
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+								<div class="block-info ">
+									<span class="info-title">Matrícula Empresa</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput type="number" formControlName="matricula_empresa"  [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="separate">
+							<h3 class="sub-title h3">Titular</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Nome completo</span>
+									<input type="hidden" formControlName="id">
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_nome"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_nome').errors !== null && form.get('titular_nome').errors.required">Nome não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_nome').errors !== null && form.get('titular_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info remove-arrow">
+									<span class="info-title">Matrícula do titular</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput type="number" formControlName="matricula_titular"  readonly>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Data de nascimento</span>
+									<mat-form-field  class="m-inputs" (click)="data_nasc_titu.open()">
+										<input matInput [matDatepicker]="data_nasc_titu" [min]="data_minima" [max]="data_maxima" formControlName="titular_data_nascimento" [disableControl]="is_ready_input ? true : false">
+										<mat-datepicker-toggle matSuffix [for]="data_nasc_titu"></mat-datepicker-toggle>
+										<mat-datepicker #data_nasc_titu></mat-datepicker>
+										<mat-error *ngIf="form.get('titular_data_nascimento').errors !== null && form.get('titular_data_nascimento').errors.required">Data de nascimento não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">CPF</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_cpf" mMarkInputs="999.999.999-99" [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_cpf').errors !== null && form.get('titular_cpf').errors.required">CPF não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_cpf').errors !== null && form.get('titular_cpf').errors.validCpf">CPF inválido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">RG</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_rg"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_rg').errors !== null && form.get('titular_rg').errors.required">RG não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Estado civil</span>
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="titular_estado_civil" [disableControl]="is_ready_input ? true : false">
+											<mat-option *ngFor="let item of lista_estado_civil | keyvalue;" [value]="item.value">
+												{{ item.key }}
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.get('titular_estado_civil').errors !== null && form.get('titular_estado_civil').errors.required">Estado civil não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Sexo</span>
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="titular_sexo" [disableControl]="is_ready_input ? true : false">
+											<mat-option value="Masculino">
+												M
+											</mat-option>
+											<mat-option value="Feminino">
+												F
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.get('titular_sexo').errors !== null && form.get('titular_sexo').errors.required">Sexo não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">CEP</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_cep"  [readonly]="is_ready_input" mMarkInputs="99999-999">
+										<mat-error *ngIf="form.get('titular_cep').errors !== null && form.get('titular_cep').errors.required">CEP não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Ponto de Referência</span>
+									<mat-form-field  class="m-inputs">
+										<textarea matInput 
+										formControlName="titular_endereco_referencia"  
+										[readonly]="is_ready_input"
+										cdkTextareaAutosize
+										cdkAutosizeMinRows="1"
+										cdkAutosizeMaxRows="5"
+										></textarea>
+										<mat-error *ngIf="form.get('titular_endereco_referencia').errors !== null && form.get('titular_endereco_referencia').errors.required">Ponto de Referência não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_endereco_referencia').errors !== null && form.get('titular_endereco_referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Nº</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_numero"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_numero').errors !== null && form.get('titular_numero').errors.required">Nº não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_numero').errors !== null && form.get('titular_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Complemento</span>
+									<mat-form-field  class="m-inputs">
+										<textarea matInput 
+										formControlName="titular_endereco_complemento"  
+										[readonly]="is_ready_input"
+										cdkTextareaAutosize
+										cdkAutosizeMinRows="1"
+										cdkAutosizeMaxRows="5"
+										maxlength="20"
+										></textarea>
+										<mat-error *ngIf="form.get('titular_endereco_complemento').errors !== null && form.get('titular_endereco_complemento').errors.required">Complemento não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_endereco_complemento').errors !== null && form.get('titular_endereco_complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Rua</span>
+									<mat-form-field  class="m-inputs">
+										<textarea matInput 
+										formControlName="titular_endereco_rua"  
+										[readonly]="is_ready_input"
+										cdkTextareaAutosize
+										cdkAutosizeMinRows="1"
+										cdkAutosizeMaxRows="5"
+										></textarea>
+										<mat-error *ngIf="form.get('titular_endereco_rua').errors !== null && form.get('titular_endereco_rua').errors.required">Rua não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_endereco_rua').errors !== null && form.get('titular_endereco_rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Bairro</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_endereco_bairro"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_endereco_bairro').errors !== null && form.get('titular_endereco_bairro').errors.required">Bairro não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('titular_endereco_bairro').errors !== null && form.get('titular_endereco_bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Cidade</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_cidade"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_cidade').errors !== null && form.get('titular_cidade').errors.required">Cidade não foi preenchida.</mat-error>
+										<mat-error *ngIf="form.get('titular_cidade').errors !== null && form.get('titular_cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Estado</span>
+									<!-- <mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_uf"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('titular_uf').errors !== null && form.get('titular_uf').errors.required">Estado não foi preenchido.</mat-error>
+									</mat-form-field> -->
+									<mat-form-field class="m-inputs">
+										<mat-select formControlName="titular_uf" [disableControl]="is_ready_input ? true : false">
+											<mat-option [value]="item" *ngFor="let item of list_estado">
+												{{ item }}
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.get('titular_uf').errors !== null && form.get('titular_uf').errors.required">Estado não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info"  >
+									<span class="info-title">Telefone</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_tel_residencial"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+										<mat-error *ngIf="form.get('titular_tel_residencial').errors !== null && form.get('titular_tel_residencial').errors.required">Telefone não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Telefone celular</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_tel_celular"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Telefone Comercial</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_tel_comercial"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<ng-container *ngIf="form.get('titular_seguro_saude').value">
+									<div class="block-info"  >
+										<span class="info-title">Antigo - Seguro saúde</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="titular_seguro_saude"  readonly >
+										</mat-form-field>
+									</div>
+								</ng-container>
+								<div class="block-info"  >
+									<span class="info-title">Seguro saúde</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="seguro_saude"  [matAutocomplete]="seguro_saude" [readonly]="is_ready_input">
+										<mat-autocomplete autoActiveFirstOption #seguro_saude="matAutocomplete" [displayWith]="displayFnSeguroSaude">
+											<mat-option *ngFor="let seguro_saude of seguros_saude"  [value]="seguro_saude" >
+												{{ seguro_saude.codigo }} - {{ seguro_saude.nome }}
+											</mat-option>
+										</mat-autocomplete>
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Nome do preposto</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="nome_preposto"  [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">CPF do preposto</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cpf_preposto" mMarkInputs="999.999.999-99" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Aviso em caso de necessidade</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_urgencia_contato_nome"  [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">E-mail</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_urgencia_email"  [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Telefone</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="titular_urgencia_telefone"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Dados clinicos</span>
+									<a  class="btn-data" (click)="openModal('',titular)">
+										Acesse aqui
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="separate" *ngIf="proposta.cobranca_responsavel_nome">
+							<h3 class="sub-title h3">Cobrança</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Nome completo</span>
+									<input type="hidden" formControlName="id">
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_responsavel_nome"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_responsavel_nome').errors !== null && form.get('cobranca_responsavel_nome').errors.required">Nome não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_responsavel_nome').errors !== null && form.get('cobranca_responsavel_nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().cobranca_tipo_pessoa != 2">
+									<span class="info-title">Data</span>
+									<mat-form-field  class="m-inputs" (click)="data_nasc_cob.open()">
+										<input matInput [matDatepicker]="data_nasc_cob" formControlName="cobranca_nascimento" [min]="data_minima" [max]="data_maxima" [disableControl]="is_ready_input ? true : false">
+										<mat-datepicker-toggle matSuffix [for]="data_nasc_cob"></mat-datepicker-toggle>
+										<mat-datepicker #data_nasc_cob></mat-datepicker>
+										<mat-error *ngIf="form.get('cobranca_nascimento').errors !== null && form.get('cobranca_nascimento').errors.required">Data não foi preenchida.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().cobranca_tipo_pessoa != 2">
+									<span class="info-title">Sexo</span>
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="cobranca_sexo" [disableControl]="is_ready_input ? true : false">
+											<mat-option value="Masculino">
+												M
+											</mat-option>
+											<mat-option value="Feminino">
+												F
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.get('cobranca_sexo').errors !== null && form.get('cobranca_sexo').errors.required">Sexo não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Tipo de pessoa</span>
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="cobranca_tipo_pessoa" [disableControl]="is_ready_input ? true : false" (selectionChange)="changeTipoPessoaCobranca($event)">
+											<mat-option value="1">
+												Pessoa Física
+											</mat-option>
+											<mat-option value="2">
+												Pessoa Jurídica
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().cobranca_tipo_pessoa != 2">
+									<span class="info-title">CPF</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_cpf" mMarkInputs="999.999.999-99" [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_cpf').errors !== null && form.get('cobranca_cpf').errors.required">CPF não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().cobranca_tipo_pessoa == 2">
+									<span class="info-title">CNPJ</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_cnpj" mMarkInputs="99.999.999/9999-99" [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_cnpj').errors !== null && form.get('cobranca_cnpj').errors.required">CNPJ não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().cobranca_tipo_pessoa != 2">
+									<span class="info-title">RG</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_rg"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_rg').errors !== null && form.get('cobranca_rg').errors.required">RG não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">CEP</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_cep"  [readonly]="is_ready_input" mMarkInputs="99999-999">
+										<mat-error *ngIf="form.get('cobranca_cep').errors !== null && form.get('cobranca_cep').errors.required">CEP não foi preenchido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Complemento</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_endereco_complemento"  maxlength="20" [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_endereco_complemento').errors !== null && form.get('cobranca_endereco_complemento').errors.required">Complemento não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_endereco_complemento').errors !== null && form.get('cobranca_endereco_complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Ponto de Referência</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_endereco_referencia"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_endereco_referencia').errors !== null && form.get('cobranca_endereco_referencia').errors.required">Ponto de Referência não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_endereco_referencia').errors !== null && form.get('cobranca_endereco_referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Nº</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_endereco_numero"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_endereco_numero').errors !== null && form.get('cobranca_endereco_numero').errors.required">Nº não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_endereco_numero').errors !== null && form.get('cobranca_endereco_numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">E-mail</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_email"  [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Rua</span>
+									<mat-form-field  class="m-inputs">
+										<textarea matInput 
+										formControlName="cobranca_endereco_rua"  
+										[readonly]="is_ready_input"
+										cdkTextareaAutosize
+										cdkAutosizeMinRows="1"
+										cdkAutosizeMaxRows="5"
+										></textarea>
+									</mat-form-field>
+									<mat-error *ngIf="form.get('cobranca_endereco_rua').errors !== null && form.get('cobranca_endereco_rua').errors.required">Rua não foi preenchido.</mat-error>
+									<mat-error *ngIf="form.get('cobranca_endereco_rua').errors !== null && form.get('cobranca_endereco_rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Bairro</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_endereco_bairro"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_endereco_bairro').errors !== null && form.get('cobranca_endereco_bairro').errors.required">Bairro não foi preenchido.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_endereco_bairro').errors !== null && form.get('cobranca_endereco_bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Cidade</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_cidade"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_cidade').errors !== null && form.get('cobranca_cidade').errors.required">Cidade não foi preenchida.</mat-error>
+										<mat-error *ngIf="form.get('cobranca_cidade').errors !== null && form.get('cobranca_cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Estado</span>
+									<!-- <mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_uf"  [readonly]="is_ready_input">
+										<mat-error *ngIf="form.get('cobranca_uf').errors !== null && form.get('cobranca_uf').errors.required">Estado não foi preenchido.</mat-error>
+									</mat-form-field> -->
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="cobranca_uf" [disableControl]="is_ready_input ? true : false">
+											<mat-option [value]="item" *ngFor="let item of list_estado">
+												{{ item }}
+											</mat-option>
+										</mat-select>
+										<mat-error *ngIf="form.get('cobranca_uf').errors !== null && form.get('cobranca_uf').errors.required">Estado não foi escolhido.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info"  >
+									<span class="info-title">Telefone</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_tel_residencial"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="block-info"  >
+									<span class="info-title">Telefone celular</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_tel_celular"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+								<div class="block-info"  >
+									<span class="info-title">Telefone Comercial</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cobranca_tel_comercial"  [readonly]="is_ready_input" ngxPhoneMaskBr>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="separate associate">
+							<h3 class="sub-title h3">Associados</h3>
+							<ng-container  *ngIf="vidas && vidas.controls.length == 0">
+								<h5 class="h5">Nenhum depentente inserido.</h5>
+							</ng-container>
+							<ng-container  *ngIf="vidas && vidas.controls.length > 0">
+								<div *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas">
+									<div class="content" [formGroupName]="i" >
+										<div class="block-info">
+											<span class="info-title">{{ vida.value.is_titular == 1 ? 'Titular'  : 'Dependente '+(i+1) }}</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="nome"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('nome').errors !== null && vida.get('nome').errors.required">Nome não foi preenchido.</mat-error>
+												<mat-error *ngIf="vida.get('nome').errors !== null && vida.get('nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+												
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">CPF</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="cpf" mMarkInputs="999.999.999-99" [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('cpf').errors !== null && vida.get('cpf').errors.required">CPF não foi preenchido.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Rua</span>
+											<mat-form-field  class="m-inputs">
+													<textarea matInput 
+														formControlName="rua"  
+														[readonly]="vida.value.is_titular == 1 || is_ready_input"
+														cdkTextareaAutosize
+														cdkAutosizeMinRows="1"
+														cdkAutosizeMaxRows="5"></textarea>
+											</mat-form-field>
+											<mat-error *ngIf="vida.get('rua').errors !== null && vida.get('rua').errors.required">Rua não foi preenchido.</mat-error>
+											<mat-error *ngIf="vida.get('rua').errors !== null && vida.get('rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Bairro</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="bairro"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('bairro').errors !== null && vida.get('bairro').errors.required">Bairro não foi preenchido.</mat-error>
+												<mat-error *ngIf="vida.get('bairro').errors !== null && vida.get('bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Número</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="numero"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('numero').errors !== null && vida.get('numero').errors.required">Número não foi preenchido.</mat-error>
+												<mat-error *ngIf="vida.get('numero').errors !== null && vida.get('numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Cep</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="cep" mMarkInputs="99999-999" [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('cep').errors !== null && vida.get('cep').errors.required">CEP não foi preenchido.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Complemento</span>
+											<mat-form-field  class="m-inputs">
+													<textarea matInput 
+														formControlName="complemento"  
+														[readonly]="vida.value.is_titular == 1 || is_ready_input"
+														cdkTextareaAutosize
+														cdkAutosizeMinRows="1"
+														cdkAutosizeMaxRows="5"
+														maxlength="20"
+														></textarea>
+													<mat-error *ngIf="vida.get('complemento').errors !== null && vida.get('complemento').errors.required">Complemento não foi preenchido.</mat-error>
+													<mat-error *ngIf="vida.get('complemento').errors !== null && vida.get('complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Referência</span>
+											<mat-form-field  class="m-inputs">
+													<textarea matInput 
+													formControlName="referencia"  
+													[readonly]="vida.value.is_titular == 1 || is_ready_input"
+													cdkTextareaAutosize
+													cdkAutosizeMinRows="1"
+													cdkAutosizeMaxRows="5"
+													></textarea>
+													<mat-error *ngIf="vida.get('referencia').errors !== null && vida.get('referencia').errors.required">Referência não foi preenchido.</mat-error>
+													<mat-error *ngIf="vida.get('referencia').errors !== null && vida.get('referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Cidade</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="cidade"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('cidade').errors !== null && vida.get('cidade').errors.required">Cidade não foi preenchido.</mat-error>
+												<mat-error *ngIf="vida.get('cidade').errors !== null && vida.get('cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Estado</span>
+											<!-- <mat-form-field  class="m-inputs">
+												<input matInput formControlName="estado"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+												<mat-error *ngIf="vida.get('estado').errors !== null && vida.get('estado').errors.required">Estado não foi preenchido.</mat-error>
+											</mat-form-field> -->
+											<mat-form-field class="m-inputs">
+												<mat-select formControlName="estado" [disableControl]="vida.value.is_titular == 1 || is_ready_input ? true : false">
+													<mat-option [value]="item" *ngFor="let item of list_estado">
+														{{ item }}
+													</mat-option>
+												</mat-select>
+												<mat-error *ngIf="vida.get('estado').errors !== null && vida.get('estado').errors.required">Estado não foi escolhido.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">E-mail</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="email"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Responsável</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="responsavel_tit"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Seguro saúde</span>
+											<mat-form-field class="m-inputs">
+												<input type="text" formControlName="seguro_saude"  matInput  [matAutocomplete]="seguro_saude_dependente" [readonly]="is_ready_input">
+												<mat-autocomplete autoActiveFirstOption #seguro_saude_dependente="matAutocomplete" [displayWith]="displayFnSeguroSaude">
+													<mat-option *ngFor="let item of seguros_saude"  [value]="item">
+														{{ item.codigo }} - {{ item.nome }}
+													</mat-option>
+												</mat-autocomplete>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Telefone do Responsável</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="tel_responsavel_tit" ngxPhoneMaskBr [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Telefone</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="tel_residencial" ngxPhoneMaskBr [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Telefone Celular</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="tel_celular" ngxPhoneMaskBr [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Telefone Comercial</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="tel_comercial" ngxPhoneMaskBr [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Sexo</span>
+											<mat-form-field  class="m-inputs">
+												<mat-select formControlName="sexo" [disableControl]="vida.value.is_titular == 1 || is_ready_input ? true : false">
+													<mat-option value="Masculino">
+														M
+													</mat-option>
+													<mat-option value="Feminino">
+														F
+													</mat-option>
+												</mat-select>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Estado civil</span>
+											<mat-form-field  class="m-inputs">
+												<mat-select formControlName="estado_civil" [disableControl]="vida.value.is_titular == 1 || is_ready_input ? true : false">
+													<mat-option value="S">
+														Solteiro
+													</mat-option>
+													<mat-option value="C">
+														Casado
+													</mat-option>
+													<mat-option value="D">
+														Divorciado
+													</mat-option>
+													<mat-option value="V">
+														Viúvo
+													</mat-option>
+													<mat-option value="M">
+														Marital
+													</mat-option>
+													<mat-option value="Q">
+														Desquitado
+													</mat-option>
+													<mat-option value="N">
+														Não informado
+													</mat-option>
+												</mat-select>
+												<mat-error *ngIf="vida.get('estado_civil').errors !== null && vida.get('estado_civil').errors.required">Estado civil não foi preenchido.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Data</span>
+											<mat-form-field  class="m-inputs" (click)="data_nasc.open()">
+												<input matInput [matDatepicker]="data_nasc" formControlName="data_nascimento" [min]="data_minima" [max]="data_maxima" [disableControl]="vida.value.is_titular == 1 || is_ready_input ? true : false">
+												<mat-datepicker-toggle matSuffix [for]="data_nasc"></mat-datepicker-toggle>
+												<mat-datepicker #data_nasc></mat-datepicker>
+												<mat-error *ngIf="vida.get('data_nascimento').errors !== null && vida.get('data_nascimento').errors.required">Data de nascimento não foi preenchido.</mat-error>
+											</mat-form-field>
+										</div>
+										<div class="block-info" >
+											<span class="info-title">Nome do preposto</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="nome_preposto"  [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">CPF do preposto</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="cpf_preposto" mMarkInputs="999.999.999-99" [readonly]="vida.value.is_titular == 1 || is_ready_input">
+											</mat-form-field>
+										</div>
+										<div class="block-info">
+											<span class="info-title">Valor</span>
+											<mat-form-field  class="m-inputs">
+												<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"  readonly>
+											</mat-form-field>
+										</div>
+										<!-- <div class="block-info">
+											<span class="info-title">Dados clinicos</span>
+											<a  class="btn-data" (click)="openModal(i)">
+												Acesse aqui
+											</a>
+										</div> -->
+										<div class="block-info">
+											<span class="info-title">Excluir</span>
+											<a  class="btn-data" (click)="!is_ready_input ?  removeDependented(vida.get('id').value) : null">
+												Remova esse dependente
+											</a>
+										</div>
+									</div>
+								</div>
+							</ng-container>
+							<button type="button" class="btn btn-associate" [ngClass]="vidas && vidas.controls.length == 0 ? 'btn-not-dependent': '' " *ngIf="!is_ready_input" (click)="!is_ready_input ? addDepented() : null">
+								<mat-icon>add_circle</mat-icon>
+								<span>Adicionar dependente</span>
+							</button>
+						</div>
+						<div class="separate" formGroupName="adesao" *ngIf="proposta.pagamentos.length > 0 && form.getRawValue().adesao">
+							<h3 class="sub-title h3">Autorização para Adesão</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Valor</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"  readonly>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Forma de pagamento</span>
+									<div class="payment-type">
+										<mat-radio-group formControlName="pagamento_tipo_id" >
+											<mat-radio-button (change)="changeFormPagamento($event,'adesao')"  [disableControl]="is_ready_input ? true : false" *ngFor="let pagamento_tipo of lista_adesao" [value]="pagamento_tipo.id">
+												{{ pagamento_tipo.nome }}
+											</mat-radio-button>
+										</mat-radio-group>
+									</div>
+								</div>
+								<div class="block-info" *ngIf="form.getRawValue().adesao && verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'conta')">
+									<span class="info-title">Banco</span>
+									<mat-form-field  class="m-inputs">
+										<!-- <input matInput formControlName="banco"  [matAutocomplete]="banco" [readonly]="is_ready_input">
+										<mat-autocomplete autoActiveFirstOption #banco="matAutocomplete" >
+											<mat-option *ngFor="let banco of lista_bancos"  [value]="banco">
+												{{ banco }}
+											</mat-option>
+										</mat-autocomplete> -->
+										<mat-select formControlName="banco" [disableControl]="is_ready_input ? true : false">
+											<mat-option *ngFor="let banco of lista_bancos_other" [value]="banco">
+												{{banco}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'conta')">
+									<span class="info-title">Nº Agência</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="numero_agencia" [readonly]="is_ready_input" >
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'conta')">
+									<span class="info-title">Nº da conta corrente</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="numero_conta" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'conta') && handleTipoConta('adesao')">
+									<span class="info-title">Tipo da conta</span>
+									<mat-form-field class="m-inputs">
+										<mat-select formControlName="conta_tipo"  [disableControl]="is_ready_input ? true : false">
+											<mat-option *ngFor="let item of lista_tipo_conta" [value]="item.value">
+												{{item.nome}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao') || 
+								verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao_d')">
+									<span class="info-title">Nº do cartão</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cartao_numero" [readonly]="is_ready_input" >
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao') || 
+								verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao_d')">
+									<span class="info-title">Nome (igual o cartão)</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cartao_nome" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao') || 
+								verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao_d')">
+									<span class="info-title">Validade</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cartao_validade" [readonly]="is_ready_input" mMarkInputs="99/99">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao') || 
+								verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao_d')">
+									<span class="info-title">Bandeira</span>
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="cartao_bandeira" [disableControl]="is_ready_input ? true : false">
+											<mat-option [value]="item" *ngFor="let item of lista_bandeiras">
+												{{item}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cartao')">
+									<span class="info-title">CVV</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="cartao_cvv" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Status</span>
+									<span class="info-answer">{{adesao.status == "1" ? "Pago" : "Pendente" }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Data de pagamento</span>
+									<span class="info-answer">{{adesao.data_pagamento ? (adesao.data_pagamento | date: 'dd/MM/yyyy' ) : "" }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Nº do Pedido</span>
+									<span class="info-answer">{{ adesao.pedido_id }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Código de transação</span>
+									<span class="info-answer">{{ adesao.transacao_codigo }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Código de transação NSU</span>
+									<span class="info-answer">{{ adesao.transacao_nsu }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Código de autorização</span>
+									<span class="info-answer">{{ adesao.autorizacao_codigo }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'cadastramento_online')">
+									<span class="info-title">Gateway</span>
+									<span class="info-answer">{{ adesao.gateway }}</span>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Nome</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="nome_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Telefone</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="telefone_pagador" ngxPhoneMaskBr [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">CEP</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="cep_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Rua</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="rua_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Número</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="numero_endereco_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Complemento</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="complemento_pagador" maxlength="20" [readonly]="is_ready_input">
+										<mat-error *ngIf="form.controls.adesao.get('complemento_pagador').errors !== null && form.controls.adesao.get('complemento_pagador').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Bairro</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="bairro_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Cidade</span>
+									<mat-form-field class="m-inputs">
+										<input matInput formControlName="cidade_pagador" [readonly]="is_ready_input">
+									</mat-form-field>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().adesao.pagamento_tipo_id,'dinheiro')">
+									<span class="info-title">Estado</span>
+									<!-- <mat-form-field class="m-inputs">
+										<input matInput formControlName="estado_pagador" [readonly]="is_ready_input">
+									</mat-form-field> -->
+									<mat-form-field  class="m-inputs">
+										<mat-select formControlName="estado_pagador"  [disableControl]="is_ready_input ? true : false">
+											<mat-option [value]="item" *ngFor="let item of list_estado">
+												{{ item }}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<ng-container *ngIf="proposta.matricula_titular && proposta.pagamento_forma	&& proposta.pagamento_data_vencimento">
+							<div class="mensalidade separate">
+								<h3 class="sub-title h3">Autorização para Mensalidade</h3>
+								<div class="content">
+									<div class="block-info">
+										<span class="info-title">Valor</span>
+										<span class="info-answer">{{valor_total | currency:'BRL' }}</span>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Forma de pagamento</span>
+										<span class="info-answer">{{proposta.pagamento_forma}}</span>
+									</div>
+									<div class="block-info" >
+										<span class="info-title">Vencimento</span>
+										<span class="info-answer">{{proposta.pagamento_data_vencimento}}</span>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<div class="mensalidade separate" formGroupName="mensalidade" *ngIf="proposta.pagamentos.length > 1">
+							<h3 class="sub-title h3">Autorização para Mensalidade</h3>
+							<div class="content">
+								<div class="block-info">
+									<span class="info-title">Valor</span>
+									<mat-form-field  class="m-inputs">
+										<input matInput formControlName="valor"  currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"  readonly>
+									</mat-form-field>
+								</div>
+								<div class="block-info">
+									<span class="info-title">Forma de pagamento</span>
+									<div class="payment-type">
+										<mat-radio-group formControlName="pagamento_tipo_id" [disableControl]="is_ready_input ? true : false">
+											<mat-radio-button (change)="changeFormPagamento($event,'mensalidade')"   *ngFor="let pagamento_tipo of pagamentos_tipos" [value]="pagamento_tipo.id">
+												{{ pagamento_tipo.nome }}
+											</mat-radio-button>
+										</mat-radio-group>
+									</div>
+								</div>
+								<div class="block-info" *ngIf="verificaTipoPagamento(form.getRawValue().mensalidade.pagamento_tipo_id,'cartao') || verificaTipoPagamento(form.getRawValue().mensalidade.pagamento_tipo_id,'conta') || verificaTipoPagamento(form.getRawValue().mensalidade.pagamento_tipo_id,'boleto')">
+									<span class="info-title">Pagamento Online</span>
+									<mat-form-field  class="m-inputs" >
+										<mat-label>Pagamento Online</mat-label>
+										<mat-select   [disableControl]="is_ready_input ? true : false" formControlName="pagamento_online">
+											<mat-option value="1">
+												Sim
+											</mat-option>
+											<mat-option value="0">
+												Não
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<div class="block-info" >
+									<span class="info-title">Vencimento</span>
+									<mat-form-field  class="m-inputs" >
+										<mat-label>Vencimento</mat-label>
+										<mat-select   [disableControl]="is_ready_input || is_disabled_data_vencimento ? true : false" formControlName="pagamento_data_vencimento">
+											<mat-option *ngFor="let item of data_vencimento" [value]="item">
+												{{item}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+								</div>
+								<ng-container *ngIf="verificaTipoPagamento(form.getRawValue().mensalidade.pagamento_tipo_id,'conta')">
+									<div class="block-info" >
+										<span class="info-title">Banco</span>
+										<mat-form-field  class="m-inputs">
+											<mat-select formControlName="banco"   [disableControl]="is_ready_input ? true : false">
+												<mat-option *ngFor="let banco of lista_bancos_other" [value]="banco">
+													{{banco}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Nº Agência</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="numero_agencia" [readonly]="is_ready_input" >
+										</mat-form-field>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Nº da conta corrente</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="numero_conta" [readonly]="is_ready_input">
+										</mat-form-field>
+									</div>
+									<div class="block-info" *ngIf="handleTipoConta('mensalidade')">
+										<span class="info-title">Tipo da conta</span>
+										<mat-form-field  class="m-inputs">
+											<mat-select formControlName="conta_tipo"  [disableControl]="is_ready_input ? true : false">
+												<mat-option *ngFor="let item of lista_tipo_conta" [value]="item.value">
+													{{item.nome}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</ng-container>
+								<ng-container *ngIf="verificaTipoPagamento(form.getRawValue().mensalidade.pagamento_tipo_id,'cartao') ">
+									<div class="block-info">
+										<span class="info-title">Nº do cartão</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="cartao_numero" [readonly]="is_ready_input" >
+										</mat-form-field>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Nome (igual o cartão)</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="cartao_nome" [readonly]="is_ready_input">
+										</mat-form-field>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Validade</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="cartao_validade" [readonly]="is_ready_input">
+										</mat-form-field>
+									</div>
+									<div class="block-info">
+										<span class="info-title">Bandeira</span>
+										<mat-form-field  class="m-inputs">
+											<mat-select  formControlName="cartao_bandeira" [disableControl]="is_ready_input ? true : false">
+												<mat-option [value]="item" *ngFor="let item of lista_bandeiras">
+													{{item}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<!-- <div class="block-info">
+										<span class="info-title">CVV</span>
+										<mat-form-field  class="m-inputs">
+											<input matInput formControlName="cartao_cvv" [readonly]="is_ready_input">
+										</mat-form-field>
+									</div> -->
+								</ng-container>
+							</div>
+						</div>
+						<div class="anexos separate">
+							<div class="header-anexo">
+								<h3 class="sub-title h3">
+									Anexos 
+								</h3>
+								<div class="box" title="Anexar arquivos">
+									<input  type="file" name="file-7[]" id="file-7" class="inputfile inputfile-6" (change)="addFile($event)"  data-multiple-caption="{count} files selected" multiple accept=".pdf,image/*"  />
+									<label for="file-7"><strong><mat-icon matSuffix>attach_file</mat-icon></strong></label>
+								</div>
+							</div>
+							<div class="content" *ngIf="proposta.anexos.length > 0;else noAnexos">
+								<div class="block-info" *ngFor="let item of proposta.anexos">
+									<div class="item">
+										<div class="btnDownload" (click)="getDownload(item)" title="{{item.nome}}">
+											<span>{{ functions.cutString(item.nome,10) }}
+												<mat-icon matSuffix>get_app</mat-icon>
+											</span>
+										</div>
+										<div class="delete-anexo"  (click)="deleteFile(item)" >
+											<mat-icon matSuffix>delete_forever</mat-icon>
+										</div>
+									</div>
+								</div>
+							</div>
+							<ng-template #noAnexos>
+								<h5 class="h5">Nenhum anexo inserido.</h5>
+							</ng-template>
+						</div>
+						<div class="logs">
+							<div class="d-flex justify-content-between">
+								<h3 class="sub-title h3">
+									Log da proposta
+								</h3>
+								<button class="btn-outline-primary btn" type="button" (click)="showLogs()">
+									Log completo
+								</button>
+							</div>
+							<div class="table">
+								<mat-table  #table [dataSource]="log_data">
+									<ng-container  matColumnDef="log">
+										<mat-header-cell *matHeaderCellDef> Log </mat-header-cell>
+										<mat-cell  *matCellDef="let element">
+											{{element.message}}
+										</mat-cell>
+									</ng-container>
+									<ng-container  matColumnDef="autor">
+										<mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
+										<mat-cell  *matCellDef="let element">
+											{{element.autor}}
+										</mat-cell>
+									</ng-container>
+									<ng-container  matColumnDef="data">
+										<mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+										<mat-cell  *matCellDef="let element">
+											{{element.data | date: 'dd/MM/yyyy HH:mm' }}
+										</mat-cell>
+									</ng-container>
+									<mat-header-row *matHeaderRowDef="colunas_log"></mat-header-row>
+									<mat-row *matRowDef="let row; columns: colunas_log;"></mat-row>
+								</mat-table>
+							</div>
+							<div class="mobile-table" *ngIf="log_data && log_data.length > 0 else noItensMobile">
+								<div class="header-table">
+									<span>Log</span>
+								</div>
+								<div class="item-table" *ngFor="let item of log_data">
+									<div class="header" (click)="toggleMobile(item)" [ngClass]="item.is_mobile_dropdown ? 'active' : ''">
+										<div class="title">
+											<button class="btn-down">
+												<mat-icon>arrow_drop_down</mat-icon>
+											</button>
+											<span>{{item.message}}</span>
+										</div>
+									</div>
+									<div class="content" *ngIf="item.is_mobile_dropdown" @hide>
+										<div class="linha">
+											<b>Autor :</b> <span>{{item.autor}}</span>
+										</div>
+										<div class="linha">
+											<b>data :</b> <span>{{item.data | date: 'dd/MM/yyyy hh:mm' }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 side-menu col-md-12">
+						<m-side-menu (response)="sideMenuActions($event)" [setProposta]="proposta" [setForm]="form" [disable_btn_without_value]="disable_btn_without_value"></m-side-menu>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="message">
+						<div class="content">
+							<span>{{ regra_negocio_adesao }}</span>
+							<span>{{ regra_negocio_mensalidade }}</span>
+						</div>
+					</div>
+					<button class="btn btn-create" *ngIf="!is_ready_input">
+						<span>Salvar alterações</span>
+					</button>
+				</div>
+			</form>
+			<ng-template #noItens>
+				<div class="loading" *ngIf="isLoading">
+					<mat-spinner></mat-spinner>
+				</div>
+				<h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma proposta encontrado.</h3>
+			</ng-template>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

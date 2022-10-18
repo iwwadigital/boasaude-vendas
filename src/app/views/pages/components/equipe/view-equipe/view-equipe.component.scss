@@ -1,0 +1,214 @@
+.header-equipe{
+    padding: 25px 30px 50px;
+
+    .row{
+        justify-content: center;
+    }
+}
+
+.column-equipe{
+    flex-direction: column;
+    display: flex;
+
+    @media only screen and (max-width: 1023px){
+        margin: 10px 0;
+        align-items: center;
+    }
+    
+    span{
+        color: var( --color-blue);
+        font-size: 1.2rem;
+        font-weight: 400;
+
+        @media only screen and (max-width: 1023px){
+            font-size: 1.5rem;
+        }
+    }
+    .header-title{
+        font-weight: bold;
+        margin-bottom: 15px;
+
+        @media only screen and (max-width: 1023px){
+            margin-bottom: 7px;
+        }
+    }
+    .meta{
+        display: flex;
+        width: 100%;
+        
+        @media only screen and (max-width: 1023px){
+            align-items: center;
+            flex-direction: column;
+        }
+
+        img{
+            width: 35px;
+
+            @media only screen and (min-width: 1024px){
+                margin-right: 13px;
+            }
+        }
+        input{
+            border: none;
+            background: transparent;
+            color: var( --color-blue);
+            font-weight: bold;
+            font-size: 24px;
+            flex-grow: 1;
+            width: 100%;
+            height: 40px;
+            border-bottom: 1px solid transparent;
+            transition: border-color 350ms ease-in-out;
+            @media only screen and (max-width: 1023px){
+                text-align: center;
+            }
+        }
+    }
+    .mat-datepicker-toggle{
+        display: none;
+    }
+    .mat-input-element{
+        color: var(--color-blue);
+        font-size: 1.2rem;
+    }
+    .mat-form-field{
+        @media only screen and (max-width: 1023px){
+            display: flex;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-infix{
+        padding: 0 0 .4375em 0;
+    }
+}
+:host{
+    ::ng-deep{
+        .edited{
+            .mat-row{
+                .mat-column-meta_individual input{
+                    border-bottom: 1px solid var(--color-blue-dark);
+                }
+            }
+            .mat-form-field-appearance-legacy .mat-form-field-underline{
+                background-color: var(--color-blue-dark);
+            }
+            .column-equipe .meta input{
+                border-color:var(--color-blue-dark) !important;
+            }
+        }
+    }
+}
+
+//img user
+.img-user{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--color-blue-dark);
+    color: #fff;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-right: 29px;
+    flex-shrink: 0;
+
+    img{
+        width: 100%;
+        height: auto;
+    }
+}
+
+.mat-cell{
+    input{
+        border: none;
+        background: transparent;
+        font-size: 16px;
+        color: #3D3D3D;
+    }
+}
+  
+.btn-edit{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 25px;
+    @media only screen and (max-width: 575px){
+        width: 150px;
+    }
+    .btn{
+        border-color: var( --color-blue);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 10px;
+        width: 100%;
+
+        .mat-icon{
+            color: var( --color-blue);
+            height: auto;
+            width: auto;
+            margin-right: 12px;
+            transition: color 300ms;
+        }
+        span{
+            color: var( --color-blue);
+            transition: color 300ms;
+        }
+
+        // HOVER
+        &:hover{
+            background: var( --color-blue);
+
+            .mat-icon{
+                color: var( --color-base);
+            }
+            span{
+                color: var( --color-base);
+            }
+        }
+    }
+}
+.mobile-table .item-table {
+    .header .title .img-user span{
+        color: var(--color-base);
+    }
+    .content{
+        .linha input{
+            border: none;
+        }
+    }
+}
+
+.row-button{
+    justify-content: center;
+    margin: 40px 0;
+}
+
+:host {
+	::ng-deep {
+        .rating{
+            .percent{
+                font-size: 24px;
+                font-weight: bold;
+                color: #16498B;
+            }
+            .mat-progress-bar{
+                height: 8px;
+                border-radius: 4px;
+            }
+        }
+        .mat-progress-bar-background{
+            fill:  #009BE0;
+        }
+        .mat-progress-bar-fill::after{
+            background-color:  #009BE0;
+        }
+        .mat-progress-bar-buffer {
+            background-color: #CCD9E5;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<div class="pagination" *ngIf="pagination_config">
+    <ul>
+        <li class="page-item prev-left" *ngIf="pagination_config.prev" (click)="routerChange(1)">
+            <i class="flaticon2-left-arrow"></i>
+            <i class="flaticon2-left-arrow"></i>
+        </li>
+        <li class="page-item prev-left" *ngIf="pagination_config.prev" (click)="routerChange(prev)">
+            <i class="flaticon2-left-arrow"></i>
+        </li>
+        <li class="page-item" [ngClass]="current == item ? 'active' : ''" *ngFor="let item of pagination_number"  (click)="current != item ? routerChange(item) : null">
+            {{item}}
+        </li>
+        <li class="page-item prev-right" *ngIf="pagination_config.next" (click)="routerChange(next)">
+            <i class="flaticon2-right-arrow"></i>
+        </li>
+        <li class="page-item prev-right" *ngIf="pagination_config.next" (click)="routerChange(pagination_config.last_page)">
+            <i class="flaticon2-right-arrow"></i>
+            <i class="flaticon2-right-arrow"></i>
+        </li>
+    </ul>
+</div>

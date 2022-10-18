@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+    <div class="row row-group">
+        <div class="item  item-active-border-md  item-margin-sm-min col-md-12 item-mobile" >
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>{{labelTitle}}</mat-label>
+                <input type="text" placeholder="Escolha um tipo de serviço" aria-label="Number" matInput formControlName="tipo_servico_universitario"  [matAutocomplete]="tipo_servico_universitario">
+                <mat-autocomplete autoActiveFirstOption #tipo_servico_universitario="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let tipo of tipos_servico"  [value]="tipo">
+                        {{ tipo.cidade }} - {{ tipo.nome }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

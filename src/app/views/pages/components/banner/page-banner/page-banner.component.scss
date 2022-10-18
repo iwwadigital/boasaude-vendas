@@ -1,0 +1,14 @@
+:host{
+    ::ng-deep{
+		.table {
+			.mat-column-nome,
+			.mat-column-equipe-nome,
+			.mat-column-equipe-cidade{
+				flex: 0 0 31%;
+			}
+			.mat-column-edit{
+				flex: 0 0 7%;	
+			}
+		}
+	}
+}

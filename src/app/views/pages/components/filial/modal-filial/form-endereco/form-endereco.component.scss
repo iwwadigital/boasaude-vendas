@@ -1,0 +1,17 @@
+
+:host{
+    ::ng-deep{
+        @media only screen and (max-width: 575px){
+            .row-group .item .mat-form-field-wrapper{
+                margin: 0 !important;
+            }
+            .item-rua{
+                .mat-form-field-appearance-outline .mat-form-field-outline-end,
+                .mat-form-field-appearance-outline .mat-form-field-outline-gap,
+                .mat-form-field-appearance-outline .mat-form-field-outline-start{
+                    border-top: none !important;
+                }
+            }
+        }
+    }
+}

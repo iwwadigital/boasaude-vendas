@@ -1,0 +1,2 @@
+*PARA CONSEGUIR FAZER AS REQUISIÇÕES,  NO PATH src/app/core/_base/crud/utils TERÁ UM ARQUIVO CHAMDO intecerpt.service.ts VOCÊ DEVERAR COMENTAR O return next.handle(httpRequest) 
+E DESCOMENTAR return next.handle(request)

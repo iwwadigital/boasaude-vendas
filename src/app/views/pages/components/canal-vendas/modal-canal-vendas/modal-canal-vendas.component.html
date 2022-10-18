@@ -1,0 +1,22 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+	<div mat-dialog-content>
+		<!-- <h5 class="form-section-title h5">Informações do produto</h5> -->
+		<div class="row row-group">
+			<div class="item item-radius-tl-all item-radius-tr-all item-radius-br-all item-radius-bl-all col-sm-12">
+				<input type="hidden" formControlName="id">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="nome" placeholder="Insira seu Nome">
+				</mat-form-field>
+			</div>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+            <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+        </button>
+    </div>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

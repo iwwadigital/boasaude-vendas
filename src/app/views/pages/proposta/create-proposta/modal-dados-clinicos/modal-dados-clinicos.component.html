@@ -1,0 +1,48 @@
+<form class="form"  autocomplete="off" [formGroup]="form" (ngSubmit)="salve()" >
+	<div mat-dialog-content *ngIf="dados_clinicos; else noItens">
+		<div class="text co-lg-12">
+			<h3 class="title">Dados Clínicos</h3>
+			<span>{{data.nome}}</span>
+		</div>
+		<div class="col-lg-12 dados_clinicos" *ngFor="let dado_clinico of dados_clinicos.controls; let i=index" formArrayName="dados_clinicos">
+			<div class="item-pergunta row" [formGroupName]="i">
+				<div class="item-content">
+					<span>{{ dado_clinico.value.pergunta.nome }}</span>
+					<div *ngIf="dado_clinico.value.pergunta.tipo_campo === 'Verdadeiro/Falso' " >
+						<mat-slide-toggle formControlName="resposta" [disabled]="!is_edit"></mat-slide-toggle>
+					</div>
+					<div *ngIf="dado_clinico.value.pergunta.tipo_campo === 'Select' " >
+						<mat-form-field appearance="outline" class="m-inputs">
+							<mat-label>Opções</mat-label>
+							<mat-select formControlName="resposta" placeholder="Escolha a opção" [disableControl]="is_edit ? true : false">
+								<mat-option *ngFor="let item of getArrayOpcoes(dado_clinico.value.pergunta.opcoes)"[value]="item" >
+									{{item}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="answer-which" *ngIf="dado_clinico.value.resposta && dado_clinico.value.pergunta.has_qual === 1 ">
+					<mat-form-field class="m-inputs">
+						<mat-label>Qual</mat-label>
+						<input matInput formControlName="qual" [readonly]="!is_edit">
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+	</div>
+	<ng-template  #noItens>
+		<div class="loading" *ngIf="isLoading">
+			<mat-spinner></mat-spinner>
+		</div>
+		<h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma pergunta encontrada.</h3>
+	</ng-template >
+	<div mat-dialog-actions>
+		 <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	        <mat-icon>close</mat-icon>
+		</button>
+		<ng-container *ngIf="!isLoading">
+			<button color="primary"  *ngIf="is_edit" class="btn btn-submit btn-success create" type="submit">Salvar</button>
+		</ng-container>
+	</div>
+</form>

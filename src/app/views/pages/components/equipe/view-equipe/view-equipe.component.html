@@ -1,0 +1,196 @@
+<kt-portlet>
+	<kt-portlet-body [class]="'kt-portlet__body--fit header-default'">
+        <h1 class="h1 title">Equipe</h1>
+        <div class="header-img">
+            <img src="./assets/vitalmed/united.svg" >
+        </div>
+        <h3 class="h3 sub-title-equipe">Dados da Equipe</h3>
+    </kt-portlet-body>
+</kt-portlet>
+<kt-portlet>
+	<kt-portlet-body [class]="'kt-portlet__body--fit'">
+        <form *ngIf="equipe" [formGroup]="form" (ngSubmit)="update()" [ngClass]="is_edit ? 'edited' : ''">
+            <div class=" header-equipe col-lg-12">
+                <div class="row">
+                    <div class="column-equipe col-sm-12 col-lg-1">
+                        <span class="header-title">Equipes</span>
+                        <span>{{equipe.nome}}</span>
+                    </div>
+                    <div class="column-equipe col-sm-12 col-lg-2">
+                        <span class="header-title">Meta de vidas</span>
+                        <div class="meta">  
+                            <img src="./assets/vitalmed/icon-lives.svg" >
+                            <input type="number" formControlName="qtd_vidas"  [readonly]="!is_edit">
+                        </div>
+                    </div>
+                    <div class="column-equipe col-sm-12 col-lg-2">
+                        <span class="header-title">Data Inicio</span>
+                        <mat-form-field  class="m-inputs" (click)="data_inic.open()">
+                            <input matInput [matDatepicker]="data_inic" formControlName="data_inicio" [disableControl]="!is_edit  ? true : false">
+                            <mat-datepicker-toggle matSuffix [for]="data_inic"></mat-datepicker-toggle>
+                            <mat-datepicker #data_inic></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="column-equipe col-sm-12 col-lg-2">
+                        <span class="header-title">Data Fim</span>
+                        <mat-form-field  class="m-inputs" (click)="data_fim.open()">
+                            <input matInput [matDatepicker]="data_fim" formControlName="data_fim" [disableControl]="!is_edit  ? true : false" >
+                            <mat-datepicker-toggle matSuffix [for]="data_fim"></mat-datepicker-toggle>
+                            <mat-datepicker #data_fim></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="column-equipe col-sm-12 rating col-lg-3">
+                        <span class="header-title">Rating</span>
+                        <kt-progress-bar [setPercent]="equipe.percent"></kt-progress-bar>
+                    </div>
+                    <div class="btn-edit col-sm-3 col-lg-2">
+                        <button class="btn btn-outline-primary" type="button" (click)="edit()"> 
+                            <mat-icon>{{ !is_edit ? 'create' : 'cancel'}}</mat-icon>
+                            <span> {{ !is_edit ? 'Editar' : 'Cancelar'}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table" *ngIf="usuarios_table && usuarios_table.filteredData.length > 0 else noItens" >
+                <mat-table  #table [dataSource]="usuarios_table" formArrayName="usuarios">
+                    <ng-container matColumnDef="vendedores">
+                        <mat-header-cell *matHeaderCellDef> Vendedores </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <div class="img-user">
+                                <img [src]="element.url_foto"  *ngIf="element.url_foto">
+                                <span *ngIf="!element.url_foto">{{element.nome[0]}}</span>
+                            </div>
+                            {{element.nome }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="meta_individual">
+                        <mat-header-cell *matHeaderCellDef> Meta individual </mat-header-cell>
+                        <mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                            <!-- {{ element.metas_usuario.length > 0 ? element.metas_usuario[0].qtd_vidas : ''}} -->
+                            <input type="number" formControlName="qtd_vidas" [readonly]="!is_edit">
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="meta_data_inicio">
+                        <mat-header-cell *matHeaderCellDef> Data inicial </mat-header-cell>
+                        <mat-cell *matCellDef="let element; let i = index"  [formGroupName]="i">
+                            <!-- {{ element.metas_usuario.length > 0 ? element.metas_usuario[0].data_inicio : '' }} -->
+                            <mat-form-field  class="m-inputs" (click)="data_inicio.open()">
+                                <input matInput [matDatepicker]="data_inicio" formControlName="data_inicio" [disableControl]="!is_edit  ? true : false">
+                                <mat-datepicker-toggle matSuffix [for]="data_inicio"></mat-datepicker-toggle>
+                                <mat-datepicker #data_inicio></mat-datepicker>
+                            </mat-form-field>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="meta_data_final">
+                        <mat-header-cell *matHeaderCellDef> Data final </mat-header-cell>
+                        <mat-cell *matCellDef="let element; let i = index"  [formGroupName]="i">
+                            <!-- {{ element.metas_usuario.length > 0 ? element.metas_usuario[0].data_fim : ''}} -->
+                            <mat-form-field  class="m-inputs" (click)="data_final.open()">
+                                <input matInput [matDatepicker]="data_final" formControlName="data_fim" [disableControl]="!is_edit  ? true : false" >
+                                <mat-datepicker-toggle matSuffix [for]="data_final"></mat-datepicker-toggle>
+                                <mat-datepicker #data_final></mat-datepicker>
+                            </mat-form-field>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="rating">
+                        <mat-header-cell *matHeaderCellDef> Rating </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <kt-progress-bar [setPercent]="element.percent"></kt-progress-bar>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="view">
+                        <mat-header-cell *matHeaderCellDef> Visualizar </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <a class="btn btn-view" [routerLink]="['/usuario/view',element.id]">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </a>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <!-- <mat-paginator #paginator
+                    [pageSizeOptions]="[1,5,10,50]"
+                    (page)="getPaginatorData($event)">
+                </mat-paginator> -->
+            </div>
+            <ng-template  #noItens>
+                <div class="loading" *ngIf="isLoading">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <h3 *ngIf="!isLoading" class="title-page noItens">Nenhum usuário nessa equipe.</h3>
+            </ng-template >
+
+            <div class="mobile-table" *ngIf="usuarios_table && usuarios_table.filteredData.length > 0 else noItensMobile" formArrayName="usuarios">
+                <div class="header-table">
+                    <span>Vendedor</span>
+                </div>
+                <div class="item-table" *ngFor="let item of usuarios_table.data; let i = index"  [formGroupName]="i" >
+                    <div class="header" (click)="toggleMobile(item)" [ngClass]="item.is_mobile_dropdown ? 'active' : ''">
+                        <div class="title">
+                            <button class="btn-down">
+                                <mat-icon>arrow_drop_down</mat-icon>
+                            </button>
+                            <div class="img-user">
+                                <img [src]="item.url_foto"  *ngIf="item.url_foto">
+                                <span *ngIf="!item.url_foto">{{item.nome[0]}}</span>
+                            </div>
+                            <span>{{item.nome}}</span>
+                        </div>
+                        <kt-status-proposta [setStatus]="item.status"  [is_mobile]="true"></kt-status-proposta>
+                    </div>
+                    <div class="content" *ngIf="item.is_mobile_dropdown" @hide>
+                        <div class="linha">
+                            <b>Meta individual :</b> 
+                            <input type="number" formControlName="qtd_vidas" [readonly]="!is_edit">
+                        </div>
+                        <div class="linha">
+                            <b>Data inicial :</b> 
+                            <mat-form-field  class="m-inputs" (click)="data_inicio.open()">
+                                <input matInput [matDatepicker]="data_inicio" formControlName="data_inicio" [disableControl]="!is_edit  ? true : false">
+                                <mat-datepicker-toggle matSuffix [for]="data_inicio"></mat-datepicker-toggle>
+                                <mat-datepicker #data_inicio></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="linha">
+                            <b>Data final :</b> 
+                            <mat-form-field  class="m-inputs" (click)="data_final.open()">
+                                <input matInput [matDatepicker]="data_final" formControlName="data_fim" [disableControl]="!is_edit  ? true : false" >
+                                <mat-datepicker-toggle matSuffix [for]="data_final"></mat-datepicker-toggle>
+                                <mat-datepicker #data_final></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="linha">
+                            <b>Data final :</b> 
+                            <kt-progress-bar [setPercent]="item.percent"></kt-progress-bar>
+                        </div>
+                        <div class="linha">
+                            <b>Visualizar : </b> 
+                            <span class="btn-align-right"> 
+                                <a [routerLink]="['/usuario/view',item.id]"  class="btn btn-view">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <kt-pagination [setPagination_config]="pagination_config"></kt-pagination>
+            </div>
+            <ng-template  #noItensMobile>
+                <div class="mobile-table">
+                    <div class="loading" *ngIf="isLoading">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma proposta encontrada.</h3>
+                </div>
+            </ng-template >
+
+            <div class="row row-button">
+                <button class="btn btn-success" *ngIf="is_edit">
+                    Salvar Alterações
+                </button> 
+            </div>
+        </form>
+    </kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,94 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+    <ng-container *ngIf="!is_loading;else loading">
+        <div mat-dialog-content>
+            <div class="row row-group">
+                <div class="item item-radius-tl-all  item-radius-tr-xs-max col-sm-6">
+                    <input type="hidden" formControlName="id">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Nome da filial<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="nome" placeholder="Insira o nome">
+                        <mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="item  item-radius-tr-sm-min  item-border-sm col-sm-6">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Slug<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="slug" [readonly]="!is_edit">
+                    </mat-form-field>
+                </div>
+                <div class="item   item-margin-sm-min col-sm-4">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Nome do Site</mat-label>
+                        <input matInput formControlName="nome_site" placeholder="Insira o nome do site">
+                    </mat-form-field>
+                </div>
+                <div class="item  item-border-sm  item-margin-sm-min col-sm-4">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Pode importar?</mat-label>
+                        <mat-select formControlName="pode_importar">
+                            <mat-option [value]="1">Sim</mat-option>
+                            <mat-option [value]="0">Não</mat-option>
+                          </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="item   item-border-sm  item-margin-sm-min col-sm-4 ">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Telefone</mat-label>
+                        <input matInput formControlName="telefone" ngxPhoneMaskBr placeholder="Insira o telefone">
+                    </mat-form-field>
+                </div>
+                
+            </div>
+            <m-form-endereco formControlName="endereco"></m-form-endereco>
+            <m-form-regra-negocio formControlName="regraNegocio"></m-form-regra-negocio>
+            <ng-container *ngIf="is_edit">
+                <m-form-metodo-pagamento formControlName="metodoPagamento"></m-form-metodo-pagamento>
+                <m-tipo-servico-unico [labelTitle]="'Tipo de serviço - Universitário'" formControlName="tipo_servico_universitario"></m-tipo-servico-unico>
+                <m-tipo-servico-unico [labelTitle]="'Tipo de serviço - Telemedicina'" formControlName="tipo_servico_telemedicina"></m-tipo-servico-unico>
+                <m-form-tipo-servico-multiplo [labelBtn]="'Adicionar Desconto em Folha'" [labelTitle]="'Tipo de serviço - Desconto em Folha'" formControlName="tipo_servico_desconto_folha_ids"></m-form-tipo-servico-multiplo>
+            </ng-container>
+            <div class="row mt-3">
+                <h4 class="h4">Cláusulas contratuais</h4>
+                <angular-editor class="textarea-editor" formControlName="clausulas_contratuais" [config]="editorConfig"></angular-editor>
+            </div>
+            <div class="row mt-3">
+                <label class="item item-full item-file">
+                    <input type="file" name="anexo" id="file" class="inputfile" (change)="addFile($event)">
+                    <div class="box-file">
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
+                                <path d="M10 0l-5.2     4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path>
+                            </svg> 
+                            <span>Escolher imagem</span>
+                        </div>
+                        <div class="text">
+                            <span>{{ file_name ? file_name : 'Nenhuma imagem selecionada' }}</span>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="row mt-3">
+                <div class="content-file" *ngIf="filial && filial.logo">
+                    <button class="btn close-file" (click)="removeFileBD()" type="button">
+                        <mat-icon>highlight_off</mat-icon>
+                    </button>
+                    <img [src]="filial.logo" alt="">
+                </div>
+            </div>
+            
+        </div>
+        <div mat-dialog-actions>
+            <button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+                <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+            </button>
+        </div>
+    </ng-container>
+    <ng-template #loading>
+		<div class="loading" >
+			<mat-spinner></mat-spinner>
+		</div>
+	</ng-template>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

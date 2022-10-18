@@ -1,0 +1,77 @@
+<div ngbDropdown placement="bottom-right" *ngIf="user$ | async as _user" class="kt-header__topbar-item kt-header__topbar-item--user">
+	<div ngbDropdownToggle class="kt-header__topbar-wrapper">
+		<span class="kt-header__topbar-username">
+			<b>{{ nome }}</b>
+			{{_user.usuario_tipo ? _user.usuario_tipo.nome : ''}}
+		</span>
+		<!-- <span class="kt-header__topbar-icon"><b>{{_user.nome|firstLetter}}</b></span> -->
+		<img *ngIf="avatar && _user.url_foto" alt="Pic"  [attr.src]="_user.url_foto">
+		<div *ngIf="!_user.url_foto"  class="user-no-image user-no-image-brand">
+			<span>{{_user.nome ? _user.nome[0]: ''}}</span>
+		</div>
+	</div>
+	<div ngbDropdownMenu class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl">
+		<!--begin: Head -->
+		<div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x" style="background-color: #CCD9E5;">
+			<div class="kt-user-card__avatar">
+				<div *ngIf="!_user.url_foto" class="user-no-image user-no-image-perfil">
+					<span>{{_user.nome ? _user.nome[0]: ''}}</span>
+				</div>
+				<img alt="Pic" *ngIf="_user.url_foto" [attr.src]="_user.url_foto"/>
+				<span [hidden]="true" class="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success">
+					{{_user.nome|firstLetter}}
+				</span>
+				<!-- <span [hidden]="true" class="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success">
+					{{_user.nome|firstLetter}}
+				</span> -->
+			</div>
+			<div class="kt-user-card__name">
+				{{_user.nome}}
+			</div>
+			<!-- <div class="kt-user-card__badge">
+				<span class="btn btn-success btn-sm btn-bold btn-font-md">23 messages</span>
+			</div> -->
+		</div>
+		<!--end: Head -->
+
+		<!--begin: Navigation -->
+		<div class="kt-notification">
+			<a ngbDropdownItem routerLink="/usuario/perfil" class="kt-notification__item">
+				<div class="kt-notification__item-icon">
+					<i class="flaticon2-calendar-3"></i>
+				</div>
+				<div class="kt-notification__item-details">
+					<div class="kt-notification__item-title kt-font-bold">
+						Meu perfil
+					</div>
+				</div>
+			</a>
+			<!-- <a ngbDropdownItem routerLink="/banner" class="kt-notification__item" *ngIf="functions.verificarPermissao(['banner-page'])">
+				<div class="kt-notification__item-icon">
+					<i class="flaticon2-image-file"></i>
+				</div>
+				<div class="kt-notification__item-details">
+					<div class="kt-notification__item-title kt-font-bold">
+						Banner
+					</div>
+				</div>
+			</a>
+			<a ngbDropdownItem routerLink="/tabela" class="kt-notification__item" *ngIf="functions.verificarPermissao(['tabela-page'])">
+				<div class="kt-notification__item-icon">
+					<i class="flaticon2-checking"></i>
+				</div>
+				<div class="kt-notification__item-details">
+					<div class="kt-notification__item-title kt-font-bold">
+						Tabela
+					</div>
+				</div>
+			</a> -->
+			<div class="kt-notification__custom">
+				<a href="javascript:;" (click)="logout()" class="btn btn-label-brand btn-sm btn-bold">Deslogar</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- <a (click)="logout()" class="btn btn-label-brand btn-sm btn-bold">Sign Out</a> -->

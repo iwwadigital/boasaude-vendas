@@ -1,0 +1,177 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="save()">
+    <div class="loading" *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+    </div>
+	<div mat-dialog-content>
+		<div class="header">
+			<h5 class="title-modal-endereco h5">Informações de {{vida && vida.nome ? vida.nome : 'sem nome'}}</h5>
+			<mat-checkbox formControlName="is_endereco_titular">Mesmo endereço do titular?</mat-checkbox>
+		</div>
+		<div class="row row-group">
+			<div class="item item-radius-tl-all item-radius-tr-xs-max col-sm-4 col-lg-4 ">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Cep<b class="inputRequired">*</b></mat-label>
+					<input matInput mMarkInputs="99999-999" formControlName="cep" placeholder="Insira sua cep">
+				</mat-form-field>
+			</div>
+			<div class="item item-border-sm col-sm-5 col-lg-5">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="rua" placeholder="Insira o rua">
+					<mat-error *ngIf="form.get('rua').errors !== null && form.get('rua').errors.required">Rua não foi preenchida.</mat-error>
+					<mat-error *ngIf="form.get('rua').errors !== null && form.get('rua').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-border-sm item-radius-tr-sm-min col-sm-3">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Número<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="numero" placeholder="Insira o número">
+					<mat-error *ngIf="form.get('numero').errors !== null && form.get('numero').errors.required">Número não foi preenchido.</mat-error>
+					<mat-error *ngIf="form.get('numero').errors !== null && form.get('numero').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-active-border-md  item-margin-sm-min col-sm-4 col-md-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="bairro" placeholder="Insira o bairro">
+					<mat-error *ngIf="form.get('bairro').errors !== null && form.get('bairro').errors.required">Bairro não foi preenchido.</mat-error>
+					<mat-error *ngIf="form.get('bairro').errors !== null && form.get('bairro').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-border-sm item-border-md  item-margin-sm-min col-sm-4 col-md-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="cidade" placeholder="Insira o cidade">
+					<mat-error *ngIf="form.get('cidade').errors !== null && form.get('cidade').errors.required">Cidade não foi preenchida.</mat-error>
+					<mat-error *ngIf="form.get('cidade').errors !== null && form.get('cidade').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item  item-border-sm  item-margin-sm-min col-sm-4 col-md-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>UF<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="estado" placeholder="Insira o uf">
+					<mat-error *ngIf="form.get('estado').errors !== null && form.get('estado').errors.required">UF não foi preenchida.</mat-error>
+					<mat-error *ngIf="form.get('estado').errors !== null && form.get('estado').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-xs-min col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Complemento<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="complemento" placeholder="Insira o complemento" maxlength="20">
+					<mat-error *ngIf="form.get('complemento').errors !== null && form.get('complemento').errors.required">Complemento não foi preenchido.</mat-error>
+					<mat-error *ngIf="form.get('complemento').errors !== null && form.get('complemento').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-sm-min item-border-sm col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Ponto de Referência<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="referencia" placeholder="Insira o referência">
+					<mat-error *ngIf="form.get('referencia').errors !== null && form.get('referencia').errors.required">Ponto de Referência não foi preenchida.</mat-error>
+					<mat-error *ngIf="form.get('referencia').errors !== null && form.get('referencia').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-xs-min col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>E-mail</mat-label>
+					<input matInput type="email" formControlName="email">
+					<mat-error *ngIf="form.get('email').errors !== null && form.get('email').errors.email">E-mail inválido.</mat-error>
+					<mat-error *ngIf="form.get('email').errors !== null && form.get('email').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-sm-min item-border-sm col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Estado Civil</mat-label>
+					<mat-select formControlName="estado_civil" placeholder="Escolha a opção">
+						<mat-option *ngFor="let item of lista_estado_civil | keyvalue;" [value]="item.value">
+							{{ item.key }}
+						</mat-option>
+                        <!-- <mat-option value="S">
+                            Solteiro
+                        </mat-option>
+                        <mat-option value="C">
+                            Casado
+                        </mat-option>
+                        <mat-option value="D">
+                            Divorciado
+                        </mat-option>
+                        <mat-option value="V">
+                            Viúvo
+                        </mat-option>
+                        <mat-option value="M">
+                            Marital
+                        </mat-option>
+                        <mat-option value="Q">
+                            Desquitado
+                        </mat-option>
+                        <mat-option value="N">
+                            Não informado
+                        </mat-option> -->
+                    </mat-select>
+					<mat-error *ngIf="form.get('estado_civil').errors !== null && form.get('estado_civil').errors.required">Estado Civil não foi escolhido.</mat-error>
+				</mat-form-field>
+            </div>
+			<div class="item item-active-border-md  item-margin-sm-min col-sm-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+                    <mat-label>Telefone<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="tel_residencial" ngxPhoneMaskBr>
+					<mat-error *ngIf="form.get('tel_residencial').errors !== null && form.get('tel_residencial').errors.required">Telefone não foi preenchido.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-xs-min item-border-sm col-sm-4 col-lg-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+                    <mat-label>Telefone Celular</mat-label>
+					<input matInput formControlName="tel_celular" ngxPhoneMaskBr >
+				</mat-form-field>
+			</div>
+			<div class="item  item-border-sm  item-margin-sm-min col-sm-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+                    <mat-label>Telefone Comercial</mat-label>
+					<input matInput formControlName="tel_comercial" ngxPhoneMaskBr >
+				</mat-form-field>
+            </div>
+            <div class="item item-margin-xs-min col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Nome do preposto</mat-label>
+					<input matInput formControlName="nome_preposto" >
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-sm-min item-border-sm col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>CPF do preposto</mat-label>
+					<input matInput mMarkInputs="999.999.999-99" formControlName="cpf_preposto" >
+				</mat-form-field>
+			</div>
+            <div class="item item-margin-xs-min item-radius-bl-sm-min col-sm-4 ">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Responsável em caso de emergência</mat-label>
+					<input matInput  formControlName="responsavel_tit">
+				</mat-form-field>
+            </div>
+            <div class="item item-margin-xs-min item-border-sm col-sm-4 col-lg-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Seguro saúde<b class="inputRequired">*</b></mat-label>
+					<input type="text" placeholder="Escolha um seguro saúde" formControlName="seguro_saude" aria-label="Number" matInput  [matAutocomplete]="auto">
+					<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+						<mat-option *ngFor="let item of seguros_saude"  [value]="item">
+							{{ item.codigo }} - {{ item.nome }}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+			</div>
+            <div class="item item-margin-xs-min item-border-sm item-radius-br-all  item-radius-bl-xs-max col-sm-4 ">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Telefone Responsavel</mat-label>
+					<input matInput  formControlName="tel_responsavel_tit" ngxPhoneMaskBr>
+				</mat-form-field>
+            </div>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button   color="primary"  class="btn btn-create" type="submit">
+            <span>Salvar</span>
+        </button>
+    </div>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

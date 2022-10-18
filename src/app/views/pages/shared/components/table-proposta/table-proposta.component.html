@@ -1,0 +1,259 @@
+<div class="table table-proposal">
+	<form [formGroup]="form" *ngIf="exist_filter" class="form-filter">
+		<mat-form-field class="m-inputs">
+			<mat-label>Pagamento do tipo</mat-label>
+			<mat-select formControlName="forma_pagamento" placeholder="Escolha a opção" >
+				<mat-option value="0" >
+					Todos
+				</mat-option>
+				<mat-option *ngFor="let item of list_pagamentos" [value]="item">
+					{{ item.nome }}
+				</mat-option>
+				<!-- <mat-option value="-1" >
+					Adesão Online
+				</mat-option> -->
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field  class="m-inputs">
+			<mat-label>Filtrar por</mat-label>
+			<mat-select formControlName="filtro" placeholder="Escolha a opção" >
+				<mat-option value="Todos" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+					Todos
+				</mat-option>
+				<mat-option value="Pendente" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+					Pendente
+				</mat-option>
+				<mat-option value="Aprovado" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+					Aprovado
+				</mat-option>
+				<mat-option value="Em aprovação" *ngIf="functions.verificarTipoUsuario([1,2,3,4,5,7,8])">
+					Em aprovação
+				</mat-option>
+				<mat-option value="Recusado" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+					Recusado
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</form>
+	<div  *ngIf="data_table && data_table.filteredData.length > 0 else noItens" >
+		<mat-table  #table [dataSource]="data_table">
+			<ng-container matColumnDef="id">
+				<mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<!-- {{element.id }} -->
+					{{element.codigo_proposta }}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="cliente">
+				<mat-header-cell *matHeaderCellDef> Cliente </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{element.titular_nome }}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="data_aprovacao">
+				<mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{element.data_proposta_aprovacao | date: 'dd/MM/yyyy'}}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="data">
+				<mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{element.proposta_data | date: 'dd/MM/yyyy'}}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="tipo_servico">
+				<mat-header-cell *matHeaderCellDef> Tipo do serviço </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{ element.tipo_servico ? element.tipo_servico.nome  : ''}}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="tabela">
+				<mat-header-cell *matHeaderCellDef> Tabela </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{ element.tabela ? element.tabela.nome  : '' }}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="status">
+				<mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					 <kt-status-proposta [setStatus]="element.status"></kt-status-proposta>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="vendedor">
+				<mat-header-cell *matHeaderCellDef> Vendedor </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					{{ element.vendedor.nome }}
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="adesao_online">
+				<mat-header-cell *matHeaderCellDef> Adesão Paga </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<ng-container *ngIf="validatyPaymentOnline(element)">
+						<button class="btn" [ngClass]="validatyPaymentOnlineClass(element)" >
+							<mat-icon>attach_money</mat-icon>
+						</button>
+					</ng-container>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="voz">
+				<mat-header-cell *matHeaderCellDef> Voz </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button class="btn" [ngClass]="classAceiteVoz(element)" *ngIf="element.aceite_voz.length > 0"  (click)="element.aceite_voz  ? openAudio(element.aceite_voz) : null">
+						<mat-icon>mic</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="conferida">
+				<mat-header-cell *matHeaderCellDef> Conferência  </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<button class="btn" [ngClass]="element.is_conferida == 1 ? 'btn-audio-completed' : 'btn-audio'">
+						<mat-icon>check_circle</mat-icon>
+					</button>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="reabrir">
+				<mat-header-cell *matHeaderCellDef> Reabrir </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<a (click)="validatyProposta(element)"  class="btn btn-view">
+						<mat-icon>refresh</mat-icon>
+					</a>
+				</mat-cell>
+			</ng-container>
+			<ng-container matColumnDef="visualizar">
+				<mat-header-cell *matHeaderCellDef> Visualizar </mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<a [routerLink]="['/proposta/view', element.id]"  class="btn btn-view">
+						<mat-icon>remove_red_eye</mat-icon>
+					</a>
+				</mat-cell>
+			</ng-container>
+			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+		</mat-table>
+		<mat-paginator 
+			[pageSizeOptions]="[1,5,10,50]"
+			[pageSize]="page"
+			[pageIndex]="currentPage"
+			[length] = "total"
+			(page)="getPaginatorData($event)">
+		</mat-paginator>
+		<kt-pagination [setPagination_config]="pagination_config"></kt-pagination>
+	</div>
+</div>
+<ng-template  #noItens>
+	<div class="table">
+		<div class="loading" *ngIf="isLoading">
+			<mat-spinner></mat-spinner>
+		</div>
+		<h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma proposta encontrada.</h3>
+	</div>
+</ng-template >
+
+
+<div class="mobile-table mobile-proposal" >
+	<div class="header-table">
+		<span>Nº de série</span>
+		<div class="more-filter" *ngIf="exist_filter">
+			<button class="btn-option" (click)="toggleMoreMobile()">
+				<mat-icon>more_horiz</mat-icon >
+			</button>
+			<div class="is_filter" *ngIf="is_filter"  @hide>
+				<ul>
+					<li><span><b>Filtrar proposta por:</b></span></li>
+					<li (click)="filterStatus('')" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+						<span>Todos</span>
+					</li>
+					<li (click)="filterStatus('Pendente')" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+						<span>Pendentes</span>
+					</li>
+					<li (click)="filterStatus('Aprovado')" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+						<span>Resolvidas</span>
+					</li>
+					<li (click)="filterStatus('Em aprovação')" *ngIf="functions.verificarTipoUsuario([1,2,3,4,5,7,8])">
+						<span>Em aprovação</span>
+					</li>
+					<li (click)="filterStatus('Recusado')" *ngIf="functions.verificarTipoUsuario([1,2,4,8])">
+						<span>Recusadas</span>
+					</li>
+				</ul>
+				<ul >
+					<li><span><b>Filtrar por pagamento:</b></span></li>
+					<!-- <li (click)="filterPagamento('0')">
+						<span>Todos</span>
+					</li> -->
+					<li *ngFor="let item of list_pagamentos" (click)="filterPagamento(item.id)">
+						<span>{{item.nome}}</span> 
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<ng-container *ngIf="data_table && data_table.filteredData.length > 0 else noItensMobile">
+		<div class="item-table" *ngFor="let item of data_table.data" >
+			<div class="header" (click)="toggleMobile(item)" [ngClass]="item.is_mobile_dropdown ? 'active' : ''">
+				<div class="title">
+					<button class="btn-down">
+						<mat-icon>arrow_drop_down</mat-icon>
+					</button>
+					<span>{{item.id}}</span>
+				</div>
+				<kt-status-proposta [setStatus]="item.status"  [is_mobile]="true"></kt-status-proposta>
+			</div>
+			<div class="content" *ngIf="item.is_mobile_dropdown" @hide>
+				<div class="linha">
+					<b>Titular :</b> <span>{{item.titular_nome}}</span>
+				</div>
+				<div class="linha">
+					<b>Data :</b> <span>{{item.proposta_data | date: 'dd/MM/yyyy'}}</span>
+				</div>
+				<div class="linha">
+					<b>Vendedor :</b> <span>{{item.vendedor.nome}}</span>
+				</div>
+				<div class="linha">
+					<b>Adesão Paga : </b> 
+					<span class="btn-align-right"> 
+						<ng-container *ngIf="validatyPaymentOnline(item)" >
+							<button class="btn-voice-completed">
+								<mat-icon>attach_money</mat-icon>
+							</button>
+						</ng-container>
+					</span>
+				</div>
+				<div class="linha">
+					<b>Voz : </b> 
+					<span class="btn-align-right"> 
+						<button *ngIf="item.aceite_voz.length > 0" [ngClass]="classAceiteVozMobile(item)" (click)="item.aceite_voz ? openAudio(item.aceite_voz) : null">
+							<mat-icon>mic</mat-icon>
+						</button>
+					</span>
+				</div>
+				<div class="linha">
+					<b>Conferência : </b> 
+					<span class="btn-align-right"> 
+						<button [ngClass]="item.is_conferida == 1 ? 'btn-voice-completed' : 'btn-voice'">
+							<mat-icon>check_circle</mat-icon>
+						</button>
+					</span>
+				</div>
+				<div class="linha">
+					<b>Visualizar : </b> 
+					<span class="btn-align-right"> 
+						<a [routerLink]="['/proposta/view', item.id]"  class="btn btn-view">
+							<mat-icon>remove_red_eye</mat-icon>
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
+		<kt-pagination [setPagination_config]="pagination_config"></kt-pagination>
+	</ng-container>
+</div>
+<ng-template  #noItensMobile>
+	<div class="mobile-table">
+		<div class="loading" *ngIf="isLoading">
+			<mat-spinner></mat-spinner>
+		</div>
+		<h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma proposta encontrada.</h3>
+	</div>
+</ng-template >

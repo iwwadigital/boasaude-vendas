@@ -1,0 +1,21 @@
+<kt-portlet >
+	<kt-portlet-body [class]="'kt-portlet__body--fit meta'">
+        <div class="meta-content" *ngIf="meta;else noItens">
+            <kt-icon-portlet [asset_icon]="'./assets/vitalmed/icon-lives.svg'"></kt-icon-portlet>
+            <!-- <div class="img-type-meta">
+                <img src="./assets/vitalmed/icon-lives.svg" alt="">
+            </div> -->
+            <div class="data-info">
+                {{meta.propostas_count}}/{{meta.qtd_vidas}}
+            </div>
+            <kt-progress-bar [is_percent]='false' [setPercent]="meta.percent"></kt-progress-bar>
+        </div>
+        <ng-template  #noItens>
+            <div class="loading" *ngIf="isLoading">
+                <mat-spinner></mat-spinner>
+            </div>
+            <h3 *ngIf="!isLoading" class="title-page noItens">Esse usuário ainda não tem meta cadastrada.</h3>
+        </ng-template >
+        
+	</kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,43 @@
+<form class="content form-aceite col-lg-12" [formGroup]="form_aceite" (ngSubmit)="create()" >
+	<h3 class="title h3">Aceite de voz</h3>
+	<div class="row row-group">
+		<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-6">
+			<mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+				<mat-label>Data do aceite de voz<b class="inputRequired">*</b></mat-label>
+				<input matInput formControlName="data_aceite_voz" [matDatepicker]="myDatepicker">
+				<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+				<mat-datepicker #myDatepicker></mat-datepicker>
+				<!-- <mat-error *ngIf="form.get('data_aceite_voz').errors !== null && form.get('data_aceite_voz').errors.required">Data de nascimento não foi preenchido.</mat-error> -->
+			</mat-form-field>
+		</div>
+		<div class="item item-radius-bl-sm item-radius-bl-md item-border-lg item-margin-md-max col-sm-6 col-lg-2">
+			<ngb-timepicker  formControlName="hora_aceite_voz"></ngb-timepicker>
+		</div>
+		<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-4">
+			<mat-form-field appearance="outline" class="m-inputs">
+				<mat-label>Telefone</mat-label>
+				<input matInput formControlName="telefone" ngxPhoneMaskBr>
+			</mat-form-field>
+		</div>
+		<!-- <div class="item col-sm-12 col-lg-5">
+			<div class="file">
+				<input type="file" id="add-file"  (change)="addFile($event)" class="inputfile inputfile-6" accept="audio/*">
+				<label class="add-more-item add-more-item"  [for]="!has_audio ? 'add-file' : ''">
+					<div class="icon-form-action icon-form-action-lg" >
+						<div class="info" *ngIf="!has_audio">
+							<span>Importa arquivo de audio</span>
+							<mat-icon>mic</mat-icon>
+						</div>
+						<audio controls id="audio" src="" data-tempo="" *ngIf="has_audio" ></audio>
+					</div>
+				</label>
+				<button class="btn close-file" (click)="removeFile()" *ngIf="has_audio">
+					<mat-icon>highlight_off</mat-icon>
+				</button>
+			</div>
+		</div> -->
+	</div>
+	<div class="row row-button">
+		<button type="submit" [disabled]="is_block" class="btn btn-success create">Enviar</button>
+	</div>
+</form>

@@ -1,0 +1,3 @@
+<span *ngIf="!is_progress_bar && !is_valor">{{ getValorColuna(obj,linha) }}</span>
+<span *ngIf="!is_progress_bar && is_valor"> {{ getValorColuna(obj,linha)   | currency :'BRL' }}</span>
+<kt-progress-bar [setPercent]="getValorColuna(obj,linha)"  *ngIf="is_progress_bar"></kt-progress-bar>

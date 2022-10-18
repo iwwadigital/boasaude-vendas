@@ -1,0 +1,37 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+    <ng-container *ngIf="!is_loading;else loading">
+        <div mat-dialog-content>
+            <div class="row row-group">
+                <div class="item item-radius-tl-all item-radius-bl-sm-min item-radius-tr-xs-max col-sm-6">
+                    <input type="hidden" formControlName="id">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Nome<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="nome" placeholder="Insira o nome">
+                        <mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="item item-radius-br-all item-radius-tr-sm-min item-radius-bl-xs-max item-border-sm col-sm-6">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Código<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="codigo">
+                        <mat-error *ngIf="form.get('codigo').errors !== null && form.get('codigo').errors.required">Código não foi digitado.</mat-error>
+                        <mat-error *ngIf="form.get('codigo').errors !== null && form.get('codigo').errors.maxlength">Código passou de {{ form.get('codigo').errors.maxlength.requiredLength}} caracteres.</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div mat-dialog-actions>
+            <button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+                <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+            </button>
+        </div>
+    </ng-container>
+    <ng-template #loading>
+		<div class="loading" >
+			<mat-spinner></mat-spinner>
+		</div>
+	</ng-template>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

@@ -1,0 +1,156 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+	<ng-container *ngIf="!is_loading;else loading">
+		<div mat-dialog-content>
+			<!-- <h5 class="form-section-title h5">Informações do Usuário</h5> -->
+			<div *ngIf="is_edit" class="header-modal-usuario">
+				<div class="img-user" >
+					<img [src]="usuario.url_foto"  *ngIf="usuario.url_foto">
+					<span *ngIf="!usuario.url_foto">{{usuario.nome[0]}}</span>
+				</div>
+				<span class="nome">{{usuario.nome}}</span>
+				<span class="equipe" *ngFor="let equipe of usuario.equipes">{{equipe.nome}}</span>
+				<ng-container *ngIf="functions.verificarTipoUsuario([1,2,8])">
+					<mat-slide-toggle formControlName="status">Ativo?</mat-slide-toggle>
+					<mat-slide-toggle formControlName="e_corretora">É corretora?</mat-slide-toggle>
+					<mat-slide-toggle formControlName="pode_retroagir_data">Pode restringir data?</mat-slide-toggle>
+				</ng-container>
+				<button class="btn" (click)="openDelete()" *ngIf="!is_delete && functions.verificarPermissao(['usuario-deletar'])" type="button">
+					<mat-icon>delete</mat-icon>
+				</button>
+				<div *ngIf="is_delete" class="remover-usuario">
+					<button class="btn" (click)="openDelete()" type="button">Não</button>
+					<button class="btn" (click)="delete()" type="button">Sim</button>
+				</div>
+			</div>
+			<div class="row row-group">
+				<div class="item item-radius-tl-all item-radius-tr-xs-max col-sm-6 col-md-4">
+					<input type="hidden" formControlName="id">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+						<input matInput formControlName="nome" placeholder="Insira seu Nome">
+						<mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="item item-border-sm item-radius-tr-sm col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Telefone</mat-label>
+						<input matInput formControlName="telefone" placeholder="Insira seu telefone"  ngxPhoneMaskBr>
+					</mat-form-field>
+				</div>
+				<div class="item item-border-md item-margin-sm-max item-radius-tr-md-min col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>E-mail<b class="inputRequired">*</b></mat-label>
+						<input matInput formControlName="email" placeholder="Insira seu E-mail">
+						<mat-error *ngIf="form.get('email').errors !== null && form.get('email').errors.required">E-mail não inserido.</mat-error>
+						<mat-error *ngIf="form.get('email').errors !== null && form.get('email').errors.email">E-mail inválido.</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="item item-border-sm item-active-border-md item-radius-bl-md-min item-margin-sm-min col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Nº de inscrição</mat-label>
+						<input matInput formControlName="inscricao" placeholder="Insira seu nº de inscrição">
+					</mat-form-field>
+				</div>
+				<div class="item item-border-md item-radius-bl-sm item-margin-sm-min col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Login</mat-label>
+						<input matInput formControlName="login" placeholder="Insira seu login">
+						<mat-error *ngIf="form.get('login').errors !== null && form.get('login').errors.required">Login não inserido.</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="item item-radius-br-all item-border-sm item-radius-bl-xs-max item-margin-sm-min col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Senha</mat-label>
+						<input matInput type="password" formControlName="senha" placeholder="Insira sua senha">
+						<mat-error *ngIf="form.get('senha').errors !== null && form.get('senha').errors.required">Senha não inserido.</mat-error>
+					</mat-form-field>
+				</div>
+			</div>
+
+			<div class="row row-group" *ngIf="functions.verificarPermissao(['usuario-editar'])">
+				<div class="item item-radius-tl-all item-radius-bl-md-min item-radius-tr-xs-max col-sm-6 col-md-4">
+					<mat-form-field appearance="outline"  class="m-inputs addItem-tipo">
+						<mat-label>Equipes<b class="inputRequired">*</b></mat-label>
+						<mat-select formControlName="equipes_id"  [multiple]="true" >
+						<mat-select-search formControlName="equipe"></mat-select-search>
+						<mat-option *ngFor="let equipe of filteredEquipeMulti | async" [value]="equipe.id">
+							{{equipe.nome}}
+						</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="item item-border-sm item-radius-tr-sm col-sm-6 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Tipo usuário<b class="inputRequired">*</b></mat-label>
+						<mat-select formControlName="usuario_tipo_id" placeholder="Escolha a opção" >
+							<mat-option *ngFor="let usuario_tipo of usuarios_tipos" [value]="usuario_tipo.id">
+								{{ usuario_tipo.nome }}
+							</mat-option>
+						</mat-select>
+						<mat-error *ngIf="form.get('usuario_tipo_id').errors !== null && form.get('usuario_tipo_id').errors.required">Tipo de usuário não foi escolhido.</mat-error>
+					</mat-form-field>
+				</div>
+				<div class="item item-radius-tr-md-min item-radius-br-all item-radius-bl-sm-max item-border-md item-margin-sm-max col-sm-12 col-md-4">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Canal de venda<b class="inputRequired">*</b></mat-label>
+						<mat-select formControlName="canal_venda" placeholder="Escolha a opção" >
+							<mat-option value="presencial">
+								Presencial
+							</mat-option>
+							<mat-option value="telemarketing">
+								Telemarketing
+							</mat-option>
+						</mat-select>
+						<!-- <mat-error *ngIf="form.get('canal_venda').errors !== null && form.get('canal_venda').errors.required">Canal de venda não foi escolhido.</mat-error> -->
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="usuario-filiais" *ngIf="!is_perfil">
+				<h3 class="h3 sub-title">Filiais</h3>
+				<div class="item-filial row row-group">
+					<ng-container *ngFor="let item of usuario_filiais.controls;let i=index" formArrayName="usuario_filiais">
+						<ng-container [formGroupName]="i">
+							<div [class]="checkClassNameFilial(i,'filial')">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Filial</mat-label>
+									<mat-select  placeholder="Escolha a opção" formControlName="filial" [compareWith]="compareObjectSelect" >
+										<mat-option [value]="item" *ngFor="let item of filiais" >
+											{{item.nome}}
+										</mat-option>						
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div [class]="checkClassNameFilial(i,'inscricao')">
+								<mat-form-field appearance="outline" class="m-inputs">
+									<mat-label>Nº de inscrição</mat-label>
+									<input matInput formControlName="inscricao" placeholder="Insira seu nº de inscrição">
+								</mat-form-field>
+								<button type="button" class="remove-dependent btn"  (click)="removeUsuarioFilial(i)" >
+									<mat-icon>remove_circle</mat-icon>
+								</button>
+							</div>
+						</ng-container>
+					</ng-container>
+				</div>
+				<button class="btn btn-add-line" (click)="addUsuarioFilial()" type="button">
+					Adicionar linha
+				</button>
+			</div>
+		</div>
+		
+		<div mat-dialog-actions>
+			<button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+				<span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+			</button>
+		</div>
+	</ng-container>
+	<ng-template #loading>
+		<div class="loading " >
+			<mat-spinner></mat-spinner>
+		</div>
+	</ng-template>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

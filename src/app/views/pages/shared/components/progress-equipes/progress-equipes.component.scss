@@ -1,0 +1,163 @@
+.progress-equips{
+    position: relative;
+    // @media only screen and (max-width: 1024px){
+    //     width: 100%;
+    //     min-height: 220px;
+    //     display: block;
+    // }
+}
+.group-equip.open{
+    // max-height: 900px;
+    max-height: 500px;
+    overflow-y: scroll;
+    .header{
+
+        .mat-icon{
+            transform: rotate(-180deg) !important; 
+        }
+    }
+}
+.group-equip{
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    max-height: 220px;
+    background: #01478D;
+    width: 100%;
+    color: #fff;
+    padding: 29px 37px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: max-height 500ms ease-in-out, overflow-y 500ms ease-in-out;
+   
+
+    @media only screen and (max-width: 1024px){
+        position: relative;
+        padding: 28px 20px;
+    }
+
+    @media only screen and (max-width: 468px){
+        max-height: 240px;
+    }
+    @media only screen and (max-width: 400px){
+        max-height: 265px;
+    }
+    .header{
+        display: flex;
+        justify-content: space-between;
+        // margin-bottom: 65px;
+        margin-bottom: 45px;
+        align-items: center;
+        @media only screen and (max-width: 468px){
+            margin-bottom: 15px;
+        }
+        button{
+            padding: 0;
+            margin: 0;
+        }
+        .mat-icon{
+            color: #fff;
+            width: auto;
+            height: auto;
+            font-size: 24px !important;
+            transition: transform 350ms ease-in-out;
+        }
+        .sub-title-equipe{
+            font-size: 26px;
+            @media only screen and (max-width: 468px){
+                font-size: 22px;
+            }
+        }
+    }
+    .content-equip{
+        display: flex;
+        flex-wrap: wrap;
+        .item-equip{
+            // width: calc(20% - 70px);
+            width: calc((100% / 3) - 70px);
+            display: flex;
+            flex-direction: column;
+            margin-right: 70px;
+            margin-bottom: 40px;
+            @media only screen and (max-width: 1320px){
+                margin-right: 40px;
+            }
+            @media only screen and (min-width:1024px) and (max-width: 1210px){
+                width: calc(50% - 40px);
+            }
+
+            @media only screen and (max-width: 768px){
+                margin-right: 20px;
+                margin-bottom: 40px;
+                width: calc(50% - 20px);
+            }
+            @media only screen and (max-width: 468px){
+                margin-right: 0px;
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            span{
+                font-size: 16px;
+                color: #fff;
+                flex-grow: 1;
+            }
+            kt-progress-bar{
+                margin-top: 14px;
+            }
+        }
+    }
+    .pagination-equip{
+        display: flex;
+        justify-content: flex-end;
+        .btn-arrow{
+            cursor: pointer;
+            .mat-icon{
+                color: #F79A1B;
+                font-size: 30px !important;
+                margin-right: 19px;
+                width: auto; 
+                height: auto; 
+                padding: 0;
+                margin: 0;
+                transition: color 350ms;
+                &:hover{
+                    color: #fff;
+                }
+            }
+        }
+        .btn-arrow-prev .mat-icon{
+            transform: rotateZ(90deg);
+        }
+        .btn-arrow-next .mat-icon{
+            transform: rotateZ(-90deg);
+        }
+    }
+    .btn-arrow.disabled{
+        pointer-events: none;
+        .mat-icon{
+            color: #CCD9E5 !important;
+        }
+    }
+}
+:host {
+    ::ng-deep {
+        .mat-progress-bar{
+            height: 8px;
+            border-radius: 4px;
+        }
+        .progress-equips .loading{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .mat-progress-spinner,
+            .mat-progress-spinner svg{
+                width: 50px !important;
+                height: 50px !important;
+            }
+            .mat-progress-spinner circle, .mat-spinner circle {
+                // brand color
+                stroke: var(--color-base);
+            }
+        }
+    }
+}

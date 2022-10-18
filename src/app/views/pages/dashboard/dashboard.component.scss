@@ -1,0 +1,137 @@
+:host {
+	::ng-deep {
+		ngb-tabset > .nav-tabs {
+			display: none;
+		}
+		.kt-portlet__body--fit{
+			position: relative;
+		}
+		.mat-form-field-appearance-outline .mat-form-field-wrapper{
+			padding-bottom: 0;
+		}
+	}
+}
+@media only screen and (min-width: 1024px){
+	.header-table {
+		padding: 29px 495px 40px 30px;
+	}
+}
+
+.header-dashboard{
+	align-items: center;
+	flex-wrap: wrap;
+	// form{
+	// 	flex-grow: 1;
+	// 	margin-left: 10px;
+	// 	@media only screen and (max-width: 480px){
+	// 		width: 100%;
+	// 		margin-left: 0;
+	// 	}
+	// 	.material-icons {
+	// 		font-size: 24px !important;
+	// 	}
+	// }
+}
+.form-order{
+    margin: 20px 0 0 0;
+    width: 100%;
+
+    @media only screen and (min-width: 575px){
+        margin: 0 0 0 auto;
+        width: auto;
+    }
+
+    .m-inputs {
+        border-bottom: 1px solid  #D5D5D5;
+        height: 30px;
+        width: 100%;
+        
+        @media only screen and (min-width: 575px){
+            width: 290px;
+		}
+		@media only screen and (min-width: 1024px){
+			width: 230px;
+		}
+        @media only screen and (min-width: 1150px){
+            width: 320px;
+        }
+
+        input{
+            border: none;
+            color: #3D3D3D;
+            width: calc(100% - 45px);
+            outline: none;
+            font-size: 1rem;
+            font-weight: 500;
+            
+            @media only screen and (min-width: 575px){
+                font-size: 1.1rem;
+            }
+
+            ::placeholder{
+                font-size: 1rem;
+                font-weight: 500;
+                color: #3D3D3D;
+
+                @media only screen and (min-width: 575px){
+                    font-size: 1.1rem;
+                }
+            }
+        }
+        .mat-icon{
+            font-size: 27px !important;
+            color: var(--color-blue-dark);
+            width: auto;
+            height: auto;
+        }
+        .btn{
+            padding: 0;
+        }
+    }
+}
+
+.content-info{
+	display: flex;
+	@media only screen and (max-width: 1024px){
+		flex-direction: column;
+		margin-bottom: 20px;
+	}
+	.meta{
+		margin-right: 38px;
+		@media only screen and (max-width: 1024px){
+			margin-right:0;
+			order: 2;
+		}
+	}
+	.banner{
+		border-radius: 8px;
+		overflow: hidden;
+		display: flex;
+		// width: 862px;
+		height: 220px;
+		@media only screen and (max-width: 1024px){
+			height: auto;
+			margin-bottom: 15px;
+		}
+		
+		
+	}
+	.progress-equipe-dashboard{
+		flex-grow: 1;
+		@media only screen and (max-width: 1024px){
+			margin-bottom: 50px;
+		}
+	}
+}
+
+
+kt-slide-banner{
+	display: block;
+    width: 100%;
+    height: auto;
+}
+kt-progress-equipes{
+	width: 100%;
+	display: block;
+	height: auto;
+}

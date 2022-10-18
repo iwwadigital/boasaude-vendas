@@ -1,0 +1,24 @@
+<form [formGroup]="form">
+    <div class="row row-group">
+        
+        <ng-container *ngFor="let item of items.controls;let i = index;" formArrayName="items">
+            <ng-container [formGroupName]="i"> 
+                <div class="item  item-active-border-md  item-margin-sm-min col-md-12 item-mobile" >
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>{{labelTitle}}</mat-label>
+                        <input type="text" placeholder="Escolha um tipo de serviço" aria-label="Number" matInput formControlName="item"  [matAutocomplete]="tipo_serv">
+                        <mat-autocomplete autoActiveFirstOption #tipo_serv="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let tipo of tipos_servico"  [value]="tipo">
+                                {{ tipo.cidade }} - {{ tipo.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-icon class="btn-icon-danger" (click)="removeItem(i)">delete</mat-icon>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <button class="btn btn-primary mt-3" (click)="addItem()">
+        {{labelBtn}}
+    </button>
+</form>

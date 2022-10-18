@@ -1,0 +1,116 @@
+<div class="table" >
+	<form [formGroup]="form_order" class="form-filter" *ngIf="tables_config.is_filter">
+		<mat-form-field  class="m-inputs">
+			<mat-label>Ordenar por</mat-label>
+			<mat-select formControlName="filter" placeholder="Escolha a opção" >
+				<mat-option *ngFor="let filter_item of tables_config.filters" [value]="filter_item.value">
+					{{filter_item.title}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</form>
+	<div class="table"  *ngIf="tables_config && data_table && data_table.length > 0; else noItens">
+		<mat-table  #table [dataSource]="data_table_datasource">
+			<ng-container *ngFor="let item of tables_config.column; let i = index"  matColumnDef="{{tables_config.column[i]}}">
+				<mat-header-cell *matHeaderCellDef> {{tables_config.title[i]}} </mat-header-cell>
+				<mat-cell  *matCellDef="let element">
+					<kt-column 
+						[obj]="element" 
+						*ngIf="!is_action(tables_config.column[i])"   
+						[linha]="tables_config.column[i]" 
+						[is_progress_bar]="tables_config.column[i] == 'percent'"
+					></kt-column>
+					<kt-column-action [config]="tables_config.actionsConfig"
+						[dados]="element"
+						[type]="tables_config.column[i]"
+						[table_api]="tables_config.table_api"
+						*ngIf="is_action(tables_config.column[i])"
+						(refreshTable)="pagination()"
+						></kt-column-action>
+				</mat-cell>
+			</ng-container>
+			<mat-header-row *matHeaderRowDef="tables_config.column"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: tables_config.column;"></mat-row>
+		</mat-table>
+		<mat-paginator #paginator
+		[pageSizeOptions]="[1,5,10,50]"
+		[pageSize]="page"
+		[pageIndex]="currentPage"
+		[length] = "total"
+		(page)="getPaginatorData($event)"
+		*ngIf="tables_config.is_pagination_length"
+		>
+		</mat-paginator>
+		<kt-pagination [setPagination_config]="pagination_config"></kt-pagination>
+	</div>
+	<ng-template  #noItens>
+		<div class="table">
+			<div class="loading" *ngIf="isLoading">
+				<mat-spinner></mat-spinner>
+			</div>
+			<h3 *ngIf="!isLoading" class="title-page noItens">Nenhuma dado encontrado.</h3>
+		</div>
+	</ng-template >
+</div>
+
+
+<div class="mobile-table" >
+	<div class="header-table">
+		<span>{{tables_config.title[0]}}</span>
+		<div class="more-filter">
+			<button class="btn-option" (click)="toggleMoreMobile()">
+				<mat-icon>more_horiz</mat-icon >
+			</button>
+			<div class="is_filter" *ngIf="is_filter"  @hide>
+				<ul>
+					<li><span><b>Ordenar por:</b></span></li>
+					<li *ngFor="let filter_item of tables_config.filters" (click)="filter(filter_item.value)">
+						<span>{{filter_item.title}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<ng-container *ngIf="data_table && data_table.length > 0 else noItensMobile">
+		<div class="item-table" *ngFor="let item of data_table">
+			<div class="header" (click)="toggleMobile(item)" [ngClass]="item.is_mobile_dropdown ? 'active' : ''">
+				<div class="title">
+					<button class="btn-down">
+						<mat-icon>arrow_drop_down</mat-icon>
+					</button>
+					<kt-column [obj]="item"  [linha]="tables_config.column[0]"></kt-column>
+				</div>
+			</div>
+			<div class="content" *ngIf="item.is_mobile_dropdown" @hide>
+				<div class="linha" *ngFor="let column of tables_config.column; let i = index">
+					<b>{{tables_config.title[i]}} : </b>
+					<!-- Coluna-->
+					<kt-column 
+						[obj]="item" 
+						*ngIf="!is_action(tables_config.column[i])" 
+						[is_progress_bar]="tables_config.column[i] == 'percent'"
+						[linha]="tables_config.column[i]">
+					</kt-column>
+					<!-- Acao-->
+					<kt-column-action 
+					[config]="tables_config.actionsConfig"
+					[dados]="item"
+					[type]="tables_config.column[i]"
+					[table_api]="tables_config.table_api"
+					*ngIf="is_action(tables_config.column[i])"
+					(refreshTable)="pagination()">
+				</kt-column-action>
+				</div>
+			</div>
+		</div>
+		<kt-pagination [setPagination_config]="pagination_config"></kt-pagination>
+	</ng-container>
+</div>
+<ng-template  #noItensMobile>
+	<div class="mobile-table">
+		<div class="loading" *ngIf="isLoading">
+			<mat-spinner></mat-spinner>
+		</div>
+		<h3 *ngIf="!isLoading" class="title-page noItens">{{tables_config.msg_error}}</h3>
+	</div>
+</ng-template >

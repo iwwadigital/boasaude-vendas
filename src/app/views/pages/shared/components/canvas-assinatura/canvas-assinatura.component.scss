@@ -1,0 +1,36 @@
+.assinatura{
+	margin: 15px 0;
+}
+#content-canvas{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	// max-width: 900px;
+	width: 100%;
+	margin: 0 auto;
+
+	canvas{
+		border: 1px solid #707070;
+		width: 100%;
+		margin-bottom: 50px;
+
+		@media only screen and (max-width: 575px){
+			margin-bottom: 20px;
+		}
+	}
+
+	.row{
+		width: 100%;
+		justify-content: flex-end;
+		align-items: center;
+		flex-wrap: wrap;
+		
+		@media only screen and (max-width: 575px){
+			justify-content: center;
+		}
+
+		.item{
+			padding: 0;
+		}
+	}
+}

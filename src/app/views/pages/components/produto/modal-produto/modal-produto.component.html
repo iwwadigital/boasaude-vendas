@@ -1,0 +1,42 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+	<div mat-dialog-content>
+		<!-- <h5 class="form-section-title h5">Informações do produto</h5> -->
+		<div class="row row-group">
+			<div class="item item-radius-tl-all item-radius-bl-md-min item-radius-tr-sm-max col-sm-12 col-md-4">
+				<input type="hidden" formControlName="id">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="nome" placeholder="Insira seu Nome">
+					<mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-border-md item-radius-bl-sm item-margin-sm-max col-sm-6 col-md-4">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Valor<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="valor" placeholder="Insira o valor">
+					<mat-error *ngIf="form.get('valor').errors !== null && form.get('valor').errors.required">Valor não foi digitado.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-border-sm item-radius-bl-xs-max item-radius-tr-md-min item-radius-br-all item-margin-sm-max col-sm-6 col-md-4">
+				<mat-form-field appearance="outline"  class="m-inputs addItem-tipo">
+					<mat-label>Tabela<b class="inputRequired">*</b></mat-label>
+					<input type="text" placeholder="Escolha a tabela" formControlName="tabela" aria-label="Number" matInput  [matAutocomplete]="auto">
+					<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+						<mat-option *ngFor="let tabela of tabelas"  [value]="tabela">
+							{{ tabela.nome }}
+						</mat-option>
+					</mat-autocomplete>
+					<mat-error *ngIf="form.get('tabela').errors !== null && form.get('tabela').errors.required">Tabela não foi escolhida.</mat-error>
+				</mat-form-field>
+			</div>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+            <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+        </button>
+    </div>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

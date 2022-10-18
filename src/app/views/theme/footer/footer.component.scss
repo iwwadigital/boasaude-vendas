@@ -1,0 +1,26 @@
+.kt-footer {
+	padding: 0;
+    margin: 0;
+    background-size: cover;
+    background-position: center center;
+    background-color: #1e1e2d;
+}
+.footer{
+    .kt-container {
+        background: #01478D;
+        display: flex;
+        align-items: center;
+        padding: 29px 35px;
+        height: 77px;
+        border-radius: 8px 8px 0px 0px;
+        svg{
+            fill: #fff;
+        }
+        span{
+            margin-left: 19px;
+            font-size: 16px;
+            color: #fff;
+        }
+    }
+    
+}

@@ -1,0 +1,18 @@
+
+<div mat-dialog-content >
+    <h3 class="h3 title mt-3">Retroagir data</h3>
+	<mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+        <mat-label>Escolha a data</mat-label>
+        <input matInput [formControl]="date" [min]="dataMinima" [max]="dataMaxima" [matDatepicker]="myDatepicker">
+        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #myDatepicker></mat-datepicker>
+    </mat-form-field>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-success mb-3" type="button" (click)="changeDate()">
+            Alterar
+        </button>
+    </div>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

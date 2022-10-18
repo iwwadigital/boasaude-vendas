@@ -1,0 +1,116 @@
+
+<h3 class="h3 title">{{ is_create  ? 'Cadastrar' : 'Atualizar'}} ficha de visita</h3>
+<form [formGroup]="form" (ngSubmit)="is_create ? create() : update()">
+    <div class="row row-group">
+        <div class="item item-radius-tl-all item-radius-tr-xs-max  col-sm-6">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Nome<b class="inputRequired">*</b></mat-label>
+                <input matInput formControlName="nome" >
+            </mat-form-field>
+        </div>
+        <div class="item  item-radius-tr-md item-border-sm  item-radius-tr-sm item-radius-tr-lg-min col-sm-6">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Telefone<b class="inputRequired">*</b></mat-label>
+                <input matInput formControlName="telefone" ngxPhoneMaskBr>
+            </mat-form-field>
+        </div>
+        <div class="item  item-radius-bl-sm-min item-margin-sm-min item-radius-bl-lg-min  col-sm-4">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Telefone de contato</mat-label>
+                <input matInput formControlName="telefone_contato" ngxPhoneMaskBr>
+            </mat-form-field>
+        </div>
+        <div class="item item-margin-xs-min item-border-sm col-sm-4">
+            <mat-form-field appearance="outline" class="m-inputs" (click)="data.open()">
+                <mat-label>Data da visita<b class="inputRequired">*</b></mat-label>
+                <input matInput [matDatepicker]="data" formControlName="data">
+                <mat-datepicker-toggle matSuffix [for]="data"></mat-datepicker-toggle>
+                <mat-datepicker #data></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="item item-margin-sm-min item-radius-bl-xs-max  item-border-sm  item-radius-br-xs-max  item-radius-br-sm-min col-sm-4">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Turno<b class="inputRequired">*</b></mat-label>
+                <mat-select formControlName="turno">
+                    <mat-option value="Manhã">
+                        Manhã
+                    </mat-option>
+                    <mat-option value="Tarde">
+                        Tarde
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="box address">
+        <div class="box-header">
+            <span>Endereços<b class="inputRequired">*</b>:</span>
+            <button class="btn btn-light" type="button" (click)="copyTitular()">Copiar endereço do titular</button>
+        </div>
+        <div class="row row-group">
+			<div class="item item-radius-tl-all item-radius-tr-xs-max col-sm-2">
+                <input type="hidden" formControlName="id">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Cep<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="cep" mMarkInputs="99999-999">
+				</mat-form-field>
+			</div>
+			<div class="item item-border-sm col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Rua<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="rua" >
+				</mat-form-field>
+            </div>
+			<div class="item item-border-sm col-sm-2">
+                <mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Número<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="numero" >
+                </mat-form-field>
+            </div>
+            <div class="item item-border-sm item-radius-tr-sm-min col-sm-2">
+                <mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>UF<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="uf"  maxlength="2">
+				</mat-form-field>
+			</div>
+
+            <div class="item item-margin-xs-min item-radius-bl-sm-min col-sm-3">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Complemento</mat-label>
+					<input matInput formControlName="complemento" >
+				</mat-form-field>
+			</div>
+			<div class="item item-margin-xs-min item-border-sm col-sm-3">
+                <mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Referência</mat-label>
+					<input matInput formControlName="referencia" >
+				</mat-form-field>
+			</div>
+			
+			<div class="item item-margin-xs-min item-border-sm col-sm-3">
+                <mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Bairro<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="bairro" >
+                </mat-form-field>
+			</div>
+			<div class="item item-margin-xs-min item-border-sm item-radius-br-all  item-radius-bl-xs-max col-sm-3">
+                <mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Cidade<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="cidade" >
+				</mat-form-field>
+			</div>
+		</div>
+    </div>
+    <div class="box what_you_do">
+        <span>O que fazer?<b class="inputRequired">*</b>:</span>
+        <mat-checkbox  (click)="checkList(option)" [checked]="option.is_checked" [value]="option" *ngFor="let option of list_options">{{ option.item }}</mat-checkbox>
+    </div>
+    <div class="col-lg-12 option">
+        <ng-container *ngIf="show_back">
+            <button type="button" class="btn btn-light" (click)="back()">
+                Voltar
+            </button>
+        </ng-container>
+        <button type="submit" class="btn btn-success create">Salvar</button>
+    </div>
+</form>

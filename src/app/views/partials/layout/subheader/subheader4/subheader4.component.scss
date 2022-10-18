@@ -1,0 +1,24 @@
+:host {
+	.kt-subheader__desc {
+		margin: 0;
+	}
+	.btn-create-proposta{
+		background: #F79A1B;
+		border-radius: 32px;
+		padding: 0;
+		display: block;
+		transition: background 300ms;
+
+		span{
+			color: #fff;
+			padding: 20px 55px;
+			display: block;
+			font-size: 16px;
+		}
+
+		// Hover
+		&:hover{
+			background: #e88c0d;
+		}
+	}
+}

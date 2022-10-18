@@ -1,0 +1,37 @@
+kt-status-proposta{
+	width: 100%;
+}
+
+.mobile-table{
+	kt-status-proposta{
+		width: auto;
+	}
+}
+.table{
+	.mat-column-id{
+        flex: 0 0 5%;
+	}
+	.mat-column-status {
+		flex: 0 0 17%;
+	}
+	
+	.mat-column-adesao_online{
+		flex: 0 0 6%;
+	}
+	.mat-column-voz {
+		flex: 0 0 6%;
+	}
+	.mat-column-vendedor {
+		flex: 0 0 17%; // Com adesao online
+		// flex: 0 0 20%;
+	}
+}
+
+.table .form-filter{
+	width: 225px;
+	.mat-form-field.m-inputs {
+		width: calc(50% - 10px);
+		margin: 0 5px;
+	}
+}
+

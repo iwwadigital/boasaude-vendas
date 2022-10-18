@@ -1,0 +1,40 @@
+<!-- begin:: Header Mobile -->
+<div class="overlay"></div>
+<div id="kt_header_mobile" class="kt-header-mobile kt-header-mobile--fixed">
+	<div class="kt-header-mobile__logo">
+		<a routerLink="/">
+			<img alt="logo" [attr.src]="headerLogo"/>
+		</a>
+	</div>
+	<div class="overlay overlay_menu"></div>
+	<div class="kt-header-mobile__toolbar">
+		<form [formGroup]="form">
+			<mat-form-field appearance="fill" class="m-inputs">
+				<mat-label>Filial</mat-label>
+				<mat-select formControlName="filial" [compareWith]="objectComparisonFunction">
+					<mat-option *ngFor="let item of filiais" [value]="item">
+						{{ item.nome }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</form>
+		<button [hidden]="!asideDisplay" class="kt-header-mobile__toolbar-toggler kt-header-mobile__toolbar-toggler--left" id="kt_aside_mobile_toggler">
+			<span></span>
+		</button>
+		<kt-notification [bgImage]="'./assets/media/misc/bg-1.jpg'"
+		[pulse]="true"
+		[pulseLight]="true"
+		[skin]="'dark'" [icon]="'./assets/vitalmed/icone-notificacoes.svg'" [useSVG]="true" *ngIf="tablet"></kt-notification>
+		<kt-user-profile3></kt-user-profile3>
+		<div id="kt_header_mobile_toggler" class="hamburguer-custom" >
+			<span></span>
+			<span></span>
+			<span></span>
+			<span></span>
+		  </div>
+		<!-- <button ktToggle [options]="toggleOptions" class="kt-header-mobile__toolbar-topbar-toggler" id="kt_header_mobile_topbar_toggler">
+			<i class="flaticon-more"></i>
+		</button> -->
+	</div>
+</div>
+<!-- end:: Header Mobile -->

@@ -1,0 +1,6 @@
+<button class="btn" [ngClass]="class" *ngIf="is_modal && functions.verificarPermissao([permissao])" (click)="openModal(modal_class)">
+	<mat-icon>{{icon}}</mat-icon>
+</button>
+<a [ngClass]="class" *ngIf="!is_modal && functions.verificarPermissao([permissao])" [routerLink]="url"  >
+	<mat-icon>{{icon}}</mat-icon>
+</a>

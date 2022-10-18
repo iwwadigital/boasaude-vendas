@@ -1,0 +1,18 @@
+:host{
+    ::ng-deep{
+		.table {
+			.mat-column-nome{
+				flex: 0 0 36%;
+			}
+			.mat-column-valor{
+				flex: 0 0 20%;
+			}
+			.mat-column-tabela-nome{
+				flex: 0 0 28%;	
+			}
+			.mat-column-delete{
+				flex: 0 0 6%;	
+			}
+		}
+	}
+}

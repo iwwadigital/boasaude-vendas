@@ -1,0 +1,296 @@
+// import login css
+@import "sass/pages/login/login-1";
+
+kt-auth, .kt-login {
+	height: 100%;
+
+	.mat-form-field {
+		width: 100%;
+	}
+
+	// add extra right padding when displaying spinner in button
+	.kt-spinner {
+		padding-right: 3rem !important;
+	}
+}
+
+// ================================ VARIAVEIS ========================== //
+$color-base: #FFF;
+$color-blue: #01478D;
+$color-blue-dark: #16498B;
+$color-blue-light: #009BE0;
+
+// ================================ ASIDE =============================== //
+	.kt-login.kt-login--v1 .kt-login__aside{
+		background: $color-blue;
+		
+		@media only screen and (max-width: 1024px){
+			padding: 3.3rem 1.5rem 2.8rem;
+		}
+
+		.kt-grid__item--middle{
+			display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    width: 100%;
+		}
+		.kt-login__logo{
+			margin-bottom: 60px;
+			
+			@media only screen and (max-width: 1024px){
+				margin-bottom: 25px;
+			}
+
+			img{
+				width: 290px;
+
+				@media only screen and (max-width: 1024px){
+					width: 165px;
+				}
+			}
+		}
+
+		.kt-login__subtitle{
+		    color: $color-base;
+			font-size: 1.2rem;
+		    font-weight: 400;
+		    line-height: 1.3em;
+		    margin: 0;
+		    max-width: 290px;
+		}
+
+		.kt-login__info{
+			justify-content: flex-end;
+		}
+	}
+
+// ================================ LOGIN =============================== //
+	.kt-login.kt-login--v1 > .kt-grid__item--fluid{
+		@media only screen and (max-width: 1024px){		
+			display: flex;
+			flex-direction: column;
+		}
+	}
+	.kt-login.kt-login--v1 .kt-login__wrapper {
+		background-color: $color-blue-light;
+		background-image: url('assets/vitalmed/bg-login.png'), url('assets/vitalmed/bg-logo-login.png');
+	    background-repeat: no-repeat;
+    	background-position: right bottom, center;
+        background-blend-mode: soft-light;
+
+        @media only screen and (max-width: 1400px){
+        	background-size: 600px auto, 85% auto;
+        }
+        @media only screen and (max-width: 1024px){
+        	background-size: 600px auto, 500px auto;
+        	flex-grow: 1;
+        }
+        @media only screen and (max-width: 767px){
+        	background-size: 400px auto, 400px auto;
+        }
+
+		.kt-login__body {
+			@media only screen and (max-width: 1024px){
+				margin-top: 0;
+			    align-items: flex-start;
+			}
+
+			.kt-login__form{
+				// TÍTULO
+				.kt-login__title{
+					margin-bottom: 2.3rem;
+
+					h3{
+						color: $color-base;
+						font-size: 2.4rem;
+						font-weight: 400;
+						line-height: 1.4em;
+					}
+				}
+
+				// FORMULARIO DE LOGIN
+				.kt-form{
+					margin: 0;
+					
+					.form-group{
+						background: $color-base;
+						padding: 0.4rem 1.5rem;
+						
+						// PRIMEIRO ITEM
+						&:nth-child(1){
+							border: 1px solid #9B9B9B;
+							border-radius: 8px 8px 0px 0px;
+						}
+
+						// SEGUNDO ITEM
+						&:nth-child(2){
+							border: 1px solid #9B9B9B;
+							border-radius: 0px 0px 8px 8px;		
+						}
+
+						&.form-group-custom{
+							border-radius: 8px;
+						}
+					}
+					.mat-form-field-label{
+						color: #3D3D3D;
+						font-size: 1.2rem;
+						line-height: 1.3em;
+					}
+					.mat-form-field-label-wrapper,
+					.mat-form-field-appearance-legacy .mat-form-field-underline{
+						display: none;
+					}
+
+					.mat-input-element{
+						color: #3D3D3D;
+						font-size: 1.2rem;
+						font-family: Oxygen;
+						line-height: 1.3em;
+					}
+		
+
+					.mat-form-field-hide-placeholder .mat-input-element::placeholder{
+						color: #3D3D3D !important;
+						-webkit-text-fill-color: #3D3D3D;
+						transition:none;
+					}
+					.mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder{
+						color: #3D3D3D !important;
+						-webkit-text-fill-color: #3D3D3D;
+						transition:none;
+					}
+					.mat-form-field-hide-placeholder .mat-input-element::-webkit-input-placeholder{
+						color: #3D3D3D !important;
+						-webkit-text-fill-color: #3D3D3D;
+						transition:none;
+					}
+					.mat-form-field-hide-placeholder .mat-input-element:-ms-input-placeholder{
+						color: #3D3D3D !important;
+						-webkit-text-fill-color: #3D3D3D;
+						transition:none;
+					}
+					
+					// BOTÃO DE ENTRAR
+					.kt-login__actions{
+						margin: 2.3rem 0 3.8rem;
+
+						.kt-login__link-forgot{
+							color: $color-base;
+							font-size: 1.1rem;
+							line-height: 1.5em;
+
+							// HOVER
+							&:hover{
+								&:after{
+									border-bottom: 1px solid $color-base;
+								}
+							}
+						}
+
+						.btn{
+						    background: $color-blue-dark;
+						    border-color: $color-blue-dark;
+							height: 40px;
+						    font-size: 1.2rem;
+						    font-weight: 400;
+						    line-height: 1.3em;
+						    padding-left: 3.3rem;
+						    padding-right: 3.3rem;
+							
+							&.btn-white{
+								border-color: $color-base;
+								border-radius: 4px;
+								background: transparent;
+								color: $color-base;
+
+								&:hover{
+									background: $color-base;
+									border-color: $color-base;
+									color: $color-blue-dark;
+								}
+							}
+
+						    // HOVER
+						    &:hover{
+								background: #0f325f;
+								border-color: #0f325f;
+						    }
+						}
+					}
+				}
+				
+				// DIVISÃO
+				.kt-login__divider{
+					margin: 0 0 2.2rem 0;
+
+					.kt-divider{
+						span{
+							&:first-child,
+							&:last-child{
+							    background: rgba($color-base,0.5);
+							}
+
+							&:not(:first-child):not(:last-child){
+								color: $color-base;
+								font-size: 1.2rem;
+								line-height: 1.3em;
+							}
+						}
+					}
+				}
+
+				// REDES SOCIAIS
+				.kt-login__options{
+					@media only screen and (max-width: 1024px){
+						justify-content: center;
+					}
+
+					.btn{
+						background: $color-blue-dark;
+						border-radius: 50%;
+						width: 68px;
+						height: 68px;
+						padding: 0;
+						margin: 0 !important;
+	    				flex: inherit;
+						
+						@media only screen and (max-width: 1024px){
+							width: 48px;
+							height: 48px;
+							margin: 0 5px !important;
+						}
+
+	    				i{
+	    					color: $color-base;		
+	    					font-size: 2rem;
+	    					padding-right: 0;
+
+	    					@media only screen and (max-width: 1024px){
+	    						font-size: 1.5rem;
+	    					}
+	    				}
+
+	    				// HOVER
+	    				&:hover{
+	    					background: #0f325f;
+	    				}
+					}
+				}
+			}
+		}
+
+		.kt-grid__item{
+			display: flex;
+			justify-content: center;
+
+			.kt-link{
+				color: $color-base;
+			    margin-right: 2rem;
+
+				&:last-child{
+					margin-right: 0;
+				}
+			}
+		}
+	}

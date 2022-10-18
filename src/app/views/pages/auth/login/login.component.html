@@ -1,0 +1,75 @@
+<!--begin::Body-->
+<div class="kt-login__body">
+	<!--begin::Signin-->
+	<div class="kt-login__form">
+		<div class="kt-login__title">
+			<h3>Login</h3>
+		</div>
+
+		<kt-auth-notice></kt-auth-notice>
+
+		<!--begin::Form-->
+		<form class="kt-form" [formGroup]="form" autocomplete="off" (ngSubmit)="submit()">
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>Código de vendedor</mat-label>
+					<input matInput type="email" placeholder="Código de vendedor" formControlName="email" autocomplete="off"/>
+					<mat-error *ngIf="form.get('email').errors !== null && form.get('email').errors.required">E-mail ou código não inserido.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>Senha</mat-label>
+					<input matInput type="password" placeholder="Senha" formControlName="senha" autocomplete="off"/>
+					<mat-error *ngIf="form.get('senha').errors !== null && form.get('senha').errors.required">Senha não inserida.</mat-error>
+				</mat-form-field>
+			</div>
+			<!--begin::Action-->
+			<div class="kt-login__actions">
+				<a href="javascript:;" routerLink="/auth/forgot-password" class="kt-link kt-login__link-forgot">
+					Esqueceu sua senha?
+				</a>
+				<button  [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}" id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">Entrar</button>
+			</div>
+			<!--end::Action-->
+		</form>
+		<!--end::Form-->
+
+		<!--begin::Divider-->
+		<!-- <div class="kt-login__divider">
+			<div class="kt-divider">
+				<span></span>
+				<span>OU</span>
+				<span></span>
+			</div>
+		</div> -->
+		<!--end::Divider-->
+
+		<!--begin::Options-->
+		<!-- <div class="kt-login__options">
+			<a href="https://www.facebook.com/keenthemes/" target="_blank" class="btn kt-btn">
+				<i class="fab fa-facebook-f"></i>
+			</a>
+
+			<a href="https://twitter.com/keenthemes/" target="_blank" class="btn kt-btn">
+				<i class="fab fa-twitter"></i>
+			</a>
+
+			<a href="javascript:;" class="btn kt-btn">
+				<i class="fab fa-google"></i>
+			</a>
+		</div> -->
+		<!--end::Options-->
+	</div>
+	<!--end::Signin-->
+</div>
+<!--end::Body-->
+
+<!-- <div class="kt-grid__item kt-hidden-desktop">
+	<div class="kt-login__info">
+		<div class="kt-login__menu">
+			<a href="javascript:;" class="kt-link">Política de privacidade</a>
+			<a href="javascript:;" class="kt-link">Ajuda</a>
+		</div>
+	</div>
+</div> -->

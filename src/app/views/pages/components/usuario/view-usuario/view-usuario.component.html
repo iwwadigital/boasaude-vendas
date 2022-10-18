@@ -1,0 +1,129 @@
+
+<kt-portlet>
+    <kt-portlet-body [class]="'kt-portlet__body--fit'" *ngIf="usuario; else noItens">
+        <div class="header-user">
+            <div class="img-user" [ngClass]="!usuario.url_foto ? 'color' : ''" >
+                <span *ngIf="!usuario.url_foto">{{ usuario.nome ? (usuario.nome[0]) : ''}}</span>
+                <img *ngIf="usuario.url_foto"  [attr.src]="usuario.url_foto">
+                <label *ngIf="is_perfil" class="new_img" for="img-user" (change)="insertImage($event)">
+                    <input type="file" id="img-user" accept="image/jpeg,image/png">
+                    <mat-icon matSuffix>camera_alt</mat-icon>
+                </label>
+            </div>
+            <div class="info-user">
+                <h3 class="h3 sub-title">{{usuario.nome}}</h3>
+                <div class="sub-info ">
+                    <div class="item-info">
+                        <mat-icon>mail_outline</mat-icon>
+                        <span>{{usuario.email}}</span>
+                    </div>
+                    <div class="item-info">
+                        <mat-icon>person</mat-icon>
+                        <span>{{ usuario.usuario_tipo.nome }}</span>
+                    </div>
+                    <div class="item-info" *ngFor="let equipe of usuario.equipes">
+                        <mat-icon>place</mat-icon>
+                        <span>{{ equipe.cidade }}</span>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="btn-edit" *ngIf="usuario_logado.usuario_tipo_id == 1 || (usuario_logado.usuario_tipo_id == 2 && usuario.usuario_tipo_id != 1) || (usuario_logado.id == usuario.id)">
+                <button class="btn btn-outline-primary" type="button" (click)="editUser()"> 
+                    <mat-icon>create</mat-icon>
+                    <span>Editar</span>
+                </button>
+            </div>
+        </div>
+        <div class="data-proposta">
+            <div class="content-data">
+                <div class="item-data">
+                    <img src="./assets/vitalmed/clipboard-verification-outlined-sign.svg" alt="">
+                    <div class="content">
+                        <span>Propostas criadas</span>
+                        <b>{{usuario.propostas_criadas_count}}</b>
+                    </div>
+                </div>
+                <div class="item-data">
+                    <img src="./assets/vitalmed/clipboard-verification-outlined-sign.svg" alt="">
+                    <div class="content">
+                        <span>Propostas aprovadas</span>
+                        <b>{{usuario.propostas_aprovadas_count}}</b>
+                    </div>
+                </div>
+                <div class="item-data">
+                    <img src="./assets/vitalmed/clipboard-warning-button.svg" alt="">
+                    <div class="content">
+                        <span>Propostas com pendências</span>
+                        <b>{{usuario.propostas_pendencias_count}}</b>
+                    </div>
+                </div>
+                <div class="item-data">
+                    <img src="./assets/vitalmed/clipboard-delete-button.svg" alt="">
+                    <div class="content">
+                        <span>Propostas recusadas</span>
+                        <b>{{usuario.propostas_recusadas_count}}</b>
+                    </div>
+                </div>
+                <div class="item-data">
+                    <img src="./assets/vitalmed/icon-lives.svg" alt="">
+                    <div class="content">
+                        <span>Vidas</span>
+                        <b>{{usuario.vidas_count}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </kt-portlet-body>
+    <ng-template  #noItens>
+        <div class="loading mt-3 mb-3" *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <h3 *ngIf="!isLoading" class="title-page noItens">Usuário não encontrado.</h3>
+    </ng-template >
+    
+</kt-portlet>
+<kt-portlet>
+    <kt-portlet-body [class]="'kt-portlet__body--fit'" >
+        <div class="list-equip">
+            <span class="title-info">Equipes</span>
+            <div class="list">
+                <div class="progress-bar-user" *ngFor="let equipe of equipes">
+                    <div class="progress-info">
+                        <span>{{ equipe.nome }}</span>
+                        <span>Metas: {{ equipe.metas_equipe && equipe.metas_equipe.length > 0  ?  equipe.metas_equipe[0].qtd_vidas : 'Está equipe não tem meta' }}</span>
+                    </div>
+                    <kt-progress-bar [setPercent]="usuario.percent"></kt-progress-bar>
+                </div>
+            </div>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>
+<kt-portlet>
+    <kt-portlet-body [class]="'kt-portlet__body--fit'" >
+        <div class="info-data">
+            <div class="item graphic">
+                <span class="title-info">Propostas/ano</span>
+                <div  style="height:220px;">
+                    <canvas #chart></canvas>
+                </div>
+            </div>
+            <div class="item raitting">
+                <span class="title-info">Ratting</span>
+                <canvas #chart_raiting></canvas>
+            </div>
+            <div class="item sales" *ngIf="usuario">
+                <span class="title-info">Vendas</span>
+                <span class="price"> <small>R$</small>{{ usuario.valor_anual}},<small>00</small></span>
+            </div>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>
+<kt-portlet *ngIf="!is_perfil">
+    <kt-portlet-body [class]="'kt-portlet__body--fit kt-portlet__body--custom'" *ngIf="usuario">
+        <div class="header-dashboard header-table">
+            <h3 class="sub-title h3">Lista de propostas</h3>
+        </div>
+        <kt-table-proposta [url_page]="url_page" [setSearch]="search"></kt-table-proposta>
+    </kt-portlet-body>
+</kt-portlet>

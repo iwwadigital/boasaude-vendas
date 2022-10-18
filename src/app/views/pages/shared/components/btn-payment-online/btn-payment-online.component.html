@@ -1,0 +1,17 @@
+<div class="payment" *ngIf="proposta.status != 'Rascunho'">
+    <ng-container *ngIf="has_accession_online && proposta.status !== 'Aprovado' && proposta.status !== 'Recusado'">
+        <button class="btn btn-success btn-pay"  (click)="clickModalPayment('adesao')">
+            <span>Adesão Online</span>
+        </button>
+    </ng-container>
+    <ng-container *ngIf="has_month_online && proposta.status !== 'Aprovado' && proposta.status !== 'Recusado'">
+        <button class="btn btn-success btn-pay"  (click)="clickModalPayment('mensalidade')">
+            <span>Mensalidade Online</span>
+        </button>
+    </ng-container>
+    <ng-container *ngIf="has_inclusion_online && proposta.status !== 'Aprovado' && proposta.status !== 'Recusado'">
+        <button class="btn btn-success btn-pay"  (click)="clickModalPayment('inclusao')">
+            <span>Inclusão Online</span>
+        </button>
+    </ng-container>
+</div>

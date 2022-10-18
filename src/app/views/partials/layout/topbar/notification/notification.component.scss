@@ -1,0 +1,30 @@
+:host {
+	::ng-deep {
+		ngb-tabset > .nav-tabs {
+			display: none;
+		}
+	}
+}
+.noItem{
+	font-size: 16px;
+	padding: 15px 10px;
+	display: block;
+}
+.btn-notification{
+	background-color: var(--color-orange);
+	color: var(--color-base);
+}
+:host{
+	::ng-deep{
+
+		#Elipse_89{
+			display: none;
+		}
+		.has_notification{
+			#Elipse_89{
+				fill: var(--color-orange);
+				display: block;
+			}
+		}
+	}
+}

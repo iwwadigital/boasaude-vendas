@@ -1,0 +1,123 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()" *ngIf="!is_preview_desktop && !is_preview_mobile">
+    <div mat-dialog-content>
+        <!-- <h5 class="form-section-title h5">Informações da banner</h5> -->
+        <div class="col-lg-12">
+            <div class="row row-group">
+                <div class="item item-radius-tl-all item-radius-bl-lg-min item-radius-tr-md-max col-sm-12 col-lg-4">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Nome<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="nome" placeholder="Insira o nome">
+                        <mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="item item-margin-md-max item-border-lg item-radius-bl-sm item-radius-bl-md col-sm-5 col-lg-3">
+                    <input type="hidden" formControlName="id">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Equipe</mat-label>
+                        <input matInput formControlName="equipe"  [matAutocomplete]="equipe">
+                        <mat-autocomplete autoActiveFirstOption #equipe="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let equipe of equipes"  [value]="equipe">
+                                {{ equipe.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <mat-error *ngIf="form.get('equipe').errors !== null && form.get('equipe').errors.required">Equipe não foi escolhida.</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="item item-margin-md-max item-border-sm col-sm-5 col-lg-3">
+                    <mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+                        <mat-label>Data de expiração<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="data_expiracao" [matDatepicker]="myDatepicker">
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="item item-margin-md-max item-border-sm item-radius-br-all item-radius-tr-lg-min item-radius-bl-xs-max col-sm-2 col-lg-2">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Status<b class="inputRequired">*</b></mat-label>
+                        <mat-select formControlName="status" >
+                            <mat-option value="1">
+                                Ativado
+                            </mat-option>
+                            <mat-option value="0">
+                                Desativado
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons-files">
+            <div class="file">
+                <input type="file" id="add-file"  (change)="addFile($event,'desktop')" class="inputfile inputfile-6"accept="image/*" >
+                <label class="add-more-item add-more-item"  [for]="!base64_img ? 'add-file' : ''" type="button" (click)="base64_img ? showPreview('desktop') : null">
+                    <div class="icon-form-action icon-form-action-lg" >
+                        <div class="info">
+                            <span>{{ !base64_img ? 'Importa imagem desktop' : 'Preview da imagem desktop'}} </span>
+                            <mat-icon>add_a_photo</mat-icon>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div class="file">
+                <input type="file" id="add-file-mobile"  (change)="addFile($event,'mobile')" class="inputfile inputfile-6"accept="image/*" >
+                <label class="add-more-item add-more-item"  [for]="!base64_img_mobile ? 'add-file-mobile' : ''" type="button" (click)="base64_img_mobile ? showPreview('mobile') : null">
+                    <div class="icon-form-action icon-form-action-lg" >
+                        <div class="info">
+                            <span>{{ !base64_img_mobile ? 'Importa imagem mobile' : 'Preview da imagem mobile'}}</span>
+                            <mat-icon>add_a_photo</mat-icon>
+                        </div>
+                    </div>
+                </label>
+            </div>
+            <div mat-dialog-actions>
+                <button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+                    <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+                </button>
+            </div>
+        </div>
+       <!--  <div class="col-lg-12">
+            <mat-checkbox formControlName="status">Ativo?</mat-checkbox>
+        </div> -->
+     
+    </div>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>
+<div class="preview-img">
+    <div class="img-file" *ngIf="is_preview_desktop">
+        <div class="option">
+            <!-- <h3 class="sub-title">Desktop</h3> -->
+            <button type="button" class="btn btn-outline-dark" (click)="back()">
+                Voltar
+            </button>
+        </div>
+        <div class="content-file" *ngIf="base64_img; else noImgDesk">
+            <button class="btn close-file" (click)="removeFile('desktop')">
+                <mat-icon>highlight_off</mat-icon>
+            </button>
+            <img [src]="base64_img" alt="">
+        </div>
+        <ng-template #noImgDesk>
+            <span  class="sub-title">Nenhuma Imagem escolhida.</span>
+        </ng-template>
+    </div>
+    <div class="img-file" *ngIf="is_preview_mobile">
+        <div class="option">
+            <!-- <h3 class="sub-title">Mobile</h3> -->
+            <button type="button" class="btn btn-outline-dark" (click)="back()">
+                Voltar
+            </button>
+        </div>
+        <div class="content-file" *ngIf="base64_img_mobile; else noImgMobile">
+            <button class="btn close-file" (click)="removeFile('mobile')">
+                <mat-icon>highlight_off</mat-icon>
+            </button>
+            <img [src]="base64_img_mobile" alt="">
+        </div>
+        <ng-template #noImgMobile>
+            <span  class="sub-title">Nenhuma Imagem escolhida.</span>
+        </ng-template>
+    </div>
+</div>

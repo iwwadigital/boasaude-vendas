@@ -1,0 +1,148 @@
+.header-modal-usuario{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 30px;
+	text-align: center;
+
+	.nome{
+		color: var( --color-blue-dark);
+		font-size: 1.8rem;
+		font-weight: 700;
+		line-height: 1.3em;
+		margin-bottom: 5px;
+	}
+	.img-user{
+	    background: var(--color-blue-dark);
+	    color: var( --color-base);
+	    width: 110px;
+	    height: 110px;
+	    border-radius: 50%;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    overflow: hidden;
+	    font-weight: bold;
+	    text-transform: capitalize;
+	    margin-bottom: 15px;
+
+	    img{
+	        width: 100%;
+	        height: auto;
+	    }
+	    span{
+	    	font-size: 1.5rem;
+	    }
+	}
+	.equipe{
+		color: #3D3D3D;
+		font-size: 1.2rem;
+		line-height: 1.3em;
+		margin-bottom: 12px;
+	}
+	& > .btn{
+	    background: #F14639;
+		border: none;
+		border-radius: 25px;
+	    width: 64px;
+	    height: 50px;
+	    padding: 0;
+	    margin: 0;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    transition: background 300ms;
+
+	    .mat-icon{
+	    	color: var( --color-base);
+	    	font-weight: 700;
+	    	width: auto;
+	    	height: auto;
+	    }
+		
+		// HOVER
+	    &:hover{
+	    	background: #ec3123;
+	    }
+	}
+}
+
+// REMOVER DEPENDENTE
+.block-remove{
+	position: relative;
+	.remove-dependent{
+		color: #E43B3B;
+		position: absolute;
+		top: 50%;
+		right: -14px;
+		transform:translateY(-50%);
+		width: 28px;
+		height: 28px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		z-index: 2;
+		transition: color 300ms;
+		
+		// @media only screen and (max-width: 1023px){
+		// 	top: 18px;
+		// 	// right: 0;
+		// 	left: 205px;
+		// }
+		@media only screen and (max-width: 800px){
+			right: 6px;
+		}
+
+		.mat-icon{
+			font-size: 28px !important;
+			width: auto;
+			height: auto;
+		}
+
+		// HOVER
+		&:hover{
+			color: red;
+		}
+	}
+}
+
+.btn-add-line{
+	background:  var( --color-blue-dark);
+	border: none;
+	border-radius: 25px;
+	width: 160px;
+    height: 50px;
+    color: #fff;
+    margin: 10px 0;
+	transition: background 300ms;
+	&:hover{
+		background: var( --color-blue);
+	}
+}
+.remover-usuario{
+	display: flex;
+	width: 170px;
+	justify-content: space-between;
+
+	.btn{
+		background: transparent;
+		border: 1px solid #9B9B9B;
+		border-radius: 25px;
+		color: #3D3D3D;
+		font-size: 1.2rem;
+		line-height: 1.3em;
+		width: 73px;
+		height: 50px;
+		transition: background 300ms;
+
+		// HOVER
+		&:hover{
+			background: #F4F5F6;
+		}
+	}
+}
+
+.mat-slide-toggle{
+	margin-bottom: 10px;
+}

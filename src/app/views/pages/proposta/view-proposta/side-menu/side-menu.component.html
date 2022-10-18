@@ -1,0 +1,78 @@
+
+    <!-- DEPOIS DE UM TEMPO VOLTAR PARA PERMISSÃO DE PROPOSTA CONFERIDA -->
+    <ng-container *ngIf="usuario && usuario.pode_retroagir_data == 1 &&  functions.isEmpty(proposta.proposta_data_original) && proposta.status != 'Aprovado' && proposta.status != 'Recusado' && proposta.status != 'Rascunho'">
+        <h3 class="sub-title h3">Retroagir a data de criação</h3>
+        <kt-btn-rectangle (click)="openRetroactDate()" [setBtnConfig]="btn_retroagir_data"></kt-btn-rectangle>
+    </ng-container>
+    <ng-container *ngIf="functions.verificarTipoUsuario([1,2,3,5,7,8,9]) || functions.verificarPermissao(['proposta-conferir']) ">
+        <div class="option" >
+            <h3 class="sub-title h3">Conferência da Proposta</h3>
+            <kt-btn-rectangle  *ngIf="proposta.is_conferida == 0 && functions.verificarPermissao(['proposta-conferir']) " (click)="conferirProposta()" [setBtnConfig]="btn_is_conferida"></kt-btn-rectangle>
+            <kt-btn-rectangle  *ngIf="proposta.is_conferida == 1" [setBtnConfig]="btn_is_conferida_success"></kt-btn-rectangle>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="proposta.aceite_voz.length > 0 || (proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarPermissao(['aceite-voz-proposta-ver']) || functions.verificarTipoUsuario([1,2,4,5,8]) ) )">
+        <div class="voice-accepted option" >
+            <h3 class="sub-title h3">Aceite de voz</h3>
+            <kt-btn-rectangle  *ngIf="proposta.aceite_voz.length > 0" (click)="openAudio()" [setBtnConfig]="btn_aceite_voz"></kt-btn-rectangle>
+            <kt-btn-rectangle  *ngIf="proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarPermissao(['aceite-voz-proposta-cadastrar']) || functions.verificarTipoUsuario([1,2,4,5,8])) &&  proposta.aceite_voz.length < 1" (click)="openAudioCreate()" [setBtnConfig]="btn_aceite_voz_create"></kt-btn-rectangle>
+        </div>
+    </ng-container>
+    <ng-container>
+        <div class="option">
+            <h3 class="sub-title h3">Assinatura</h3>
+            <span class="sing" *ngIf="proposta.is_assinatura_presencial == 1">Assinatura do tipo impressa.</span>
+            <kt-btn-rectangle  (click)="showAssinatura()" routerLinkActive="router-link-active"  *ngIf="proposta.comprovante" [setBtnConfig]="btn_assinatura"></kt-btn-rectangle>
+            <kt-btn-rectangle  (click)="createAssinatura()" routerLinkActive="router-link-active"  *ngIf="proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarTipoUsuario([1,2,4,5,8]) || functions.verificarPermissao(['assinatura-proposta-cadastrar']))" [setBtnConfig]="btn_assinatura_create"></kt-btn-rectangle>
+        </div>
+    </ng-container>
+    
+    <ng-container *ngIf="filial && proposta && filial.tipo_servico_universitario_id == proposta.tipo_servico_id">
+        <div class="option">
+            <h3 class="sub-title h3">Comprovante Universitário</h3>
+            <div class="box" title="Anexar arquivos" *ngIf="!proposta.comprovante_universitario && proposta.status != 'Aprovado' && proposta.status != 'Recusado' && functions.verificarTipoUsuario([1,2,4,5,8])">
+                <input  type="file" name="file-8[]" id="file-8" class="inputfile inputfile-6" (change)="addFileUniversitario($event)"  accept=".pdf,image/*"  />
+                <label for="file-8">
+                    <strong>
+                        <mat-icon matSuffix>attach_file</mat-icon>
+                    </strong>
+                    <span>Inserir o comprovante</span>
+                </label>
+            </div>
+            <div class="item" *ngIf="proposta.comprovante_universitario">
+                <kt-btn-rectangle    [setBtnConfig]="btn_comprovante_univiersitario" (click)="getDownload(proposta.comprovante_universitario)"></kt-btn-rectangle>
+                <div class="delete-anexo"  (click)="deleteFile(proposta.comprovante_universitario)" >
+                    <mat-icon matSuffix>delete_forever</mat-icon>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <div class="pendency option" >
+        <h3 class="sub-title h3" >Pendência</h3>
+        <ng-container *ngIf="proposta && proposta.pendencias.length > 0; else semPendencia" >
+            <div *ngFor="let pendencia of proposta.pendencias" >
+                <kt-pendencia [show_create]="show_pendencia" (response)="show()" [setPropostaId]="proposta.id" [setPendencia]="pendencia"></kt-pendencia>
+            </div>
+        </ng-container>
+        <ng-template #semPendencia>
+            <h5 class="h5">Nenhuma pendência criada para essa proposta.</h5>
+        </ng-template>
+        <kt-btn-rectangle *ngIf="proposta.status !== 'Aprovado' && proposta.status !== 'Recusado' && (functions.verificarTipoUsuario([1,2,3,5,7,8,9]) || functions.verificarPermissao(['pendencia-proposta-cadastrar']) )" (click)="!btn_pendencia.is_disabled ? add_pendencia() : null" [setBtnConfig]="btn_pendencia"></kt-btn-rectangle>
+    </div>
+    <ng-container *ngIf="proposta.status != 'Rascunho' && proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarTipoUsuario([1,2,3,4,5,7,8,9]) || functions.verificarPermissao(['ficha-visita-ver']))">
+        <h3 class="sub-title h3" >Ficha de visitas</h3>
+        <kt-btn-rectangle  (click)="showFichaVisita()"  [setBtnConfig]="btn_ficha_visita"></kt-btn-rectangle>
+    </ng-container>
+    <div class="proposal option" *ngIf="functions.verificarTipoUsuario([1,5,6]) || functions.verificarPermissao(['proposta-editar-status']) || (functions.verificarTipoUsuario([4]) && proposta.status == 'Rascunho')">
+        <h3 class="sub-title h3">Proposta</h3>
+        <ng-container *ngIf="proposta.status != 'Rascunho' && (functions.verificarTipoUsuario([1,5]) || functions.verificarPermissao(['proposta-editar-status']))">
+            <kt-btn-rectangle *ngIf="proposta.status !== 'Recusado'" (click)="proposta.status !== 'Aprovado' && proposta.status !== 'Recusado' ? validatyProposta('Aprovado') : null" [setBtnConfig]="btn_proposta"></kt-btn-rectangle>
+            <kt-btn-rectangle *ngIf="proposta.status !== 'Aprovado'" (click)="proposta.status !== 'Aprovado' && proposta.status !== 'Recusado' ? validatyProposta('Recusado') : null" [setBtnConfig]="btn_recusar"></kt-btn-rectangle>
+        </ng-container>
+        <ng-container *ngIf="(functions.verificarPermissao(['proposta-status-editar']) || functions.verificarTipoUsuario([1,2,4,5,8]) ) && proposta.status != 'Rascunho' &&( proposta.status == 'Aprovado' || proposta.status == 'Recusado')">
+            <kt-btn-rectangle  (click)="validatyProposta('Em aprovação')" [setBtnConfig]="btn_reabrir"></kt-btn-rectangle>
+        </ng-container>
+        <ng-container *ngIf="proposta.status == 'Rascunho'">
+            <kt-btn-rectangle (click)="retirarRascunho()" [setBtnConfig]="btn_rascunho"></kt-btn-rectangle>
+        </ng-container>
+    </div>

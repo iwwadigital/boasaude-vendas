@@ -1,0 +1,121 @@
+// .mat-dialog-content{
+// 	overflow: inherit !important;
+// }
+
+.buttons-files{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-top: 20px;
+
+    @media only screen and (min-width: 576px){
+        align-items: flex-start;
+        flex-direction: row;
+    }
+
+    .add-more-item {
+        .icon-form-action{
+            padding: 0 20px;
+            margin: 0;
+            
+            @media only screen and (min-width: 576px){
+                padding: 0 15px;
+                margin: 0 10px 0 0;
+            }
+            @media only screen and (min-width: 768px){
+                padding: 0 30px;
+                margin: 0 15px 0 0;
+            }
+
+            .info{
+                align-items: center;
+
+                span{
+                    font-size: 13px;
+
+                    @media only screen and (min-width: 768px){
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-dialog-actions{
+        @media only screen and (min-width: 576px){  
+            margin-top: 0 !important;
+            margin-left: auto;
+        }
+
+        span{
+            @media only screen and (min-width: 576px) and (max-width: 767px){  
+                padding: 20px 35px !important;
+            }
+        }
+    }
+}
+
+.preview-img{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    margin: 20px 0;
+    
+    @media only screen and (min-width: 576px){
+        flex-direction: row;
+    }
+
+    .img-file{
+        margin: 10px;
+
+        @media only screen and (min-width: 576px){
+            margin: 0 10px;
+        }
+        
+        .option{
+            margin-bottom: 15px;
+        }
+        .btn-outline-dark{
+            background: var(--color-blue-dark);
+            border-color: var(--color-blue-dark);
+            color: var(--color-base);
+
+            &:hover{
+                background: var(--color-blue-light);
+                border-color: var(--color-blue-light);
+            }
+        }
+
+        .sub-title{
+            width: 100%;
+            padding: 0;
+            margin: 0 0 15px 0;
+            font-size: 22px;
+        }
+
+        .content-file{
+            position: relative;
+
+            .close-file{
+                position: absolute;
+                top: -13px;
+                right: -13px;
+                padding: 0;
+                margin: 0;
+
+                .mat-icon{
+                    font-size: 26px !important;
+                    width: auto;
+                    height: auto;
+                }
+            }
+            img{
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+

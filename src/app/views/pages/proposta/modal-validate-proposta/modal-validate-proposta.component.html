@@ -1,0 +1,24 @@
+<div mat-dialog-content>
+    <ng-container *ngIf="this.data.status == 'Aprovado' || this.data.status == 'Recusado';else draft ">
+        <h3 class="h3">Deseja {{status}} essa proposta?</h3>
+    </ng-container>
+    <ng-template #draft>
+        <ng-container *ngIf="is_draft">
+            <h3 class="h3">Tem certeza que você quer enviar a proposta para  análise?</h3>
+        </ng-container>
+        <ng-container *ngIf="!is_draft">
+            <h3 class="h3">Tem certeza que você deseja reabrir essa proposta?</h3>
+        </ng-container>
+    </ng-template>
+</div>
+<div mat-dialog-actions class="footer">
+    <button mat-button type="button" class="btn btn-not btn-light" (click)="onNoClick()">
+        Não
+    </button>
+    <button  color="primary"  class="btn btn-yes btn-light" (click)="validateProposta()">
+        Sim
+    </button>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

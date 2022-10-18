@@ -1,0 +1,36 @@
+:host {
+	::ng-deep {
+        .mat-form-field-appearance-fill .mat-form-field-flex {
+            background-color: #fff;
+        }
+        .mat-form-field{
+            margin-top: 1.34375em;
+        }
+    }
+}
+form{
+    margin-right: 20px;
+}
+.overlay{
+    background: rgba(0,0,0,.2);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 97;
+    display: none;
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+}
+
+
+.overlay.overlay_menu{
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 122px;
+    z-index: 98;
+}
+
+

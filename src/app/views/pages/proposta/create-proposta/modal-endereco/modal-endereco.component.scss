@@ -1,0 +1,24 @@
+.title-modal-endereco{
+	color: var( --color-blue);
+	font-weight: 700;
+	font-size: 1.6rem;
+	line-height: 1.3em;
+	margin: 0 0 10px -10px;
+
+	@media only screen and (min-width: 768px){
+		margin: 0 0 20px -10px;
+		font-size: 2rem;
+	}
+}
+.loading{
+    position: absolute;
+    background: rgba(0,0,0,.2);
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    .mat-progress-spinner circle, .mat-spinner circle{
+        stroke: var(--color-base) !important;
+    }
+}

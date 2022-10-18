@@ -1,0 +1,66 @@
+.form-order{
+    margin: 20px 0 0 0;
+    width: 100%;
+
+    @media only screen and (min-width: 575px){
+        margin: 0 0 0 auto;
+        width: auto;
+    }
+
+    .m-inputs {
+        border-bottom: 1px solid  #D5D5D5;
+        height: 30px;
+        width: 100%;
+        
+        @media only screen and (min-width: 575px){
+            width: 290px;
+        }
+        @media only screen and (min-width: 1024px){
+            width: 320px;
+        }
+
+        input{
+            border: none;
+            color: #3D3D3D;
+            width: calc(100% - 45px);
+            outline: none;
+            font-size: 1rem;
+            font-weight: 500;
+            
+            @media only screen and (min-width: 575px){
+                font-size: 1.1rem;
+            }
+
+            ::placeholder{
+                font-size: 1rem;
+                font-weight: 500;
+                color: #3D3D3D;
+
+                @media only screen and (min-width: 575px){
+                    font-size: 1.1rem;
+                }
+            }
+        }
+        .mat-icon{
+            font-size: 27px !important;
+            color: var(--color-blue-dark);
+            width: auto;
+            height: auto;
+        }
+        .btn{
+            padding: 0;
+        }
+    }
+}
+:host{
+    ::ng-deep{
+		.table {
+			.mat-column-nome{
+				flex: 0 0 10%;
+			}
+			.mat-column-delete{
+				flex: 0 0 6%;	
+			}
+		}
+	}
+}

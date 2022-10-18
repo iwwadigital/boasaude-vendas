@@ -1,0 +1,73 @@
+<h3 class="h3 title">Informações da proposta</h3>
+<div class="d-flex flex-wrap">
+    <div class="block">
+        <b>Nº da proposta</b>
+        <span>{{ proposta_form ? proposta_form.codigo_proposta : '' }}</span>
+    </div>
+    <div class="block">
+        <b>Valor da adesão</b>
+        <span>{{ proposta_form ? (proposta_form.adesao.valor | currency : 'BRL' ) : '' }}</span>
+    </div>
+    <div class="block">
+        <b>Promotor</b>
+        <span>{{proposta_form ? proposta_form.vendedor.nome : ''}}</span>
+    </div>
+</div>
+<ng-container *ngIf="!is_form">
+    <div class="header">
+        <h3 class="h3 title">Lista de ficha de visitas</h3>
+        <button class="btn btn-success" (click)="addFicha()">
+            <mat-icon>add</mat-icon>
+            Nova Ficha
+        </button>
+    </div>
+    <div class="list">
+        <div class="item" *ngFor="let item of ficha_visitas">
+            <div class="line w33">
+                <span><b>Nome:</b> {{ item.nome }}</span>
+                <span><b>Telefone</b> {{ item.telefone }}</span>
+                <span><b>Telefone Contato</b> {{ item.telefone_contato }}</span>
+            </div>
+            <div class="line w33">
+                <span><b>Turno:</b> {{ item.turno }}</span>
+                <span><b>Data:</b> {{ item.data | date: 'dd/MM/yyyy' }}</span>
+                <span><b>Promotor:</b> 19/01/2020</span>
+            </div>
+            <div class="line w100">
+                <span><b>Rua:</b> {{ item.rua }}</span>
+            </div>
+            <div class="line w33">
+                <span><b>Bairro:</b> {{ item.bairro }}</span>
+                <span><b>Cidade:</b> {{ item.cidade }}</span>
+                <span><b>Nº:</b> {{ item.numero }}</span>
+            </div>
+            <div class="line w50">
+                <span><b>Complemento:</b> {{ item.complemento }}</span>
+                <span><b>Referência</b> {{ item.referencia }}</span>
+            </div>
+            <div class="line">
+                <span><b>O que fazer?:</b> {{ item.oque_fazer }}</span>
+            </div>
+            <div class="options">
+                <button class="btn btn-danger" type="button" (click)="deleteFicha(item.id)">
+                    <mat-icon>cancel</mat-icon>
+                    Excluir
+                </button>
+                <button class="btn btn-warning" type="button" (click)="editFicha(item)">
+                    <mat-icon>create</mat-icon>
+                    Editar
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="is_form">
+    <kt-ficha-visita 
+        [setProposta]="proposta_form" 
+        [proposta_id]="proposta_id" 
+        [setIsCreate]="is_create"  
+        [show_back]="true"
+        (event_return)="outputFichaVisita($event)"
+        (back_event)="back($event)"
+    ></kt-ficha-visita>
+</ng-container>

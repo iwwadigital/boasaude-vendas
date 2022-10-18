@@ -1,0 +1,6 @@
+<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="22.621" height="23.087" viewBox="0 0 22.621 23.087" >
+  <g id="icone-notificacoes" transform="translate(-77.379 -940)">
+    <path id="Icon_awesome-bell" data-name="Icon awesome-bell" d="M9.625,22a2.75,2.75,0,0,0,2.749-2.75h-5.5A2.75,2.75,0,0,0,9.625,22Zm9.255-6.433c-.83-.892-2.383-2.234-2.383-6.63A6.785,6.785,0,0,0,11,2.27v-.9a1.374,1.374,0,1,0-2.748,0v.9a6.785,6.785,0,0,0-5.5,6.667c0,4.4-1.553,5.738-2.383,6.63A1.343,1.343,0,0,0,0,16.5a1.376,1.376,0,0,0,1.379,1.375H17.871A1.376,1.376,0,0,0,19.25,16.5a1.342,1.342,0,0,0-.37-.933Z" transform="translate(77.379 941.087)"/>
+    <circle id="Elipse_89" data-name="Elipse 89" cx="5.5" cy="5.5" r="5.5"  transform="translate(89 940)"/>
+  </g>
+</svg>

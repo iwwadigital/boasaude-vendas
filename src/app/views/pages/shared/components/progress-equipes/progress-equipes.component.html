@@ -1,0 +1,30 @@
+<div class="progress-equips">
+    <div class="group-equip" [ngClass]="is_down ? 'open' : ''" >
+        <div class="header">
+            <h2 class="h2 sub-title-equipe">Região / Vidas Cadastradas</h2>
+            <button class="btn" *ngIf="equipes.length > 0" (click)="changeSlide()">
+                <mat-icon>arrow_downward</mat-icon>
+            </button>
+        </div>
+        <div class="content-equip" *ngIf="equipes.length > 0; else noItens">
+            <div class="item-equip" *ngFor="let equipe of equipes">
+                <span>{{equipe.nome}}</span>
+                <kt-progress-bar [setPercent]="equipe.percent"></kt-progress-bar>
+            </div>
+        </div>
+        <div class="pagination-equip" *ngIf="pagination && pagination.total > limit">
+            <a class="btn-arrow btn-arrow-prev" [ngClass]="!pagination.prev ? 'disabled' : ''" (click)="click_pagination('prev')">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+            <a class="btn-arrow btn-arrow-next" [ngClass]="!pagination.next ? 'disabled' : ''" (click)="click_pagination('next')">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </a>
+        </div>
+        <ng-template class="mobile-table" #noItens>
+            <div class="loading" *ngIf="is_loading">
+                <mat-spinner></mat-spinner>
+            </div>
+            <h3 *ngIf="!is_loading" class="title-page noItens">Nenhuma equipe encontrada.</h3>
+        </ng-template >
+    </div>
+</div>

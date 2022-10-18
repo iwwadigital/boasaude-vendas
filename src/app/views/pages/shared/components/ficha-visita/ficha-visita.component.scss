@@ -1,0 +1,59 @@
+form{
+    margin-top: 15px;
+}
+.info{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  
+}
+.h3{
+    margin-top: 30px;
+}
+.h4{
+    font-weight: bold;
+}
+.row{
+    margin-right: 0;
+    margin-left: 0;
+}
+.box-header{
+    margin: 10px 0;
+    .btn {
+        margin-left: 15px;
+    }
+}
+.box{
+    span{
+        width: 100%;
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+}
+
+
+.what_you_do{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    
+    .mat-radio-button{
+        width: 100%;
+        margin: 5px 0;
+    }
+    .mat-checkbox{
+        margin-right: 15px;
+    }
+}
+
+.option{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    .btn-light{
+        margin-right: 50px;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+}

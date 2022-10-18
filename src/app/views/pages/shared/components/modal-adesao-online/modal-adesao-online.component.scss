@@ -1,0 +1,68 @@
+.mat-dialog-content{
+    display: flex;
+    flex-direction: column;
+}
+.btn-custom{
+    margin: 5px 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    border-radius: 8px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 20px;
+    border: 1px solid;
+    transition: color 350ms, border-color 350ms, background-color 350ms;
+    .mat-icon{
+        width: auto;
+        height: auto;
+        font-size: 22px !important;
+        margin-left: 5px;
+    }
+    svg{
+        width: 22px;
+        height: 22px;
+        margin-right: 5px;
+        transition: fill 350ms;
+    }
+}
+
+.outline-success{
+    color: #3DB239;
+    border-color:#3DB239;
+    background-color:#fff;
+    svg{
+        fill:#3DB239;
+    }
+}
+.outline-success:hover{
+    color: #fff;
+    background-color:#3DB239;
+    svg{
+        fill:#fff;
+    }
+}
+
+.btn-custom.success{
+    color: #fff;
+    border-color:#3DB239;
+    background-color:#3DB239;
+}
+
+.btn-custom.success:hover{
+    border-color:#308b2d;
+    background-color:#308b2d;
+}
+
+.btn-custom.primary{
+    color: #fff;
+    border-color: var(--color-blue-dark);
+    background-color: var(--color-blue-dark);
+}
+
+.btn-custom.primary:hover{
+    color: var(--color-blue-dark);
+    background-color: #fff;
+}

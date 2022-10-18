@@ -1,0 +1,120 @@
+<kt-portlet >
+    <kt-portlet-body [class]="'kt-portlet__body--fit kt-portlet__body--fit--custom kt-portlet-body-contrato'">
+        <form class="search" [formGroup]="form" (ngSubmit)="search_form()">
+            <div class="content">
+                <!-- <div class="date">
+                    <span>Data Inicial</span>
+                    <mat-form-field  class="m-inputs" (click)="myDatepicker.open()">
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                        <input placeholder="09/04/2020" matInput formControlName="data_inicial" [matDatepicker]="myDatepicker">
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="date">
+                    <span>Data Final</span>
+                    <mat-form-field  class="m-inputs" (click)="data_final.open()">
+                        <mat-datepicker-toggle matSuffix [for]="data_final"></mat-datepicker-toggle>
+                        <input placeholder="09/04/2020" matInput formControlName="data_final" [matDatepicker]="data_final">
+                        <mat-datepicker #data_final></mat-datepicker>
+                    </mat-form-field>
+                </div> -->
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline"  class="m-inputs" (click)="myDatepicker.open()">
+                        <mat-label>Data Inicial</mat-label>
+                        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                        <input placeholder="09/04/2020" matInput formControlName="data_inicial" [matDatepicker]="myDatepicker">
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline"  class="m-inputs" (click)="data_final.open()">
+                        <mat-label>Data Final</mat-label>
+                        <mat-datepicker-toggle matSuffix [for]="data_final"></mat-datepicker-toggle>
+                        <input placeholder="09/04/2020" matInput formControlName="data_final" [matDatepicker]="data_final">
+                        <mat-datepicker #data_final></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="filter type_service"> -->
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Tipo de Transação</mat-label>
+                        <mat-select formControlName="is_inclusao" placeholder="Escolha a opção" >
+                            <mat-option value="1">
+                                É inclusão
+                            </mat-option>
+                            <mat-option value="0">
+                                Não é inclusão
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="filter table_proposta"> -->
+                <div class="col-lg-3">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Pagamento tipo</mat-label>
+                        <mat-select formControlName="pagamento_tipo" placeholder="Escolha a opção" >
+                            <mat-option [value]="pagemnto_tipo" *ngFor="let pagemnto_tipo of list_pagamentos">
+                                {{ pagemnto_tipo.nome }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                 <!-- <div class="filter export"> -->
+                    <div class="col-lg-4">
+                        <mat-form-field appearance="outline" class="m-inputs">
+                            <mat-label>Filtro</mat-label>
+                            <mat-select formControlName="filtro" placeholder="Escolha a opção" >
+                                <mat-option value="1">
+                                    Exportado
+                                </mat-option>
+                                <mat-option value="0">
+                                    Não Exportado
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                <!-- <div class="filter"> -->
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Tabela</mat-label>
+                        <input type="text"  formControlName="tabela" aria-label="Number" matInput  [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let tabela of list_tabelas"  [value]="tabela" [title]="tabela.nome">
+                                {{ tabela.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="filter export"> -->
+                <div class="col-lg-4">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Tipo de Serviço</mat-label>
+                        <input type="text"  formControlName="tipo_servico" aria-label="Number" matInput  [matAutocomplete]="tipo_servico">
+                        <mat-autocomplete autoActiveFirstOption #tipo_servico="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let tipo of list_tipos"  [value]="tipo">
+                                {{ tipo.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="option">
+                    <button class="btn btn-search">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+                <div class="export-contrato">
+                    <button type="button" class="btn btn-export-contrato" (click)="exportacao()">
+                        <span>Exportar Contratos</span>                        
+                        <mat-icon>cloud_upload</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="kt-portlet__body--custom">
+            <div class="header-table">
+                <h3 class="sub-title h3">Lista de Propostas aprovadas</h3>
+            </div>
+            <kt-table-proposta [setDisplayedColumns]="displayedColumns" [setSearch]="search"></kt-table-proposta>
+        </div>
+    </kt-portlet-body>
+</kt-portlet>

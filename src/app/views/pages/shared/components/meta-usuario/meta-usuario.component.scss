@@ -1,0 +1,48 @@
+.noItens{
+    text-align: center;
+}
+.meta{
+    width: 420px;
+    height: 220px;
+    position: relative;
+
+    @media only screen and (max-width: 1024px){
+        width: 100%;
+        height: auto;
+    }
+    .meta-content{
+        padding: 25px 20px;
+    }
+    .data-info{
+        text-align: center;
+        font-weight: bold;
+        color: #16498B;
+        font-size: 28px;
+        margin-top: 40px;
+
+        @media only screen and (min-width: 576px){
+            font-size: 34px;
+        }
+        @media only screen and (min-width: 1024px){
+            font-size: 42px;
+            margin-top: 50px;
+        }
+    }
+}
+kt-progress-bar{
+    margin-top: 20px;
+    display: block;
+}
+:host {
+	::ng-deep {
+        .percent{
+            font-size: 16px;
+            color: #3D3D3D;
+        }
+        .mat-progress-bar{
+            height: 8px;
+            border-radius: 4px;
+        }
+       
+    }
+}

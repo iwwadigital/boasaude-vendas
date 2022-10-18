@@ -1,0 +1,36 @@
+<div class="assinatura col-lg-12 justify-content-center" *ngIf="!is_other; else newValidation">
+	<div class="header">
+		<h3 class="h3 title">Assinatura do Responsável</h3>
+		<mat-checkbox [(ngModel)]="is_assinatura_impressa">Será uma assinatura impressa?</mat-checkbox>
+	</div>
+
+	<div id="content-canvas" *ngIf="!is_assinatura_impressa;else assinaturaImpressa" @hide>
+		<!-- <canvas id="MySing" #canvas></canvas> -->
+		<kt-canvas-assinatura [getImageCanvas]="image_get" (sendImage)="setImage($event)"></kt-canvas-assinatura>
+	</div>
+	<ng-template #assinaturaImpressa >
+		<h4 class="h4" @fade>Ao escolher essa opção, isso indica que a proposta será do tipo impressa.</h4>
+	</ng-template>
+	<div class="row">
+		<div class="item">
+			<button class="btn btn-success" (click)="create()">Salvar</button>	
+		</div>
+	</div>
+</div>
+<ng-template #newValidation>
+	<div class="answer">
+		<h3 class="h3">Deseja alterar a Assinatura desta proposta? </h3>
+		<h6 class="h6">Obs: Ao fazer isso os aceites de voz será deletado da proposta.</h6>
+		<div class="option">
+			<button type="button" class="btn btn-not btn-light" (click)="onNoClick()">
+				Não
+			</button>
+			<button type="button" class="btn btn-yes btn-light" (click)="setValidation()">
+				Sim
+			</button>
+		</div>
+	</div>
+</ng-template>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

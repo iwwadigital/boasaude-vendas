@@ -1,0 +1,4 @@
+<button type="button" class="button-page " [ngClass]="btn_config && btn_config.has_class ? btn_config.class : ''">
+	<mat-icon *ngIf="btn_config && btn_config.is_icon">{{btn_config.icon}}</mat-icon>
+	<span>{{ btn_config ? btn_config.title : ''}}</span>
+</button>

@@ -1,0 +1,97 @@
+<div class="audio" *ngIf="!is_done; else msg_done" >
+	<div class="info-aceite">
+		<div class="header">
+			<span class="modal-aceite-voz-title">Dados do Aceite de voz</span>
+			<div  class="btn-edit">
+				<button  class="btn btn-outline-primary" type="button" *ngIf="is_modal_edit && (functions.verificarPermissao(['aceite-voz-proposta-cadastrar']) ||  functions.verificarTipoUsuario([1,2,4,5,8]) ) &&  aceite_voz.status == 'Pendente'" (click)="changeEdit()">
+					<mat-icon>{{ !is_edit ? 'create' : 'cancel'}}</mat-icon>
+				</button>
+			</div>
+		</div>
+		<form  [formGroup]="form" (ngSubmit)="update()">
+			<div class="info">
+				<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-4">
+					<mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+						<mat-label>Data do aceite de voz<b class="inputRequired">*</b></mat-label>
+						<input matInput formControlName="data_aceite_voz"  [matDatepicker]="myDatepicker" [disableControl]="!is_edit ? true : false">
+						<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+						<mat-datepicker #myDatepicker></mat-datepicker>
+					</mat-form-field>
+				</div>
+				<div class="item item-radius-bl-sm item-radius-bl-md item-border-lg item-margin-md-max col-sm-6 col-lg-3">
+					<ngb-timepicker  formControlName="hora_aceite_voz" [disableControl]="!is_edit ? true : false"></ngb-timepicker>
+				</div>
+				<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-5">
+					<mat-form-field appearance="outline" class="m-inputs">
+						<mat-label>Telefone</mat-label>
+						<input matInput formControlName="telefone" ngxPhoneMaskBr [readonly]="!is_edit">
+					</mat-form-field>
+				</div>
+			</div>
+			<div class="row row-button" *ngIf="is_edit">
+				<button type="submit"  class="btn btn-success create">Atualizar</button>
+			</div>
+		</form>
+	</div>
+	<div class="msg-content" *ngIf="!btn_new_aceite">
+		<span>Aceite de voz está {{aceite_voz.status | lowercase}}</span>
+		<button *ngIf="aceite_voz.status == 'Recusado' && functions.verificarTipoUsuario([1,2,4,5,8])" (click)="newACeite()" class="btn btn-primary">Novo Aceite</button>
+	</div>
+	<ng-container *ngIf="btn_new_aceite">
+		<div class="second_aceite">
+			<div class="info-aceite" >
+				<form  [formGroup]="form_new" (ngSubmit)="create_new_aceite ? create() : update()" >
+					<div class="info">
+						<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-4">
+							<mat-form-field appearance="outline" class="m-inputs" (click)="myDatepicker.open()">
+								<mat-label>Data do aceite de voz<b class="inputRequired">*</b></mat-label>
+								<input matInput formControlName="data_aceite_voz"  [matDatepicker]="myDatepicker" [disableControl]="!is_edit_second ? true : false">
+								<mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+								<mat-datepicker #myDatepicker></mat-datepicker>
+							</mat-form-field>
+						</div>
+						<div class="item item-radius-bl-sm item-radius-bl-md item-border-lg item-margin-md-max col-sm-6 col-lg-3">
+							<ngb-timepicker  formControlName="hora_aceite_voz" [disableControl]="!is_edit_second ? true : false"></ngb-timepicker>
+						</div>
+						<div class="item item-radius-tl-all item-radius-bl-lg-min  item-radius-tr-md-max item-border-md-min item-radius-top-left-sm item-radius-bottom-left-sm col-sm-12 col-lg-5">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Telefone</mat-label>
+								<input matInput formControlName="telefone" ngxPhoneMaskBr [readonly]="!is_edit_second">
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row row-button" *ngIf="is_edit_second">
+						<button type="submit"  [disabled]="is_block" class="btn btn-success create">{{ create_new_aceite  ? "Criar" : "Atualizar" }}</button>
+					</div>
+				</form>
+			</div>
+			<div class="msg-content" *ngIf="aceite_voz.status != 'Pendente'">
+				<span>Aceite de voz está {{aceite_voz.status | lowercase}}</span>
+			</div>
+		</div>
+	</ng-container>
+	
+	<ng-container *ngIf="aceite_voz && aceite_voz.status == 'Pendente' && is_modal_edit && (!is_edit && !is_edit_second); else statusAceite">
+		<span class="sub-title validaty">Validar?</span>
+		<div class="opcoes">
+			<button class="btn btn-cancel" (click)="changeStatus('Recusado')">
+				Não
+			</button>
+			<button class="btn btn-validaty" (click)="changeStatus('Validado')">
+				Sim
+			</button>
+		</div>
+	</ng-container>
+</div>
+<ng-template #msg_done>
+	<div class="pendencia " *ngIf="status === 'Recusado' && !is_pendencia">
+		<h3 class="sub-title h3">Crie uma pendência</h3>
+		<kt-pendencia (response)="pendenciaCreate($event)" [show_create]="!is_pendencia"  [setPropostaId]="proposta_id"></kt-pendencia>
+	</div>
+	<div class="msg-content" *ngIf="status === 'Validado' || is_pendencia">
+		<span>{{msg}}</span>
+	</div>
+</ng-template>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

@@ -1,0 +1,33 @@
+
+<button class="check-pendencia" (click)="checkStatus()" *ngIf="pendencia && pendencia.status !== 'Resolvido' && pendencia.observacoes && pendencia.observacoes.length > 0 && (functions.verificarTipoUsuario([1,2,5]) || pendencia.criador_id == usuario.id)" type="button">
+	<mat-icon>
+		done
+	</mat-icon>
+</button>
+<div class="pendencia"  *ngIf="show_create || pendencia"  [ngClass]="pendencia &&  pendencia.status === 'Resolvido' ? 'pendencia-resolved' : 'has-pendencia'" >
+	<div class="content-pendencias" *ngIf="pendencia && pendencia.observacoes && pendencia.observacoes.length > 0" >
+		<div class="single-pendencia" *ngFor="let item of pendencia.observacoes;let i = index">
+			<div class="header">
+				<span class="name">{{item.usuario.nome}}</span>
+				<div class="info">
+					<span>{{item.data_criacao | date:"hh:mm"}}</span>
+					<span>{{item.data_criacao | date:"dd/MM/yyyy"}}</span>
+				</div>
+			</div>
+			<div class="content">
+				<span>{{item.observacao}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="content-input" *ngIf="!pendencia || pendencia.status !== 'Resolvido'" >
+		<form [formGroup]="form" (ngSubmit)="create()" >
+			<input type="hidden" formControlName="proposta_id">
+			<input class="input-observacao" placeholder="Digite aqui" type="text" formControlName="observacao">
+			<button class="send">
+				<mat-icon>send</mat-icon>
+			</button>
+		</form>
+	</div>
+</div>
+
+

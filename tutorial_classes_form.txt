@@ -1,0 +1,20 @@
+Tutorial das classes do formulário
+
+item-radius = onde vai ter o border radius;
+item-border = Dependendo da tela ele não tera borda-left;
+item-margin = Retira a margin top em um tamanho de tela especifico, juntamente da borda-top;
+
+tl = top left;
+tr = top right;
+bl = bottom left;
+br = bottom right;
+
+xs = menor que celular;
+sm = celular;
+md = tablet;
+lg = desktop;
+
+max = vai até o tamanho maximo da tela;
+min = começa aparti desse tamanho de tela;
+- = Quando vai ser só nesse tamanho de tela;
+

@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="generateRelatorio()">
+        <div class="col-lg-12">
+            <div class="row row-group">
+                <div [ngClass]="form_class.data_inicio">
+                    <mat-form-field appearance="outline" class="m-inputs" (click)="data_inicio.open()">
+                        <mat-label>Data de inicio<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="data_inicio" [matDatepicker]="data_inicio">
+                        <mat-datepicker-toggle matSuffix [for]="data_inicio"></mat-datepicker-toggle>
+                        <mat-datepicker #data_inicio></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div [ngClass]="form_class.data_fim">
+                    <mat-form-field appearance="outline" class="m-inputs" (click)="data_fim.open()">
+                        <mat-label>Data final<b class="inputRequired">*</b></mat-label>
+                        <input matInput formControlName="data_fim" [matDatepicker]="data_fim">
+                        <mat-datepicker-toggle matSuffix [for]="data_fim"></mat-datepicker-toggle>
+                        <mat-datepicker #data_fim></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="data.type == types[1] || data.type == types[2] || data.type == types[4]" [ngClass]="form_class.canal_vendas">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Canal vendas</mat-label>
+                        <input matInput formControlName="canal_vendas"  [matAutocomplete]="canal_vendas">
+                        <mat-autocomplete autoActiveFirstOption #canal_vendas="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let canal_vendas of canais_vendas"  [value]="canal_vendas">
+                                {{ canal_vendas.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="data.type == types[1] || data.type == types[2] || data.type == types[4]" [ngClass]="form_class.adesao">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Adesão</mat-label>
+                        <mat-select placeholder="Escolha a opção" formControlName="adesao" >
+                            <mat-option value="1">
+                                Pago (online)
+                            </mat-option>
+                            <mat-option value="0">
+                                Outros
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="data.type == types[2] || data.type == types[4]" [ngClass]="form_class.equipe">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Equipe</mat-label>
+                        <input matInput formControlName="equipe"  [matAutocomplete]="equipe">
+                        <mat-autocomplete autoActiveFirstOption #equipe="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let equipe of equipes"  [value]="equipe">
+                                {{ equipe.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="data.type == types[2] || data.type == types[4]" [ngClass]="form_class.vendedor">
+                    <mat-form-field appearance="outline" class="m-inputs">
+                        <mat-label>Vendedor</mat-label>
+                        <input matInput formControlName="vendedor"  [matAutocomplete]="vendedors">
+                        <mat-autocomplete autoActiveFirstOption #vendedors="matAutocomplete" [displayWith]="displayFn">
+                            <mat-option *ngFor="let vendedor of vendedores"  [value]="vendedor">
+                                {{ vendedor.nome }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <button  class="btn btn-success" type="submit">
+                <span>Gerar</span>
+            </button>
+        </div>
+    </form>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

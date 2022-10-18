@@ -1,0 +1,59 @@
+<form [formGroup]="form">
+    <div class="row row-group">
+        <div class="item item-active-border-md item-mobile  item-margin-sm-min col-sm-4 col-md-2">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Cartão</mat-label>
+                <mat-select formControlName="mensalidade_cartao_id">
+                    <mat-option value="">Nenhum</mat-option>
+                    <mat-option *ngFor="let pagamento of pagamentos" [value]="pagamento.id">
+                      {{pagamento.nome}} - {{pagamento.cidade}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="item   item-border-sm  item-margin-sm-min col-sm-4 col-md-2 ">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Boleto</mat-label>
+                <mat-select formControlName="mensalidade_boleto_id">
+                    <mat-option value="">Nenhum</mat-option>
+                    <mat-option *ngFor="let pagamento of pagamentos" [value]="pagamento.id">
+                      {{pagamento.nome}} - {{pagamento.cidade}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="item   item-border-sm  item-margin-sm-min col-sm-4 col-md-2 ">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Desconto em Folha</mat-label>
+                <mat-select formControlName="mensalidade_desconto_folha_id">
+                    <mat-option value="">Nenhum</mat-option>
+                    <mat-option *ngFor="let pagamento of pagamentos" [value]="pagamento.id">
+                      {{pagamento.nome}} - {{pagamento.cidade}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="item  item-border-md  item-margin-sm-min col-sm-6 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Débito automático</mat-label>
+                <mat-select formControlName="mensalidade_conta_id">
+                    <mat-option value="">Nenhum</mat-option>
+                    <mat-option *ngFor="let pagamento of pagamentos" [value]="pagamento.id">
+                      {{pagamento.nome}} - {{pagamento.cidade}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="item item-border-sm item-margin-xs-min col-sm-6 col-md-3">
+            <mat-form-field appearance="outline" class="m-inputs">
+                <mat-label>Cobrança Repasse</mat-label>
+                <mat-select formControlName="mensalidade_cobranca_repasse_id">
+                    <mat-option value="">Nenhum</mat-option>
+                    <mat-option *ngFor="let pagamento of pagamentos" [value]="pagamento.id">
+                      {{pagamento.nome}} - {{pagamento.cidade}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

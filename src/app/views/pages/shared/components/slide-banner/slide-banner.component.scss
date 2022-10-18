@@ -1,0 +1,42 @@
+:host {
+	::ng-deep {
+        .slide-banner{
+            .swiper-pagination-bullet {
+                width: 16px;
+                height: 16px;
+                background: #fff;
+                opacity: 1;
+            }
+            .swiper-pagination-bullet-active{
+                border: 2px solid #fff;
+                background: transparent;
+            }
+            .img-mobile{
+                display: none;
+                @media only screen and (max-width: 468px){
+                    width: 100%;
+                    display: block;
+                }
+            }
+            .img-desktop{
+                display: block;
+                @media only screen and (max-width: 1024px){
+                    width: 100%;
+                }
+                @media only screen and (max-width: 468px){
+                    display: none;
+                }
+            }
+        }
+    }
+}
+.content-slide{
+    width: 970px;
+    height: 100%;
+    display: block;
+    background: #fff;
+    .noItens {
+        padding: 35px;
+        text-align: left;
+    }
+}

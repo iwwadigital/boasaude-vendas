@@ -1,0 +1,32 @@
+
+
+<h1 mat-dialog-title class="mt-3 ml-5">Histórico de Log</h1>
+<div mat-dialog-content>
+	<div class="table">
+        <mat-table  #table [dataSource]="data.logs">
+            <ng-container  matColumnDef="log">
+                <mat-header-cell *matHeaderCellDef> Log </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    {{element.data | date: 'dd/MM/yyyy HH:mm' }} - {{element.log}}
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="usuario">
+                <mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    {{element.usuario ? element.usuario.nome : ''}}
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="data_horario">
+                <mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    {{element.data | date: 'dd/MM/yyyy HH:mm' }}
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

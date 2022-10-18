@@ -1,0 +1,30 @@
+<form class="form" [formGroup]="form" autocomplete="off" (ngSubmit)="!is_edit ? create() : update()">
+	<div mat-dialog-content>
+		<!-- <h5 class="form-section-title h5">Informações da tabela</h5> -->
+		<div class="row row-group">
+			<!-- <div class="item item-radius-tr-all item-radius-tl-all item-radius-bl-all item-radius-br-all col-lg-12"> -->
+			<div class="item item-radius-tl-all item-radius-bl-sm-min item-radius-tr-xs-max col-sm-6">
+				<input type="hidden" formControlName="id">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="nome" placeholder="Insira seu Nome">
+					<mat-error *ngIf="form.get('nome').errors !== null && form.get('nome').errors.required">Nome não foi digitado.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="item item-radius-br-all item-radius-tr-sm-min item-radius-bl-xs-max item-border-sm col-sm-6">
+				<mat-form-field appearance="outline" class="m-inputs">
+					<mat-label>Status<b class="inputRequired">*</b></mat-label>
+					<input matInput formControlName="status" readonly>
+				</mat-form-field>
+			</div>
+		</div>
+	</div>
+	<div mat-dialog-actions>
+		<button [disabled]="is_block"  color="primary"  class="btn btn-create" type="submit">
+            <span>{{!is_edit ? 'Cadastrar' : 'Atualizar'}}</span>
+        </button>
+    </div>
+    <button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

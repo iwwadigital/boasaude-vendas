@@ -1,0 +1,35 @@
+.status{
+	color: var( --color-base);
+	width: 153px;
+	padding: 3px 0;
+	font-size: 14px;
+	font-weight: 400;
+	display: flex;
+	justify-content: center;
+	border-radius: 15px;
+}
+.status-mobile{
+	width: 42px;
+	height: 26px;
+	display: block;
+	border-radius: 14px;
+	margin-right: 8px;
+	background: transparent;
+}
+
+.pending{
+	background: #F79A1B;
+}
+.approved{
+	background: #3DB239;
+}
+.on-approval{
+	background: #4181D4;
+}
+.refused{
+	background: #F14639;
+}
+.draft{
+	background: #CCD9E5;	
+	color: #5a5f63;
+}
