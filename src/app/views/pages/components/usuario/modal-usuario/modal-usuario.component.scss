@@ -6,14 +6,14 @@
 	text-align: center;
 
 	.nome{
-		color: var( --color-blue-dark);
+		color: var( --color-green-dark);
 		font-size: 1.8rem;
 		font-weight: 700;
 		line-height: 1.3em;
 		margin-bottom: 5px;
 	}
 	.img-user{
-	    background: var(--color-blue-dark);
+	    background: var(--color-green-dark);
 	    color: var( --color-base);
 	    width: 110px;
 	    height: 110px;
@@ -108,7 +108,7 @@
 }
 
 .btn-add-line{
-	background:  var( --color-blue-dark);
+	background:  var( --color-green-dark);
 	border: none;
 	border-radius: 25px;
 	width: 160px;
@@ -117,7 +117,7 @@
     margin: 10px 0;
 	transition: background 300ms;
 	&:hover{
-		background: var( --color-blue);
+		background: var( --color-green);
 	}
 }
 .remover-usuario{

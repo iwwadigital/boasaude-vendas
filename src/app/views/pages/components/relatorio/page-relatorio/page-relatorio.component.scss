@@ -135,7 +135,7 @@
 }
 .btn-print,
 .btn-search{
-    background: var( --color-blue);
+    background: var( --color-green);
     border-radius: 8px;
     padding: 13px;
     margin-left: 10px;
@@ -151,6 +151,6 @@
     
     // HOVER
     &:hover{
-        background: var( --color-blue-light);
+        background: var( --color-green-light);
     }
 }

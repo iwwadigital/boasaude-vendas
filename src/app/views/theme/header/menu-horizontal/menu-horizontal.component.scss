@@ -16,7 +16,7 @@
 			right: -45px;
 			top: 40px !important;
 			left: initial;
-			background-color: #01478D;
+			background-color: var(--color-green);
 			width: 45px;
 			height: 45px;
 		}
@@ -36,11 +36,11 @@
 		}
 		.kt-header-menu-wrapper {
 			right: -295px;
-			background: #01478D;
+			background: var(--color-green);
 			left: initial;
 		}
 		.kt-header-menu-mobile {
-			background-color: #01478D;
+			background-color: var(--color-green);
 		}
 		// A do MENU
 		.kt-header-menu-mobile .kt-menu__nav > .kt-menu__item > .kt-menu__link {

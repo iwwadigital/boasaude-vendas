@@ -15,7 +15,7 @@
     
 }
 .h4{
-    color: var(--color-blue);
+    color: var(--color-green);
     font-weight: bold;
 }
 .textarea-editor{
@@ -30,7 +30,7 @@
     .icon{
         display: flex;
         align-items: center;
-        background: #16498B;
+        background: var(--color-green);
         padding: 20px;
         min-height: 64px;
         flex-shrink: 0;
@@ -38,7 +38,7 @@
         
         // HOVER
         &:hover{
-            background: #01478D;
+            background:  var(--color-green-dark);
         }
                     
         svg{
@@ -62,7 +62,7 @@
     }
     .text{
         background: #fff;
-        color: #16498B;
+        color: var(--color-green);
         padding: 20px 15px;
         flex-grow: 1;
         white-space: nowrap;

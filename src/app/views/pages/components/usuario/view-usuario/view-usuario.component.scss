@@ -3,7 +3,7 @@
     flex-direction: column;
     padding: 30px 0;
     margin: 0 15px;
-    border-bottom: 1px solid #CCD9E5;
+    border-bottom: 1px solid var(--color-white-green);
     position: relative;
     
     @media only screen and (min-width: 768px){
@@ -14,7 +14,7 @@
     }
 
     .color{
-		background: var(--color-blue-light);
+		background: var(--color-green-light);
 		border-radius: 50%;
 	}
 	.img-user{
@@ -45,7 +45,7 @@
 			position: absolute;
 			bottom: -20px;
     		right: -20px;
-			background: var(--color-blue-dark);
+			background: var(--color-green-dark);
 			border-radius: 50%;
 			width: 40px;
 			height: 40px;
@@ -84,7 +84,7 @@
 
     .info-user{
         .sub-title{
-            color: var( --color-blue-dark);
+            color: var( --color-green-dark);
             font-size: 2rem;
             font-weight: 700;
             margin: 20px 0 20px 0;
@@ -110,7 +110,7 @@
             }
 
             .item-info{
-                color: var( --color-blue-dark);
+                color: var( --color-green-dark);
                 font-size: 16px;
                 display: flex;
                 align-items: center;
@@ -172,7 +172,7 @@
         margin-bottom: 15px;
         
         span{
-            color: var( --color-blue-dark);
+            color: var( --color-green-dark);
             font-size: 1rem;
             @media only screen and (min-width: 480px){
                 font-size: 1.2rem;
@@ -194,7 +194,7 @@
     top: 20px;
 
     .btn{
-        border-color: var( --color-blue);
+        border-color: var( --color-green);
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -210,7 +210,7 @@
         }
 
         .mat-icon{
-            color: var( --color-blue);
+            color: var( --color-green);
             height: auto;
             width: auto;
             transition: color 300ms;
@@ -220,7 +220,7 @@
             }
         }
         span{
-            color: var( --color-blue);
+            color: var( --color-green);
             transition: color 300ms;
             display: none;
 
@@ -231,7 +231,7 @@
 
         // HOVER
         &:hover{
-            background: var( --color-blue);
+            background: var( --color-green);
 
             .mat-icon{
                 color: var( --color-base);
@@ -299,14 +299,14 @@
                     font-size: 14px;
                     font-weight: 400;
                     line-height: 1.3em;
-                    color: #16498B;
+                    color: var(--color-green);
 
                     @media only screen and (min-width: 1300px){
                         font-size: 16px;
                     }
                 }
                 b{
-                    color: #16498B;
+                    color: var(--color-green);
                     font-size: 18px;
                     font-weight: 700;
                     line-height: 1.3em;
@@ -354,7 +354,7 @@
         }
         
         .price{
-            color: var( --color-blue-dark);
+            color: var( --color-green-dark);
             font-size: 40px;
             font-weight: 700;
             text-align: center;
@@ -383,22 +383,22 @@
         }
     }
     .raitting{
-        border-top:  1px solid #CCD9E5;       
-        border-bottom:  1px solid #CCD9E5;       
+        border-top:  1px solid var(--color-white-green);       
+        border-bottom:  1px solid var(--color-white-green);       
 
         @media only screen and (min-width: 480px){
             border-top: none;
             border-bottom: none;
-            border-left:  1px solid #CCD9E5;
+            border-left:  1px solid var(--color-white-green);
         }
 
         @media only screen and (min-width: 768px){
-            border-right:  1px solid #CCD9E5;
+            border-right:  1px solid var(--color-white-green);
         }
     }
     .sales{
         @media only screen and (min-width: 481px) and (max-width: 767px){
-            border-top:  1px solid #CCD9E5;       
+            border-top:  1px solid var(--color-white-green);       
             width: 100%;
         }
 
@@ -415,7 +415,7 @@
         .progress-bar-user{
             .percent{
                 font-size: 12px;
-                color: #16498B;
+                color: var(--color-green);
             }
             .mat-progress-bar{
                 height: 8px;
@@ -430,7 +430,7 @@
         }
         .mat-progress-bar-buffer {
             //opacity: 0.3;
-            background-color: #CCD9E5;
+            background-color: var(--color-white-green);
         }
     }
 }

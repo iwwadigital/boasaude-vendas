@@ -1,5 +1,6 @@
 .noItens{
     text-align: center;
+    color:var(--color-green-dark);
 }
 .meta{
     width: 420px;
@@ -16,7 +17,7 @@
     .data-info{
         text-align: center;
         font-weight: bold;
-        color: #16498B;
+        color: var(--color-green);
         font-size: 28px;
         margin-top: 40px;
 

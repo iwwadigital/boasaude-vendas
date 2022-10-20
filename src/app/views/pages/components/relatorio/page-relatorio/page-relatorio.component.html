@@ -132,10 +132,10 @@
             </div>
         </form>
         <div class="statistics" *ngIf="statistics">
-            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/icon-lives.svg'" [title_text]="statistics.vidas_total" [sub_title_text]="'Vidas cadastradas'"></kt-portlet-relatorio>
-            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/icone-valor-total.svg'" [title_text]="statistics.valor_total ? (statistics.valor_total | currency : 'BRL') : '0' " [sub_title_text]="'Valor Total'"></kt-portlet-relatorio>
-            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/clipboard-verification-outlined-sign.svg'" [title_text]="statistics.propostas_aprovadas_total" [sub_title_text]="'Propostas Aprovadas'"></kt-portlet-relatorio>
-            <kt-portlet-relatorio [asset_icon]="'./assets/vitalmed/clipboard-warning-button.svg'" [title_text]="statistics.proposta_pendencia_total" [sub_title_text]="'Propostas com Pendências'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/boasaude/icon-lives.svg'" [title_text]="statistics.vidas_total" [sub_title_text]="'Vidas cadastradas'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/boasaude/icone-valor-total.svg'" [title_text]="statistics.valor_total ? (statistics.valor_total | currency : 'BRL') : '0' " [sub_title_text]="'Valor Total'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/boasaude/clipboard-verification-outlined-sign.svg'" [title_text]="statistics.propostas_aprovadas_total" [sub_title_text]="'Propostas Aprovadas'"></kt-portlet-relatorio>
+            <kt-portlet-relatorio [asset_icon]="'./assets/boasaude/clipboard-warning-button.svg'" [title_text]="statistics.proposta_pendencia_total" [sub_title_text]="'Propostas com Pendências'"></kt-portlet-relatorio>
         </div>
         <div class="kt-portlet__body-custom">
             <div class="header-dashboard header-table">

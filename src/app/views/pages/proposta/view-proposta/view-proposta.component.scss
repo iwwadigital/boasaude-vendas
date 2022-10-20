@@ -298,7 +298,7 @@ mat-footer-row{
 .proposta_aproved .footer-table{
 	display: flex;
     padding: 20px 15px;
-    border-bottom: 1px solid #CCD9E5;
+    border-bottom: 1px solid var(--color-white-green);
     justify-content: space-between;
 	align-items: center;
 	span{
@@ -312,17 +312,17 @@ mat-footer-row{
 	border-bottom: 1px solid rgba(0,0,0,.2);
 	.mat-icon{
 		font-size: 28px !important;
-		color: var(--color-blue-dark);
+		color: var(--color-green-dark);
 		margin-right: 20px;
 		transition: transform 350ms ease-in-out;
 	}
 	h3{
-		color: var(--color-blue-dark);
+		color: var(--color-green-dark);
 	}
 }
 .btn-outline-primary{
-	color: var(--color-blue-dark);
-	border-color : var(--color-blue-dark);
+	color: var(--color-green-dark);
+	border-color : var(--color-green-dark);
 	display: inline-flex;
     align-items: center;
 	justify-content: center;
@@ -339,8 +339,8 @@ mat-footer-row{
 	}
 	&:hover,&:not(:disabled):not(.disabled):active{
 		color: var(--color-base);
-		background-color: var(--color-blue-dark);
-    	border-color: var(--color-blue-dark);
+		background-color: var(--color-green-dark);
+    	border-color: var(--color-green-dark);
 	}
 	span{
 		font-size: 16px;
@@ -420,9 +420,9 @@ mat-footer-row{
 			display: flex;
 			justify-content: center;
 			width: 100%;
-			border-top: 1px solid var(--color-blue-dark);
+			border-top: 1px solid var(--color-green-dark);
 			span{
-				background: var(--color-blue-dark);
+				background: var(--color-green-dark);
 				color: var(--color-base);
 				font-size: 16px;
 				padding: 15px 25px;
@@ -432,7 +432,7 @@ mat-footer-row{
 		}
 	}
 	.separate{
-		border-bottom: 1px solid #CCD9E5;
+		border-bottom: 1px solid var(--color-white-green);
 	}
 	.sub-title{
 		font-weight: bold;
@@ -495,7 +495,7 @@ mat-footer-row{
 				}
 				.info-title{
 					font-size: 12px;
-					color: #16498B;
+					color: var(--color-green);
 					margin-bottom: 10px;
 					font-weight: 500;
 				}
@@ -637,7 +637,7 @@ mat-footer-row{
 			width: 100%;
 			font-size: 14px;
 			font-weight: 700;
-			background: var(--color-blue-dark);
+			background: var(--color-green-dark);
 			padding: 5px 10px;
 			display: block;
 			color: #fff;
@@ -663,7 +663,7 @@ mat-footer-row{
 		.btnDownload:before{
 			content: "";
 			// background: #2e2e2d;
-			background: var(--color-blue-light);
+			background: var(--color-green-light);
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -704,7 +704,7 @@ mat-footer-row{
 			overflow: hidden;
 		}
 		.single-proposta.active .mat-form-field-appearance-legacy .mat-form-field-underline{
-			background-color: var(--color-blue-dark);
+			background-color: var(--color-green-dark);
 		}
 		//RADIO
 		.mat-radio-label-content{

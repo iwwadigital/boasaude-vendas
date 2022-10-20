@@ -22,7 +22,7 @@ $color-blue-light: #009BE0;
 
 // ================================ ASIDE =============================== //
 	.kt-login.kt-login--v1 .kt-login__aside{
-		background: $color-blue;
+		background: var(--color-green);
 		
 		@media only screen and (max-width: 1024px){
 			padding: 3.3rem 1.5rem 2.8rem;
@@ -72,21 +72,26 @@ $color-blue-light: #009BE0;
 		}
 	}
 	.kt-login.kt-login--v1 .kt-login__wrapper {
-		background-color: $color-blue-light;
-		background-image: url('assets/vitalmed/bg-login.png'), url('assets/vitalmed/bg-logo-login.png');
+		background-color: var(--color-green-light);
+		background-image: url('assets/boasaude/login-person.png');
+		// background-image: url('assets/boasaude/login-person.png'), url('assets/vitalmed/bg-logo-login.png');
 	    background-repeat: no-repeat;
-    	background-position: right bottom, center;
+    	// background-position: right bottom, center;
+    	background-position: right bottom;
         background-blend-mode: soft-light;
 
         @media only screen and (max-width: 1400px){
-        	background-size: 600px auto, 85% auto;
+        	// background-size: 600px auto, 85% auto;
+        	background-size: 600px auto;
         }
         @media only screen and (max-width: 1024px){
-        	background-size: 600px auto, 500px auto;
+        	background-size: 600px auto;
+        	// background-size: 600px auto, 500px auto;
         	flex-grow: 1;
         }
         @media only screen and (max-width: 767px){
-        	background-size: 400px auto, 400px auto;
+        	background-size: 400px auto;
+        	// background-size: 400px auto, 400px auto;
         }
 
 		.kt-login__body {
@@ -189,8 +194,8 @@ $color-blue-light: #009BE0;
 						}
 
 						.btn{
-						    background: $color-blue-dark;
-						    border-color: $color-blue-dark;
+						    background: var(--color-green);
+						    border-color: var(--color-green);
 							height: 40px;
 						    font-size: 1.2rem;
 						    font-weight: 400;
@@ -207,14 +212,14 @@ $color-blue-light: #009BE0;
 								&:hover{
 									background: $color-base;
 									border-color: $color-base;
-									color: $color-blue-dark;
+									color: var(--color-green);
 								}
 							}
 
 						    // HOVER
 						    &:hover{
-								background: #0f325f;
-								border-color: #0f325f;
+								background: var(--color-green-dark);
+								border-color: var(--color-green-dark);
 						    }
 						}
 					}

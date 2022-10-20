@@ -38,18 +38,18 @@
 		}
 	}
 	&-default {
-		background: #16498B;
+		background: var(--color-green-dark);
 		color: #fff;
 		border-color: transparent;
 		.mat-icon{
 			color: #fff;
 		}
 		&:hover{
-			border-color: #16498B;
+			border-color: var(--color-green-dark);
 			background: #fff;
-			color: #16498B;
+			color: var(--color-green-dark);
 			.mat-icon{
-				color: #16498B;
+				color: var(--color-green-dark);
 			}
 		}
 	}
@@ -88,11 +88,11 @@
 		}
 	}
 	&-outline {
-		border-color: #16498B;
-		color: #16498B;
+		border-color: var(--color-green-dark);
+		color: var(--color-green-dark);
 		&:hover{
 			background: #fff;
-			color: #16498B;
+			color: var(--color-green-dark);
 
 		}
 	}

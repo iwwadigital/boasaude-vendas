@@ -1,12 +1,12 @@
 :host{
     ::ng-deep{
         .mat-select-panel:not([class*='mat-elevation-z']) {
-            border: 1px solid var(--color-blue-dark);
+            border: 1px solid var(--color-green-dark);
         }
         .mat-select-panel .mat-option .mat-option-text{
-            color: var(--color-blue-dark) !important;
+            color: var(--color-green-dark) !important;
             font-weight: bold;
-            border-bottom: 1px solid  var(--color-blue-dark) ;
+            border-bottom: 1px solid  var(--color-green-dark) ;
         }
 
         .table {
@@ -35,7 +35,7 @@
 
         .search{
             .mat-form-field-label{
-                color: var( --color-blue-dark);
+                color: var( --color-green-dark);
             }
             .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
                 display: none;
@@ -90,12 +90,12 @@
                 }
 
                 span{
-                    color: var( --color-blue-dark);
+                    color: var( --color-green-dark);
                     font-size: 1.2rem;        
                     font-weight: 700;
                 }
                 .mat-input-element{
-                    color: var( --color-blue-dark);
+                    color: var( --color-green-dark);
                     font-size: 1.1rem;        
                     font-weight: 700;
                 }
@@ -132,7 +132,7 @@
                 }
                 
                 .mat-input-element{
-                    color: var( --color-blue-dark);
+                    color: var( --color-green-dark);
                     font-size: 1.2rem;        
                     font-weight: 700;
                 }
@@ -148,7 +148,7 @@
     }
 }
 .btn-export-contrato{
-    background: var(--color-blue-dark);
+    background: var(--color-green-dark);
     color: var(--color-base);
     border-radius: 8px;
     width: 190px;
@@ -172,7 +172,7 @@
 
     // HOVER
     &:hover{
-        background: var( --color-blue-light);
+        background: var( --color-green-light);
     }
 }
 
@@ -191,7 +191,7 @@
     }
 
     .btn-search{
-        background: var( --color-blue);
+        background: var( --color-green);
         border-radius: 8px;
         padding: 13px;
         transition: background 300ms;
@@ -206,7 +206,7 @@
         
         // HOVER
         &:hover{
-            background: var( --color-blue-light);
+            background: var( --color-green-light);
         }
     }
 }

@@ -2,4 +2,12 @@
 	.kt-header__brand {
 		height: 100%;
 	}
+	.kt-header__brand-logo-default{
+		width: 110px;
+		filter: brightness(0) invert(1);
+	}
+	.kt-header__brand-logo-sticky{
+		width: 100px;
+		filter: brightness(0) invert(1);
+	}
 }

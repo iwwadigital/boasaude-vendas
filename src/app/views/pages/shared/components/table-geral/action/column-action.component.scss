@@ -21,7 +21,7 @@
 }
 .btn-action-view,
 .btn-action-edit{
-    background: var( --color-blue-dark);
+    background: var( --color-green-dark);
     border: 1px solid var( --color-base);
     width: 42px;
     height: 26px;
@@ -46,14 +46,14 @@
         height: 50px;
 
         .mat-icon{
-            color: var(--color-blue-dark);
+            color: var(--color-green-dark);
             font-size: 22px !important;
         }
     }
 
     // HOVER
     &:hover{
-        background: var( --color-blue-dark);
+        background: var( --color-green-dark);
         border-color: var( --color-base);
 
         .mat-icon{

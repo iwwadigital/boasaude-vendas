@@ -27,12 +27,13 @@ export class BrandComponent implements OnInit, AfterViewInit {
 	 * On init
 	 */
 	ngOnInit(): void {
-		let logoStorage = localStorage.getItem("logo");
-		if(!logoStorage){
-			this.headerLogo = this.layoutConfigService.getLogo();
-		}else{
-			this.headerLogo = logoStorage;
-		}
+		// let logoStorage = localStorage.getItem("logo");
+		// if(!logoStorage){
+		// 	this.headerLogo = this.layoutConfigService.getLogo();
+		// }else{
+		// 	this.headerLogo = logoStorage;
+		// }
+		this.headerLogo = this.layoutConfigService.getLogo();
 		this.headerStickyLogo = this.layoutConfigService.getStickyLogo();
 
 		const config = this.layoutConfigService.getConfig();
@@ -40,13 +41,13 @@ export class BrandComponent implements OnInit, AfterViewInit {
 		// get menu header display option
 		// this.menuHeaderDisplay = objectPath.get(config, 'header.menu.self.display');
 
-		this.functions.$logo.subscribe((logo:any)=>{
-			if(!this.functions.isEmpty(logo)){
-				this.headerLogo = logo;
-			}else{
-				this.headerLogo = this.layoutConfigService.getLogo();
-			}
-		})
+		// this.functions.$logo.subscribe((logo:any)=>{
+		// 	if(!this.functions.isEmpty(logo)){
+		// 		this.headerLogo = logo;
+		// 	}else{
+		// 		this.headerLogo = this.layoutConfigService.getLogo();
+		// 	}
+		// })
 	}
 
 	/**

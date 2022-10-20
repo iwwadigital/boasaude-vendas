@@ -7,18 +7,18 @@ export class LayoutConfig {
 		self: {
 			layout: 'fluid', // fluid|boxed
 			body: {
-				'background-image': './assets/vitalmed/header_img.jpg',
+				'background-image': './assets/boasaude/bg-login.png',
 				'background-position': 'center top',
 				// 'background-size': '100% 350px',
 				'background-size': 'auto 350px',
 			},
-			logo: './assets/vitalmed/logo-vitalmed.svg',
+			logo: './assets/boasaude/layout-logo.png',
 		},
 		// == Page Splash Screen loading
 		loader: {
 			enabled: true,
 			type: 'spinner-logo',
-			logo: './assets/vitalmed/logo-vitalmed.svg',
+			logo: './assets/boasaude/layout-logo.png',
 			message: 'Carregando...',
 		},
 		// == Colors for javascript

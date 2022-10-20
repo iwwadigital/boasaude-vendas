@@ -34,17 +34,17 @@ input[type=number] {
 	    width: calc(100% - 1px);
 	}
 	.btn-exit{
-		background-color: var(--color-blue-dark);
+		background-color: var(--color-green-dark);
 		color: #fff;
 		&:hover{
 			background-color: #fff;
-			color: var(--color-blue-dark);
+			color: var(--color-green-dark);
 		}
 	}
 
 	// TOPO
 	.kt-portlet__head{
-	    border-bottom-color: var( --color-blue);
+	    border-bottom-color: var( --color-green);
 		padding: 0 0 22px 0;
 	    max-width: 885px;
 	    width: 100%;
@@ -56,7 +56,7 @@ input[type=number] {
 		}
 
 		.kt-portlet__head-title{
-			color: var( --color-blue);
+			color: var( --color-green);
 			font-size: 2.9rem;
 			font-weight: 700;
 			line-height: 1.2em;
@@ -123,7 +123,7 @@ input[type=number] {
 			}
 
 			span{
-				color: var( --color-blue);
+				color: var( --color-green);
 				font-size: 16px;
 				font-weight: bold;
 
@@ -133,7 +133,7 @@ input[type=number] {
 			}
 
 			&.active{
-				background: var( --color-blue);
+				background: var( --color-green);
 				border-color: var( --color-orange);
 				
 				&:before{
@@ -155,7 +155,7 @@ input[type=number] {
 
 	.form-dados{
 	    .header-general{
-	    	background: #0160B3;
+	    	background: var( --color-green);
 		    color: var( --color-base);
 		    margin-bottom: 5px;
 		    border-radius: 8px;
@@ -182,8 +182,8 @@ input[type=number] {
 		margin-top: 20px;
 
 		.btn{
-			background: #CCD9E5;
-			border-color: #CCD9E5;
+			background: var(--color-white-green);
+			border-color: var(--color-white-green);
 			width: 60px;
 			height: 60px;
 			padding: 0;
@@ -197,7 +197,7 @@ input[type=number] {
 			}
 
 			.material-icons{
-				color: var( --color-blue);
+				color: var( --color-green);
 			    font-size: 40px !important;
 			    width: auto;
 			    height: auto;
@@ -209,8 +209,8 @@ input[type=number] {
 
 			// HOVER
 			&:hover{
-				background: var( --color-blue-light);
-				border-color: var( --color-blue-light);
+				background: var( --color-green-light);
+				border-color: var( --color-green-light);
 			}
 		}
 
@@ -285,7 +285,7 @@ input[type=number] {
 	.add-address {
 		margin-left: 15px;
 		font-size: 1.2rem;
-		color: var(--color-blue);
+		color: var(--color-green);
 		cursor: pointer; 
 		display: inline-flex;
     	align-items: center;
@@ -338,7 +338,7 @@ input[type=number] {
 		}
 		
 		.btn{
-			background: var( --color-blue);
+			background: var( --color-green);
 			display: flex;
     		align-items: center;
     		justify-content: center;
@@ -359,8 +359,8 @@ input[type=number] {
     		}
 
     		&:hover{
-    			background: var( --color-blue-light);
-    			border-color: var( --color-blue-light);
+    			background: var( --color-green-light);
+    			border-color: var( --color-green-light);
     		}
 		}
 	}
@@ -368,7 +368,7 @@ input[type=number] {
 		margin: 0 !important; // precisa botar no ng-root ou no style
 	}
 	.titular .associated-title{
-		background: var( --color-blue);
+		background: var( --color-green);
 	}
 
 	.dependent{
@@ -479,7 +479,7 @@ input[type=number] {
 		flex-wrap: wrap;
 		.btn{
 			margin-right: 15px;
-			background: var(--color-blue-light);
+			background: var(--color-green-light);
 			color: var(--color-base);
 			transition: background 350ms;
 			margin-top: 10px;
@@ -489,12 +489,12 @@ input[type=number] {
 			}
 			@media only screen and (min-width: 768px){
 				&:hover{
-					background: var(--color-blue-dark);
+					background: var(--color-green-dark);
 				}
 			}
 		}
 		.btn.active{
-			background: var(--color-blue-dark);
+			background: var(--color-green-dark);
 		}
 	}
 	.accordion-open .group .mat-icon{
@@ -564,8 +564,8 @@ input[type=number] {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: #CCD9E5;
-		border-color: #CCD9E5;
+		background: var(--color-white-green);
+		border-color: var(--color-white-green);
 		color: #5a5f63;
 		border-radius: 30px;
 		font-size: 1.2rem;

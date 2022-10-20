@@ -22,7 +22,7 @@
     z-index: 2;
     width: 100%;
     max-height: 220px;
-    background: #01478D;
+    background: var(--color-green-dark);
     width: 100%;
     color: #fff;
     padding: 29px 37px;
@@ -135,7 +135,7 @@
     .btn-arrow.disabled{
         pointer-events: none;
         .mat-icon{
-            color: #CCD9E5 !important;
+            color: var(--color-white-green) !important;
         }
     }
 }

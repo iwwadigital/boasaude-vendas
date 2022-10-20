@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="69.672" height="69.177" viewBox="0 0 69.672 69.177">
+  <g id="icone-caneta" transform="translate(-925.412 -647.411)">
+    <path id="Icon_awesome-pen-fancy" data-name="Icon awesome-pen-fancy" d="M10.516,37.578a4.251,4.251,0,0,0-2.688,2.688L0,63.75l.623.623L12.96,52.036A4.088,4.088,0,0,1,12.751,51,4.25,4.25,0,1,1,17,55.25a4.088,4.088,0,0,1-1.036-.209L3.628,67.379,4.25,68l23.484-7.828a4.248,4.248,0,0,0,2.688-2.688l4.392-11.166L21.682,33.186ZM49.041,3.761,24.722,30.256l13,13L64.212,18.933C75.491,8.962,58.933-7.429,49.041,3.761Z" transform="matrix(1, -0.017, 0.017, 1, 925.412, 648.598)" fill="#16498b"/>
+    <path id="Icon_feather-check" data-name="Icon feather-check" d="M49.549,18.128,20.7,46.2,6,31.5" transform="translate(942 655.305)" fill="none" stroke="#3db239" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+  </g>
+</svg>

@@ -78,13 +78,13 @@
             margin-bottom: 15px;
         }
         .btn-outline-dark{
-            background: var(--color-blue-dark);
-            border-color: var(--color-blue-dark);
+            background: var(--color-green-dark);
+            border-color: var(--color-green-dark);
             color: var(--color-base);
 
             &:hover{
-                background: var(--color-blue-light);
-                border-color: var(--color-blue-light);
+                background: var(--color-green-light);
+                border-color: var(--color-green-light);
             }
         }
 

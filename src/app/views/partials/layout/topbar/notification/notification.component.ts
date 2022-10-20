@@ -36,7 +36,7 @@ export class NotificationComponent implements OnDestroy {
 
 	@Input() type: 'brand' | 'success' = 'success';
 
-	@Input() color : string = "var(--color-blue-dark)";
+	@Input() color : string = "var(--color-green-dark)";
 
 	public titleQtdNotificacao:string = "Sem Notificação";
 	public hasNotificacao:boolean = false;

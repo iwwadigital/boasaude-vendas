@@ -1,6 +1,6 @@
 :host {
 	.kt-splash-screen {
-		background-color: var(--color-blue-dark);
+		background-color: var(--color-green);
 		position: absolute;
 		display: flex;
 		flex-direction: column;
@@ -14,6 +14,7 @@
 			margin-left: calc(100vw - 100%);
 			width: 250px;
 			margin-bottom: 30px;
+			filter: brightness(0) invert(1);
 		}
 
 		span {

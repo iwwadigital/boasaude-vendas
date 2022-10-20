@@ -1,5 +1,5 @@
-// export const URL = "http://vitalmedvendas.iwwadigital.com.br";
-export const URL = "https://vendas.vitalmed.com.br";
+export const URL = "http://boasaudevendas.iwwadigital.com.br/";
+// export const URL = "https://vendas.vitalmed.com.br";
 
 export const API_URL = `${URL}/api`;
 export const URL_PDF = `${URL}/`;

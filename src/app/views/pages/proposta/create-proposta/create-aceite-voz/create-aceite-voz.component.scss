@@ -19,7 +19,7 @@ audio::-webkit-media-controls-enclosure{
 	right: -20px;
 	.mat-icon{
 		font-size: 30px !important;
-		color: #16498B;
+		color: var(--color-green);
 	}
 }
 
@@ -43,6 +43,13 @@ audio::-webkit-media-controls-enclosure{
 	::ng-deep{
 		.ng-invalid .form-control::placeholder{
 			color: #fd397a;
+		}
+		.btn-link{
+			color:var(--color-green);
+
+		}
+		.btn.btn-link:hover{
+			background-color: var(--color-green);
 		}
 	}
 }

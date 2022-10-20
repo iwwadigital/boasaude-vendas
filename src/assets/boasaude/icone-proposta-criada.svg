@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66.029" height="68.912" viewBox="0 0 66.029 68.912">
+  <g id="icone-proposta-criada" transform="translate(-925.055 -481.088)">
+    <g id="Icon_ionic-ios-document" data-name="Icon ionic-ios-document" transform="translate(917.742 477.15)">
+      <path id="Path_30" data-name="Path 30" d="M23.008,16.471H34.534a.627.627,0,0,0,.633-.633h0a3.749,3.749,0,0,0-1.355-2.9L24.148,4.882a4.068,4.068,0,0,0-2.609-.937h0a.935.935,0,0,0-.937.937v9.183A2.4,2.4,0,0,0,23.008,16.471Z" transform="translate(24.519 0.006)" fill="#16498b"/>
+      <path id="Path_31" data-name="Path 31" d="M41.394,11.72V3.938H12.825A5.529,5.529,0,0,0,7.312,9.45V67.337a5.529,5.529,0,0,0,5.513,5.513H54.173a5.529,5.529,0,0,0,5.513-5.513V19.473H49.147A7.764,7.764,0,0,1,41.394,11.72Z" transform="translate(0)" fill="#16498b"/>
+    </g>
+    <path id="Icon_feather-check" data-name="Icon feather-check" d="M49.549,18.128,20.7,46.2,6,31.5" transform="translate(938 485.305)" fill="none" stroke="#3db239" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+  </g>
+</svg>
