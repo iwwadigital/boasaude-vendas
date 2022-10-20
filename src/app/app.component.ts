@@ -23,7 +23,7 @@ import { FunctionsService } from './core/_base/crud/utils/functions.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	// Public properties
-	title = 'Vitalmed';
+	title = 'BoaSaude';
 	loader: boolean;
 	private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 

@@ -43,7 +43,7 @@ export class ModalAdesaoOnlineComponent implements OnInit,OnDestroy{
 	}
 
     public clickShareWhatsApp(){
-        let msg = `Falta pouco para você completar a sua adesão à Vitalmed. Acesse o link para realizar o pagamento da sua adesão: ${this.url}`;
+        let msg = `Falta pouco para você completar a sua adesão à BoaSaúde. Acesse o link para realizar o pagamento da sua adesão: ${this.url}`;
         let url = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`
         window.open(url, '_blank');
     }

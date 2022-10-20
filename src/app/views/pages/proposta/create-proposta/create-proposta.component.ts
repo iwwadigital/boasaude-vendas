@@ -515,7 +515,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 							if(!this.is_matricula_titular){
 								this._http.get("validar-cpf",params).subscribe((validacao:any) =>{
 									if(validacao.validacao == 1){
-										this.functions.printSnackBar("CPF já está cadastrado na vitalmed.");
+										this.functions.printSnackBar("CPF já está cadastrado no sistema.");
 										this.is_cpf_valid = true;
 									}else{
 										this.is_cpf_valid = false;
@@ -863,7 +863,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 					this.cdr.detectChanges();
 				});
 			}else{
-				this.functions.printSnackBar("CPF já está cadastrado na vitalmed!");
+				this.functions.printSnackBar("CPF já está cadastrado no sistema!");
 				this.btn_block_click = false;
 				this.cdr.detectChanges();
 			}
@@ -1080,7 +1080,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 				return;
 			}
 			if(this.is_cpf_valid || this.verificaCpfWebServiceVidas()){
-				this.functions.printSnackBar("CPF já está cadastro na VITALMED.")
+				this.functions.printSnackBar("CPF já está cadastro no sistema.")
 			}else{
 				if(!endreco_preenchido){
 					this.functions.printSnackBar("Preencha os campos de endereço da vida.");
@@ -1132,7 +1132,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 							}
 							this._http.get("validar-cpf",params).subscribe((validacao:any) =>{
 								if(validacao.validacao == 1){
-									this.functions.printSnackBar("CPF já está cadastrado na vitalmed.");
+									this.functions.printSnackBar("CPF já está cadastrado no sistema.");
 									control.patchValue({
 										is_cpf_webService: true
 									});

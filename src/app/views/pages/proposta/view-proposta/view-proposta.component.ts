@@ -790,7 +790,7 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 								){
 								this._http.get("validar-cpf",params).subscribe((validacao:any) =>{
 									if(validacao.validacao == 1){
-										this.functions.printSnackBar("CPF já está cadastrado na vitalmed.");
+										this.functions.printSnackBar("CPF já está cadastrado no sistema.");
 										control.patchValue({
 											is_cpf_webService: true
 										});
