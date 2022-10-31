@@ -38,18 +38,14 @@ import {
 import { PageUsuarioComponent } from './components/usuario/page-usuario/page-usuario.component';
 import { PageProdutoComponent } from './components/produto/page-produto/page-produto.component';
 import { PageTabelaComponent } from './components/tabela/page-tabela/page-tabela.component';
-import { PageEnderecoComponent } from './components/endereco/page-endereco/page-endereco.component';
 import { PageEquipeComponent } from './components/equipe/page-equipe/page-equipe.component';
 import { ModalUsuario } from './components/usuario/modal-usuario/modal-usuario.component';
 import { ModalTabelaComponent } from './components/tabela/modal-tabela/modal-tabela.component';
 import { ModalProdutoComponent } from './components/produto/modal-produto/modal-produto.component';
-import { ModalEnderecoComponent } from './components/endereco/modal-endereco/modal-endereco.component';
 import { ModalEquipeComponent } from './components/equipe/modal-equipe/modal-equipe.component';
 import { ViewEquipeComponent } from './components/equipe/view-equipe/view-equipe.component';
 import { ViewUsuarioComponent } from './components/usuario/view-usuario/view-usuario.component';
 import { RouterModule } from '@angular/router';
-import { PageBannerComponent } from './components/banner/page-banner/page-banner.component';
-import { ModalBannerComponent } from './components/banner/modal-banner/modal-banner.component';
 import { PageRelatorioComponent } from './components/relatorio/page-relatorio/page-relatorio.component';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { changePaginator } from './../../PaginatorIntl';
@@ -79,9 +75,7 @@ registerLocaleData(ptBr);
 		PageUsuarioComponent,
 		PageTabelaComponent,
 		PageProdutoComponent,
-		PageEnderecoComponent,
 		PageEquipeComponent,
-		PageBannerComponent,
 		PageRelatorioComponent,
 		PageContratoComponent,
 		PageTipoServicoComponent,
@@ -92,9 +86,7 @@ registerLocaleData(ptBr);
 		ModalUsuario,
 		ModalTabelaComponent,
 		ModalProdutoComponent,
-		ModalEnderecoComponent,
 		ModalEquipeComponent,
-		ModalBannerComponent,
 		ModalTipoServicoComponent,
 		ModalCanalVendasComponent,
 		ViewEquipeComponent,
@@ -164,9 +156,7 @@ registerLocaleData(ptBr);
 		ModalUsuario,
 		ModalTabelaComponent,
 		ModalProdutoComponent,
-		ModalEnderecoComponent,
 		ModalEquipeComponent,
-		ModalBannerComponent,
 		ModalTipoServicoComponent,
 		ModalCanalVendasComponent,
 		ModalFilialComponent,

@@ -110,20 +110,6 @@ export class MenuConfig {
 								"tipo-servico-page"
 							],
 						},
-						{
-							title: "Endereços",
-							root: true,
-							alignment: 'left',
-							page : "/endereco",
-							permissao : [],
-						},
-						{
-							title: "Banners",
-							root: true,
-							alignment: 'left',
-							page : "/banner",
-							permissao : [],
-						},
 					]
 				},
 				{
@@ -214,28 +200,6 @@ export class MenuConfig {
 				// 		"produto-page"
 				// 	],
 				// },
-				{
-					title: "Endereços",
-					root: true,
-					alignment: 'left',
-					icon: 'flaticon2-map',
-					page : "/endereco",
-					show_menu: true,
-					permissao : [
-						"endereco-page"
-					],
-				},
-				{
-					title: "Banners",
-					root: true,
-					alignment: 'left',
-					icon: 'flaticon2-image-file',
-					page : "/banner",
-					show_menu: true,
-					permissao : [
-						"banner-page"
-					],
-				},
 				{
 					title: "Filiais",
 					root: true,
