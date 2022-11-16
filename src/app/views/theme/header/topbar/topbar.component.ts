@@ -50,7 +50,6 @@ export class TopbarComponent implements OnDestroy{
 					this.form.patchValue({
 						"filial" : filialObj
 					});
-
 				}
 			}
 		}else{

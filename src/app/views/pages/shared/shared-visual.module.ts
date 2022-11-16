@@ -36,7 +36,7 @@ import { RouterModule } from '@angular/router';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { ProgressEquipeComponent } from './components/progress-equipes/progress-equipes.component';
 import { DisableControlDirective, MarkInputsDirective } from './../../../core/_base/crud';
-import { SlideBannerComponent } from './components/slide-banner/slide-banner.component';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetaUsuarioComponent } from './components/meta-usuario/meta-usuario.component';
 import { PartialsModule } from '../../partials/partials.module';
@@ -74,7 +74,6 @@ import { ModalRegridirDataComponent } from './components/modal-regridir-data/mod
 		ProgressBarComponent,
 		ProgressEquipeComponent,
 		DisableControlDirective,
-		SlideBannerComponent,
 		MetaUsuarioComponent,
 		IconPortletComponent,
 		PortletRelatorioComponent,
@@ -105,7 +104,6 @@ import { ModalRegridirDataComponent } from './components/modal-regridir-data/mod
 		ProgressBarComponent,
 		ProgressEquipeComponent,
 		DisableControlDirective,
-		SlideBannerComponent,
 		MetaUsuarioComponent,
 		IconPortletComponent,
 		PortletRelatorioComponent,

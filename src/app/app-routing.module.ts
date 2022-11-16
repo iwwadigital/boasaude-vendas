@@ -8,7 +8,6 @@ import { ErrorPageComponent } from './views/theme/content/error-page/error-page.
 import { PageUsuarioComponent } from './views/pages/components/usuario/page-usuario/page-usuario.component';
 import { PageTabelaComponent } from './views/pages/components/tabela/page-tabela/page-tabela.component';
 import { PageProdutoComponent } from './views/pages/components/produto/page-produto/page-produto.component';
-import { PageEnderecoComponent } from './views/pages/components/endereco/page-endereco/page-endereco.component';
 
 // Auth
 // import { AuthGuard } from './core/auth';
@@ -17,7 +16,6 @@ import { AuthGuard } from './core/auth_new/auth.guard';
 import { PageEquipeComponent } from './views/pages/components/equipe/page-equipe/page-equipe.component';
 import { ViewEquipeComponent } from './views/pages/components/equipe/view-equipe/view-equipe.component';
 import { ViewUsuarioComponent } from './views/pages/components/usuario/view-usuario/view-usuario.component';
-import { PageBannerComponent } from './views/pages/components/banner/page-banner/page-banner.component';
 import { PageRelatorioComponent } from './views/pages/components/relatorio/page-relatorio/page-relatorio.component';
 import { PageContratoComponent } from './views/pages/components/relatorio/page-contrato/page-contrato.component';
 import { PageTipoServicoComponent } from './views/pages/components/tipo-servico/page-tipo-servico/page-tipo-servico.component';
@@ -141,32 +139,6 @@ const routes: Routes = [
 			// 	},
 			// 	component: PageProdutoComponent
 			// },
-			{
-				path: 'endereco',
-				canActivate: [AuthGuard],
-				data: {
-					permissions: {
-						only: [
-							"endereco-page",
-						],
-						redirectTo: ''
-					}
-				},
-				component: PageEnderecoComponent
-			},
-			{
-				path: 'banner',
-				canActivate: [AuthGuard],
-				data: {
-					permissions: {
-						only: [
-							"banner-page",
-						],
-						redirectTo: ''
-					}
-				},
-				component: PageBannerComponent
-			},
 			{
 				path: 'equipe',
 				canActivate: [AuthGuard],

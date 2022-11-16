@@ -190,27 +190,16 @@ export class MenuConfig {
 					],
 				},
 				// {
-				// 	title: "Produtos",
+				// 	title: "Filiais",
 				// 	root: true,
 				// 	alignment: 'left',
-				// 	page : "/produto",
-				// 	icon: 'flaticon2-box-1',
+				// 	icon: 'flaticon2-image-file',
+				// 	page : "/filial",
 				// 	show_menu: true,
 				// 	permissao : [
-				// 		"produto-page"
+				// 		"filial-page"
 				// 	],
 				// },
-				{
-					title: "Filiais",
-					root: true,
-					alignment: 'left',
-					icon: 'flaticon2-image-file',
-					page : "/filial",
-					show_menu: true,
-					permissao : [
-						"filial-page"
-					],
-				},
 				{
 					title: "Seguros Saúde",
 					root: true,

@@ -45,6 +45,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.usuario = this.functions.getUsuario();
 		this.propostaPorTipoUsuario(this.usuario.usuario_tipo_id)
+		// this.abrirModalFilial()
+	}
+
+	private abrirModalFilial(){
 		if(!localStorage.getItem("selectFilial")){
 			let modal_config :MatDialogConfig = new MatDialogConfig();
 			modal_config.data = null;
