@@ -7,8 +7,8 @@
     <ng-container *ngIf="functions.verificarTipoUsuario([1,2,3,5,7,8,9]) || functions.verificarPermissao(['proposta-conferir']) ">
         <div class="option" >
             <h3 class="sub-title h3">Conferência da Proposta</h3>
-            <kt-btn-rectangle  *ngIf="proposta.is_conferida == 0 && functions.verificarPermissao(['proposta-conferir']) " (click)="conferirProposta()" [setBtnConfig]="btn_is_conferida"></kt-btn-rectangle>
-            <kt-btn-rectangle  *ngIf="proposta.is_conferida == 1" [setBtnConfig]="btn_is_conferida_success"></kt-btn-rectangle>
+            <kt-btn-rectangle  *ngIf="proposta.e_conferida == 0 && functions.verificarPermissao(['proposta-conferir']) " (click)="conferirProposta()" [setBtnConfig]="btn_is_conferida"></kt-btn-rectangle>
+            <kt-btn-rectangle  *ngIf="proposta.e_conferida == 1" [setBtnConfig]="btn_is_conferida_success"></kt-btn-rectangle>
         </div>
     </ng-container>
     <ng-container *ngIf="proposta.aceite_voz.length > 0 || (proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarPermissao(['aceite-voz-proposta-ver']) || functions.verificarTipoUsuario([1,2,4,5,8]) ) )">

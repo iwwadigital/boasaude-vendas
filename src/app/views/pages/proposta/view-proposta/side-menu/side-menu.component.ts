@@ -209,12 +209,12 @@ export class SideMenuComponent implements OnInit, OnDestroy{
             });
         }
 
-        if(this.proposta.is_conferida){
+        if(this.proposta.e_conferida){
             this.response.emit({
                 update_proposta : true,
             });
         }
-        if(this.proposta.comprovante || this.proposta.is_assinatura_presencial == 1){
+        if(this.proposta.comprovante || this.proposta.e_assinatura_presencial == 1){
             title_comprovante = "Alterar Assinatura";
         }
         this.btn_assinatura_create = new BtnConfig( {
@@ -260,7 +260,7 @@ export class SideMenuComponent implements OnInit, OnDestroy{
 
     public conferirProposta(){
 		this.subs.add(
-			this._http.put("proposta-conferir",{id: this.proposta.id,is_conferida:1}).subscribe((resp:any) =>{
+			this._http.put("proposta-conferir",{id: this.proposta.id,e_conferida:1}).subscribe((resp:any) =>{
 				if(resp.success){
 					this.functions.printSnackBar("Proposta conferida com sucesso.");
                     this.response.emit({
@@ -401,7 +401,7 @@ export class SideMenuComponent implements OnInit, OnDestroy{
 	}
 
     public checkExistFildsExtra(){
-		if(this.proposta.is_assinatura_presencial == 1){
+		if(this.proposta.e_assinatura_presencial == 1){
 			return true;
 		}
 		if(this.proposta.aceite_voz.length > 0){

@@ -410,7 +410,7 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 			// if(this.functions.isEmpty(this.proposta.aceite_voz) || !this.functions.verificarPermissao(['aceite-voz-editar'])){ // retirei pq o admin de vendas 
 			//só vai ver aceite se tiver validado
 
-			if(this.proposta.is_conferida){
+			if(this.proposta.e_conferida){
 				this.is_update_proposta = true;
 			}
 			// SET TIPO PESSOA
@@ -617,15 +617,17 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 	}
 
 	public getTiposServico(parameter?:any){
-		this._http.get("tipo-servico",parameter).pipe(
-			catchError((err,caught)=>{
-				this.functions.printSnackBar(`Nenhum tipo de servico encontrado.`);
-				return of(err);
+		this.subs.add(
+			this._http.get("tipo-servico",parameter).pipe(
+				catchError((err,caught)=>{
+					this.functions.printSnackBar(`Nenhum tipo de servico encontrado.`);
+					return of(err);
+				})
+			).subscribe((response:any)=>{
+				this.tipos_servico = response.tipos_servico;
+				this.cdr.detectChanges();
 			})
-		).subscribe((response:any)=>{
-			this.tipos_servico = response.tipos_servico;
-			this.cdr.detectChanges();
-		})
+		);
 	}
 
 	public getForm(){
@@ -1388,7 +1390,7 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 
 	// Verifico se ja existe Aceite de voz, Assinatura, ou é impresso
 	public checkExistFildsExtra(){
-		if(this.proposta.is_assinatura_presencial == 1){
+		if(this.proposta.e_assinatura_presencial == 1){
 			return true;
 		}
 		if(this.proposta.aceite_voz.length > 0){

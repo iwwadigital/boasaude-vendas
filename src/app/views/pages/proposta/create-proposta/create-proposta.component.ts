@@ -91,7 +91,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	// FORMS
     public form:FormGroup;
 	public date_actual:Date = new Date();
-	public produtos:Produto[] = [];
 	public tabelas:Tabela[]= [];
 	public canais_vendas:CanalVendas[] = [];
 	public tipos_servico:TipoServico[]= [];
@@ -104,6 +103,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	public is_tabela_antiga:boolean = false;
 
 	// REGRA NEGOCIO
+	public filial:string = "";
 	public btn_block_click:boolean = false; // BLOQUEIA O CLICK DO BOTÃO
 	public valor_produto = null;
 	public lista_bancos; // LISTA DE BANCO PARA USAR NA ADESÃO
@@ -122,7 +122,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	public lista_estado_civil:any;
 
 	public validade_matricula:boolean = true;  // DETECTA VALIDADE DA MATRICULA
-	public is_endereco_valido:boolean = true;  // DETECTA VALIDADE DO ENDERECO
 
 	public data_minima = new Date("01/01/1900 00:00");
 	public data_maxima = new Date();
@@ -183,52 +182,28 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	){}
 
     ngOnInit(){
-		let lista = LISTA_ESTADO;
-		for(let estado in lista){
-			this.list_estado.push(lista[estado]);
-		}
-		this.usuario = this.functions.getUsuario();
-		let filial = localStorage.getItem("filial");
-		this.getRegrasNegocio({filial: filial});
-		let validators_inclusao = new Proposta().getValidatorsInclusao();
-		if(this.usuario.equipes.length > 0){
-			let cidades =  [];
-			this.usuario.equipes.map(equipe => {
-				if(cidades.indexOf(equipe.cidade) == -1){	
-					cidades.push(equipe.cidade);
-				}
-			})
-			this.list_filiais =	cidades;
-		}else{
-			this.list_filiais.push(this.usuario.equipe.cidade);
-		}
+		this.adicionaCamposNoFormulario();
+		this.chamaTodasRegrasNegocios();
+		this.iniciaMudancaValoresFormulario();
+		this.verificaNumeroSerieNaUrl();
+		// this.iniciaMudancaDeFiliais();
+    }
 
+	private adicionaCamposNoFormulario(){
 		this.form = this.formBuilder.group(new Proposta);
-		if(!filial){
-			filial = "Salvador";
+		if(!this.filial){
+			this.filial = "Unix";
 		}
-		this.form.patchValue({
-			"filial" : filial
-		});
-		let ano = new Date();
-		let param_tabela:any = {filial: filial};
-		if(filial != "São Luis"){
-			param_tabela.ano =  ano.getFullYear();
-		}
-		this.getTabela(param_tabela);
-		this.getSeguroSaude(param_tabela);
-		this._http.get("pagamento-tipo",{filial:filial}).subscribe((response:any)=>{
-			this.pagamentos_tipos = response.pagamentos_tipos;
-			this.cdr.detectChanges();
-		});
-		
 
+		this.form.patchValue({
+			"filial" : this.filial
+		});
 
 		this.form.addControl('tabela',new FormControl({value:null,disabled:false}));
 		this.form.addControl('tabela_matricula_titular',new FormControl(null));
 		this.form.addControl('canal_vendas',new FormControl(null,[Validators.required,validateAutocomplete]));
 		this.form.addControl('tipo_servico',new FormControl(null,[Validators.required,validateAutocomplete]));
-		// this.form.addControl('produto',new FormControl({value:null,disabled:true}));
+
 		let adesao = new Pagamento({transacao_id:1});
 		let mensalidade = new Pagamento({transacao_id:2,correspondencia:'titular',pagamento_data_vencimento:null,periodicidade:null});
 		// Cria Adesao e Mensalidade
@@ -244,16 +219,51 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		validators_proposta.map(el =>{
 			this.form.get(el.key).setValidators(el.validators);
 		});
+	}
+
+	private chamaTodasRegrasNegocios(){
+		let lista = LISTA_ESTADO;
+		let ano = new Date();
+		let param_tabela:any = {filial: this.filial};
+
+		for(let estado in lista){
+			this.list_estado.push(lista[estado]);
+		}
+
+		this.usuario = this.functions.getUsuario();
+		this.filial = localStorage.getItem("filial");
+
+		this.getRegrasNegocio({filial: this.filial});
+		if(this.usuario.equipes.length > 0){
+			let cidades =  [];
+			this.usuario.equipes.map(equipe => {
+				if(cidades.indexOf(equipe.cidade) == -1){	
+					cidades.push(equipe.cidade);
+				}
+			})
+			this.list_filiais =	cidades;
+		}else{
+			this.list_filiais.push(this.usuario.equipe.cidade);
+		}
+		
+		if(this.filial != "São Luis"){
+			param_tabela.ano =  ano.getFullYear();
+		}
+		this.getTabela(param_tabela);
+		this.getSeguroSaude(param_tabela);
+		this.getPagamentoTipo();
 		// GET TIPO SERVICO
 		let parameter_tipo_servico:any = {};
-		if(filial){
-			parameter_tipo_servico.filial = filial;
+		if(this.filial){
+			parameter_tipo_servico.filial = this.filial;
 		}
 		this.getTiposServico(parameter_tipo_servico);
 		this.getTipoServicoSaeb();
 		// GET CANAL VENDAS
 		this.getCanalVendas();
+	}
 
+	private iniciaMudancaValoresFormulario(){
 		this.subs.add(
 			this.form.get("matricula_titular").valueChanges.pipe(
 				tap(()=>{
@@ -302,8 +312,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 									}
 								}
 								this.dialog.open(ModalMessageComponent,matconfig)
-							
-								// this.functions.printMsgError(erro);
 								this.validade_matricula = true;
 								this.cdr.detectChanges();
 							})
@@ -339,8 +347,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 					}
 					if(typeof value === 'object' && !this.functions.isEmptyObj(value)){
 						this.tabela = value;
-						// this.form.get("produto").enable();
-						// this.getProdutos({tabela_id: value.id});
 					}
 					return of(null);
 				})
@@ -445,13 +451,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 						this.isLoading = true;
 						this.cdr.detectChanges();
 						this._http.get(`search-cep/${value}`).subscribe((response:any) =>{
-							if(response.success != undefined && !response.success){
-								this.functions.printSnackBar("Endereço está na blacklist");
-								this.is_endereco_valido = false;
-								return;
-							}else{
-								this.is_endereco_valido = true;
-							}
 							if(response.bairro || response.localidade || response.logradouro){
 								this.form.patchValue({
 									titular_endereco_bairro : response.bairro,
@@ -461,6 +460,39 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 								if(!this.is_matricula_titular){
 									this.form.patchValue({
 										titular_endereco_rua : response.logradouro,
+									});
+								}
+							}
+							this.isLoading = false;
+							this.cdr.detectChanges();
+						},(erro:any) =>{
+							this.functions.printMsgError(erro);
+							this.isLoading = false;
+							this.cdr.detectChanges();
+						})
+
+					}
+					return of(value);
+				})
+			).subscribe()
+		);
+		this.subs.add(
+			this.form.get('pj_endereco_cep').valueChanges.pipe(
+				debounceTime(250),
+				switchMap((value:string) =>{
+					if(!this.functions.isEmpty(value) && typeof value === 'string' && value.length === 8 && !this.is_matricula_titular){
+						this.isLoading = true;
+						this.cdr.detectChanges();
+						this._http.get(`search-cep/${value}`).subscribe((response:any) =>{
+							if(response.bairro || response.localidade || response.logradouro){
+								this.form.patchValue({
+									pj_endereco_bairro : response.bairro,
+									pj_endereco_cidade : response.localidade,
+									pj_endereco_uf : this.functions.getEstado(response.uf)
+								});
+								if(!this.is_matricula_titular){
+									this.form.patchValue({
+										pj_endereco_rua : response.logradouro,
 									});
 								}
 							}
@@ -531,6 +563,21 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			).subscribe()
 		);
 
+		this.subs.add(
+			this.form.get("tipo_pessoa").valueChanges.pipe(
+				switchMap((value) =>{
+					if(value == "0"){
+						let titular = new Proposta().getTitular();
+						this.form.patchValue(titular);
+					}else{
+						let empresa = new Proposta().getEmpresa();
+						this.form.patchValue(empresa);
+					}
+					return of(value);
+				})
+			)
+			.subscribe()
+		)
 
 		// CHECK BANCO
 		let adesao_form = this.form.get("adesao");
@@ -659,6 +706,9 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 				}
 			})
 		);
+	}
+
+	private verificaNumeroSerieNaUrl(){
 		// RASCUNHO
 		this.subs.add(
 			this.route.queryParams.subscribe((params:any)=>{
@@ -671,6 +721,9 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 				}
 			})
 		);
+	}
+
+	private iniciaMudancaDeFiliais(){
 		// FILIAL ATUALIZANDO
 		this.subs.add(
 			this.functions.$filial.subscribe((value) =>{
@@ -692,7 +745,8 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 				}
 			})	
 		);
-    }
+	}
+
 	// REGRAS NEGOCIOS ------------------------------------------------------------------------------------------------------------
 	public getRegrasNegocio(params?:any){
 		this._http.get("lista/all",params).subscribe((resp:any) => {
@@ -739,6 +793,15 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		})
 	}
 
+	private getPagamentoTipo(){
+		this.subs.add(
+			this._http.get("pagamento-tipo",{filial:this.filial}).subscribe((response:any)=>{
+				this.pagamentos_tipos = response.pagamentos_tipos;
+				this.cdr.detectChanges();
+			})
+		);
+	}
+
 	public getCanalVendas(parameter?:any){
 		this._http.get("canal-vendas",parameter).pipe(
 			catchError((err,caught)=>{
@@ -762,23 +825,9 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		})
 	}
 
-	public getProdutos(parameter?:any){
-		
-		this._http.get("produto",parameter).pipe(
-				catchError((err,caught)=>{
-					this.functions.printSnackBar(`Nenhuma produto encontrada.`);
-					return of(err);
-				})
-			).subscribe((response:any)=>{
-			this.produtos = response.produtos;
-		})
-	}
-
 	public checkIsRequired(){
 		let current_id:any = document.getElementById(`${this.current}`);
-		// let classNames = current_id.querySelectorAll("ng-invalid");
 		let classNames = current_id.getElementsByClassName("ng-invalid");
-		// return true; // TESTE
 		if(classNames.length > 0){
 			for(let i = 0; i < classNames.length ; i++){
 				classNames[i].classList.add("mat-form-field-invalid");
@@ -802,6 +851,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	public displayFnFilial(data?:any){
 		return data ? data.cidade : undefined;
 	}
+	
 	public displayFnSeguroSaude(data?:any){
 		return data ? data.codigo+" - "+data.nome : undefined;
 	}
@@ -847,7 +897,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 							adesao.pagamento_tipo_id == ADESAO_PAGAMENTO_ONLINE_ID || 
 							mensalidade.pagamento_online == 1 || 
 							this.form.value.matricula_titular != null
-							// this.verificaTipoPagamento({id: mensalidade.pagamento_tipo_id},"cadastramento_online")
 						){
 							this.has_payment = true;
 						}
@@ -885,7 +934,9 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		proposta.numero_serie = this.numero_serie;
 		proposta.pagamentos = [];
 		proposta.filial = this.form.get("filial").value;
-		proposta.tabela_id = this.form.get("tabela").value.id;
+		if(!this.functions.isEmpty(this.form.get("tabela").value)){
+			proposta.tabela_id = this.form.get("tabela").value.id;
+		}
 		if(!this.functions.isEmpty(this.form.get("tabela_matricula_titular").value)){
 			proposta.tabela_id = this.form.get("tabela_matricula_titular").value.id;
 		}
@@ -990,37 +1041,17 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 
     public next(){
 		if(this.current + 1 === 3){
-			let vida:Vida = new Vida();
-			vida.is_titular = 1;
-			vida.id = this.functions.generateAlphaNumeric();
-			vida.nome = this.form.value.titular_nome;
-			// vida.sexo = this.form.value.titular_sexo;
-			vida.sexo = this.form.getRawValue().titular_sexo;
-			// vida.data_nascimento = this.form.value.titular_data_nascimento;
-			vida.data_nascimento = this.form.getRawValue().titular_data_nascimento;
-			vida.cpf = this.form.value.titular_cpf;
-			vida.rua = this.form.value.titular_endereco_rua;
-			vida.cep = this.form.value.titular_cep;
-			vida.bairro = this.form.value.titular_endereco_bairro;
-			vida.cidade = this.form.value.titular_cidade;
-			vida.estado = this.form.value.titular_uf;
-			vida.numero = this.form.value.titular_numero;
-			vida.estado_civil = this.form.getRawValue().titular_estado_civil;
-			vida.tel_residencial = this.form.value.titular_tel_residencial;
-			vida.tel_comercial = this.form.value.titular_tel_comercial;
-			vida.tel_celular = this.form.value.titular_tel_celular;
-			vida.complemento = this.form.value.titular_endereco_complemento;
-			vida.referencia = this.form.value.titular_endereco_referencia;
-			vida.email = this.form.value.titular_urgencia_email;
-			vida.tel_responsavel_tit = this.form.value.titular_urgencia_telefone;
-			vida.responsavel_tit = this.form.value.titular_urgencia_contato_nome;
-			vida.nome_preposto = this.form.value.nome_preposto;
-			vida.cpf_preposto = this.form.value.cpf_preposto;
-			if(!this.functions.isEmpty(this.form.value.seguro_saude)){
-				vida.seguro_saude_id = this.form.value.seguro_saude.id;
+			let vida:Vida;
+			if(this.form.value.tipo_pessoa == "0"){
+				vida = Vida.returnVidaTitular(this.form);
+			}else{
+				vida = new Vida({
+					is_titular: 0
+				})
 			}
 			this.vidas.controls[0].patchValue(vida);
 			this.applyDesconto();
+
 			if(this.functions.isEmpty(this.form.get("matricula_titular").value) ){
 				this.vidas.controls[0].get("valor").setValidators(Validators.required);
 			}else{
@@ -1038,13 +1069,11 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			valor: this.valor_produto
 		});
 		let endreco_preenchido = this.checkEnderecoVida();
-		if(this.is_endereco_valido && this.checkIsRequired() && !this.verificaCpfWebServiceVidas() && endreco_preenchido && !this.is_cpf_valid && this.validade_matricula){
+		if(this.checkIsRequired() && !this.verificaCpfWebServiceVidas() && endreco_preenchido && !this.is_cpf_valid && this.validade_matricula){
 			let proposta = this.getForm();
 			if(this.current + 1 > this.limit){ // SE A ATUAL + 1 FOR MAIOR QUE LIMITE, RECEBE LIMITE
 				this.current = this.limit;
 			}else{ // SE NÃO PASSA DE PAGE
-				// this.current++;
-
 				if(!this.functions.isEmpty(proposta.matricula_titular)){ 
 					this.is_matricula_titular = true;
 					if(this.current + 1 == 3 && !this.control_dependent_matricular){
@@ -1075,10 +1104,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			document.getElementById("kt_scrolltop").click();
 
 		}else{
-			if(!this.is_endereco_valido){
-				this.functions.printSnackBar("CEP está na blacklist.")
-				return;
-			}
 			if(this.is_cpf_valid || this.verificaCpfWebServiceVidas()){
 				this.functions.printSnackBar("CPF já está cadastro no sistema.")
 			}else{

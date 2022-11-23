@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, Output, EventEmitter, OnInit, Inject, OnDestroy } from "@angular/core";
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { FunctionsService } from './../../../../../core/_base/crud/utils/functions.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, of } from 'rxjs';
@@ -83,27 +83,7 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 	public seguros_saude:SeguroSaude[]= [];
 	public tabelas:any[];
 
-    public form:FormGroup = new FormGroup({
-        rua : new FormControl(null),
-        bairro : new FormControl(null),
-        cidade : new FormControl(null),
-        cep : new FormControl(null),
-        complemento : new FormControl(null),
-        referencia : new FormControl(null),
-        estado : new FormControl(null),
-        numero : new FormControl(null),
-        estado_civil : new FormControl(null),
-        tel_comercial : new FormControl(null),
-        tel_celular : new FormControl(null),
-        tel_residencial : new FormControl(null),
-        email : new FormControl(null),
-        responsavel_tit : new FormControl(null),
-		tel_responsavel_tit : new FormControl(null),
-		is_endereco_titular: new FormControl(false),
-		seguro_saude : new FormControl(null),
-		nome_preposto : new FormControl(null),
-		cpf_preposto : new FormControl(null),
-    });
+    public form:FormGroup;
 
     get f(){
         return this.form.value;
@@ -114,6 +94,7 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data:any = null,
+		private formBuilder:FormBuilder,
 		private cdr:ChangeDetectorRef,
         private functions:FunctionsService,
         private _http:HttpService,
@@ -121,17 +102,13 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
     ){}
 
     ngOnInit(){
+		this.criarFormulario({})
 		let lista = LISTA_ESTADO;
 		this.getEstadoCivil();
 		this.getSeguroSaude({filial: localStorage.getItem("filial")});
 		for(let estado in lista){
 			this.lista_estado =  lista[estado];
 		}
-		let validators_vida = new Vida().getValidatorsInfo();
-		validators_vida.map(el =>{
-			this.form.get(el.key).setValidators(el.validators);
-		});
-		
         if(!this.functions.isEmpty(this.data)){
 			this.titular = this.data.titular;
 			delete this.data.titular;
@@ -142,6 +119,18 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 				let date = new Date();
 			}
         }
+		this.iniciarMudancaValoresFormulario();
+    }
+
+	private criarFormulario(obj){
+		this.form = this.formBuilder.group(new Vida(obj).getCamposModal());
+		let validators_vida = new Vida().getValidatorsInfo();
+		validators_vida.map(el =>{
+			this.form.get(el.key).setValidators(el.validators);
+		});
+	}
+
+	private iniciarMudancaValoresFormulario(){
 		//funcao de autocomplete da seguro saude
 		this.subs.add(
 			this.form.get("seguro_saude").valueChanges.pipe(
@@ -155,13 +144,13 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 				})
 			).subscribe()
 		);
-		
-        this.subs.add(
+
+		this.subs.add(
 			this.form.get("cep").valueChanges.pipe(
 				debounceTime(500),
 				switchMap((value:string) =>{
 					if(!this.functions.isEmpty(value) && typeof value === 'string' && value.length === 8){
-                        this.isLoading = true;
+						this.isLoading = true;
 						this.cdr.detectChanges();
 						this._http.get(`search-cep/${value}`).subscribe((response:any) =>{
 							this.form.patchValue({
@@ -169,12 +158,12 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 								bairro : response.bairro,
 								cidade : response.localidade,
 								estado: this.functions.getEstado(response.uf)
-                            });
-                            this.isLoading = false;
+							});
+							this.isLoading = false;
 							this.cdr.detectChanges();
 						},(erro:any) =>{
-                            this.functions.printMsgError(erro);
-                            this.isLoading = false;
+							this.functions.printMsgError(erro);
+							this.isLoading = false;
 							this.cdr.detectChanges();
 						})
 					}
@@ -191,7 +180,7 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 				}
 			})
 		)
-    }
+	}
 
 	public displayFn(data?:any){
 		return data ? data.codigo+" - "+data.nome : undefined;

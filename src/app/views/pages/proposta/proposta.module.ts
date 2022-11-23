@@ -93,7 +93,7 @@ const routes: Routes = [
 		MarkInputsPhoneDirective,
 		ModalEnderecoVidaComponent,
 		ModalLogHistoryComponent,
-		SideMenuComponent
+		SideMenuComponent,
     ],
     imports: [
 		PartialsModule,

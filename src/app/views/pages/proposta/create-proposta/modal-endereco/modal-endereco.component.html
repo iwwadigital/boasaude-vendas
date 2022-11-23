@@ -85,27 +85,6 @@
 						<mat-option *ngFor="let item of lista_estado_civil | keyvalue;" [value]="item.value">
 							{{ item.key }}
 						</mat-option>
-                        <!-- <mat-option value="S">
-                            Solteiro
-                        </mat-option>
-                        <mat-option value="C">
-                            Casado
-                        </mat-option>
-                        <mat-option value="D">
-                            Divorciado
-                        </mat-option>
-                        <mat-option value="V">
-                            Viúvo
-                        </mat-option>
-                        <mat-option value="M">
-                            Marital
-                        </mat-option>
-                        <mat-option value="Q">
-                            Desquitado
-                        </mat-option>
-                        <mat-option value="N">
-                            Não informado
-                        </mat-option> -->
                     </mat-select>
 					<mat-error *ngIf="form.get('estado_civil').errors !== null && form.get('estado_civil').errors.required">Estado Civil não foi escolhido.</mat-error>
 				</mat-form-field>
@@ -131,37 +110,58 @@
             </div>
             <div class="item item-margin-xs-min col-sm-6">
 				<mat-form-field appearance="outline" class="m-inputs">
-					<mat-label>Nome do preposto</mat-label>
-					<input matInput formControlName="nome_preposto" >
+					<mat-label>Nome da mãe</mat-label>
+					<input matInput  formControlName="nome_mae" >
 				</mat-form-field>
 			</div>
 			<div class="item item-margin-sm-min item-border-sm col-sm-6">
 				<mat-form-field appearance="outline" class="m-inputs">
-					<mat-label>CPF do preposto</mat-label>
-					<input matInput mMarkInputs="999.999.999-99" formControlName="cpf_preposto" >
+					<mat-label>Idade</mat-label>
+					<input matInput type="number"  formControlName="idade" >
 				</mat-form-field>
 			</div>
             <div class="item item-margin-xs-min item-radius-bl-sm-min col-sm-4 ">
 				<mat-form-field appearance="outline" class="m-inputs">
-					<mat-label>Responsável em caso de emergência</mat-label>
-					<input matInput  formControlName="responsavel_tit">
+					<mat-label>Grau de parentesco</mat-label>
+					<mat-select formControlName="grau_parentesco" placeholder="Escolha a opção">
+						<mat-option value="01">
+							Titular
+						</mat-option>
+						<mat-option value="02">
+							Cônjuge
+						</mat-option>
+						<mat-option value="03">
+							Filho(A)
+						</mat-option>
+						<mat-option value="04">
+							Enteado
+						</mat-option>
+						<mat-option value="05">
+							Outros
+						</mat-option>
+                    </mat-select>
 				</mat-form-field>
             </div>
             <div class="item item-margin-xs-min item-border-sm col-sm-4 col-lg-4">
 				<mat-form-field appearance="outline" class="m-inputs">
-					<mat-label>Seguro saúde<b class="inputRequired">*</b></mat-label>
-					<input type="text" placeholder="Escolha um seguro saúde" formControlName="seguro_saude" aria-label="Number" matInput  [matAutocomplete]="auto">
-					<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-						<mat-option *ngFor="let item of seguros_saude"  [value]="item">
-							{{ item.codigo }} - {{ item.nome }}
+					<mat-label>Código de Carência</mat-label>
+					<mat-select formControlName="codigo_carencia" placeholder="Escolha a opção" >
+						<mat-option value="01">
+							Total/Normal
 						</mat-option>
-					</mat-autocomplete>
+						<mat-option value="02">
+							Reduzida/Parcial
+						</mat-option>
+						<mat-option value="03">
+							Isento
+						</mat-option>
+					</mat-select>
 				</mat-form-field>
 			</div>
             <div class="item item-margin-xs-min item-border-sm item-radius-br-all  item-radius-bl-xs-max col-sm-4 ">
 				<mat-form-field appearance="outline" class="m-inputs">
-					<mat-label>Telefone Responsavel</mat-label>
-					<input matInput  formControlName="tel_responsavel_tit" ngxPhoneMaskBr>
+					<mat-label>Carteira do SUS</mat-label>
+					<input matInput type="number" formControlName="carteira_sus"  [readonly]="is_matricula_titular">
 				</mat-form-field>
             </div>
 		</div>
