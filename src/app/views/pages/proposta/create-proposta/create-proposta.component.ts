@@ -566,13 +566,31 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		this.subs.add(
 			this.form.get("tipo_pessoa").valueChanges.pipe(
 				switchMap((value) =>{
+					let proposta = new Proposta();
+					let validacao_titular = proposta.getValidatorsTitular();
+					let validacao_empresa = proposta.getValidatorsEmpresa();
 					if(value == "0"){
-						let titular = new Proposta().getTitular();
+						let titular = proposta.getTitular();
 						this.form.patchValue(titular);
+						validacao_empresa.map(el => {
+							this.form.get(el.key).clearValidators();
+							this.form.get(el.key).updateValueAndValidity();
+						})
+						validacao_titular.map(el =>{
+							this.form.get(el.key).setValidators(el.validators);
+						});
 					}else{
-						let empresa = new Proposta().getEmpresa();
+						let empresa = proposta.getEmpresa();
 						this.form.patchValue(empresa);
+						validacao_titular.map(el => {
+							this.form.get(el.key).clearValidators();
+							this.form.get(el.key).updateValueAndValidity();
+						})
+						validacao_empresa.map(el =>{
+							this.form.get(el.key).setValidators(el.validators);
+						});
 					}
+					console.log(this.form);
 					return of(value);
 				})
 			)
@@ -836,7 +854,13 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		}
 		if(this.current == 2){
 			let form = this.form.value;
-			if(this.functions.isEmpty(form.matricula_titular) && this.functions.isEmpty(form.titular_tel_residencial) && this.functions.isEmpty(form.titular_tel_comercial) && this.functions.isEmpty(form.titular_tel_celular)){
+			if(
+				this.functions.isEmpty(form.matricula_titular) && 
+				this.functions.isEmpty(form.titular_tel_residencial) && 
+				this.functions.isEmpty(form.titular_tel_comercial) && 
+				this.functions.isEmpty(form.titular_tel_celular) &&
+				this.functions.isEmpty(form.pj_telefone)
+			){
 				this.dont_phone = true;
 				return false;
 			}
@@ -1046,7 +1070,8 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 				vida = Vida.returnVidaTitular(this.form);
 			}else{
 				vida = new Vida({
-					is_titular: 0
+					is_titular: 0,
+					valor:0
 				})
 			}
 			this.vidas.controls[0].patchValue(vida);
@@ -1311,7 +1336,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 
 	public checkEnderecoVida(){
 		let exist = true;
-		if(this.current == 3){
+		if(this.current == 3 && this.form.value.tipo_pessoa == '0'){
 			for(let i=0;i < this.vidas.controls.length; i++){
 				let vida_individual = this.vidas.controls[i];
 				if(this.functions.isEmpty(vida_individual.get("rua").value)){

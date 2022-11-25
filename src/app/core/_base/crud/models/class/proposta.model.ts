@@ -309,13 +309,6 @@ export class Proposta{
 					Validators.maxLength(15)
 				]
 			},
-			// {
-			// 	key: "seguro_saude",
-			// 	validators : [
-			// 		Validators.required,
-			// 		validateAutocomplete
-			// 	]
-			// },
 		]
 	}
 
@@ -393,117 +386,10 @@ export class Proposta{
 				]
 			},
 			{
-				key: "titular_nome",
-				validators : [
-					Validators.required,
-					Validators.maxLength(120)
-				]
-			},
-			{
-				key: "titular_sexo",
-				validators : [
-					Validators.required
-				]
-			},
-			{
-				key: "titular_data_nascimento",
-				validators : [
-					Validators.required
-				]
-			},
-			{
-				key: "titular_cpf",
-				validators : [
-					validateCpf
-				]
-			},
-			{
-				key: "titular_estado_civil",
-				validators : [
-					Validators.required
-				]
-			},
-			{
-				key: "titular_endereco_rua",
-				validators : [
-					Validators.required,
-					Validators.maxLength(150)
-				]
-			},
-			{
-				key: "titular_numero",
-				validators : [
-					Validators.required,
-					Validators.maxLength(20)
-				]
-			},
-			{
-				key: "titular_endereco_complemento",
-				validators : [
-					Validators.required,
-					Validators.maxLength(20)
-				]
-			},
-			{
-				key: "titular_endereco_referencia",
-				validators : [
-					Validators.required,
-					Validators.maxLength(120)
-				]
-			},
-			{
-				key: "titular_endereco_bairro",
-				validators : [
-					Validators.required,
-					Validators.maxLength(50)
-				]
-			},
-			{
-				key: "titular_cidade",
-				validators : [
-					Validators.required,
-					Validators.maxLength(50)
-				]
-			},
-			{
-				key: "titular_uf",
-				validators : [
-					Validators.required,
-					Validators.maxLength(20)
-				]
-			},
-			{
-				key: "titular_cep",
-				validators : [
-					Validators.required
-				]
-			},
-			{
 				key: "tabela",
 				validators : [
 					Validators.required,
 					validateAutocomplete
-				]
-			},
-			{
-				key: "seguro_saude",
-				validators : [
-					Validators.required,
-					validateAutocomplete
-				]
-			},
-			{
-				key: "titular_urgencia_email",
-				validators : [
-					Validators.email,
-					Validators.maxLength(100)
-				]
-			},
-			{
-				key: "titular_tel_residencial",
-				validators : [
-					Validators.required,
-					Validators.maxLength(15)
 				]
 			},
 			{

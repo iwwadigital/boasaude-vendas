@@ -5,7 +5,7 @@
 	<div mat-dialog-content>
 		<div class="header">
 			<h5 class="title-modal-endereco h5">Informações de {{vida && vida.nome ? vida.nome : 'sem nome'}}</h5>
-			<mat-checkbox formControlName="is_endereco_titular">Mesmo endereço do titular?</mat-checkbox>
+			<mat-checkbox formControlName="e_endereco_titular" *ngIf="data.titular && data.titular.tipo_pessoa == '0'">Mesmo endereço do titular?</mat-checkbox>
 		</div>
 		<div class="row row-group">
 			<div class="item item-radius-tl-all item-radius-tr-xs-max col-sm-4 col-lg-4 ">

@@ -131,20 +131,6 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 	}
 
 	private iniciarMudancaValoresFormulario(){
-		//funcao de autocomplete da seguro saude
-		this.subs.add(
-			this.form.get("seguro_saude").valueChanges.pipe(
-				debounceTime(500),
-				switchMap(value =>{
-					if(value !== null && typeof value !== 'object'){
-						let params:any = {q:value,filial: localStorage.getItem("filial")};
-						this.getSeguroSaude(params);
-					}
-					return of(null);
-				})
-			).subscribe()
-		);
-
 		this.subs.add(
 			this.form.get("cep").valueChanges.pipe(
 				debounceTime(500),
@@ -172,7 +158,7 @@ export class ModalEnderecoVidaComponent implements OnInit, OnDestroy {
 			).subscribe()
 		);
 		this.subs.add(
-			this.form.get("is_endereco_titular").valueChanges.subscribe((value) =>{
+			this.form.get("e_endereco_titular").valueChanges.subscribe((value) =>{
 				if(value == true){
 					this.setTitularVida();
 				}else{

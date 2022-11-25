@@ -197,12 +197,6 @@ export class Vida{
 					Validators.maxLength(150)
 				]
 			},
-			{
-				key: "seguro_saude",
-				validators : [
-					Validators.required
-				]
-			},
 		]
 	}
 

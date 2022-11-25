@@ -725,79 +725,140 @@
 
             <div *ngIf="current == 3" id="3" class="associated current-page">
 				<h3 class="h3 title">Associados</h3>
-				<div class="is_matricula" *ngIf="is_matricula_titular">
-					<span><b>Proposta antiga:</b> {{ tabela_antiga.nome}} </span>
-					<div class="tabela">
-						<mat-form-field appearance="outline" class="m-inputs">
-							<mat-label>Tabela de Preço<b class="inputRequired">*</b></mat-label>
-							<input type="text" placeholder="Escolha uma tabela" formControlName="tabela_matricula_titular" aria-label="Number" matInput  [matAutocomplete]="tabela_matricula">
-							<mat-autocomplete autoActiveFirstOption #tabela_matricula="matAutocomplete" [displayWith]="displayFn">
-								<mat-option *ngFor="let tabela of tabelas"  [value]="tabela">
-									{{ tabela.nome }}
-								</mat-option>
-							</mat-autocomplete>
-						</mat-form-field>
+				<ng-container *ngIf="form.get('tipo_pessoa').value == '0'">
+					<div class="is_matricula" *ngIf="is_matricula_titular">
+						<span><b>Proposta antiga:</b> {{ tabela_antiga.nome}} </span>
+						<div class="tabela">
+							<mat-form-field appearance="outline" class="m-inputs">
+								<mat-label>Tabela de Preço<b class="inputRequired">*</b></mat-label>
+								<input type="text" placeholder="Escolha uma tabela" formControlName="tabela_matricula_titular" aria-label="Number" matInput  [matAutocomplete]="tabela_matricula">
+								<mat-autocomplete autoActiveFirstOption #tabela_matricula="matAutocomplete" [displayWith]="displayFn">
+									<mat-option *ngFor="let tabela of tabelas"  [value]="tabela">
+										{{ tabela.nome }}
+									</mat-option>
+								</mat-autocomplete>
+							</mat-form-field>
+						</div>
 					</div>
-				</div>
-				<div class="col-lg-12" *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas" [ngClass]="vida.value.is_titular == 1 ? 'titular' : 'dependent'">
-					<div class="row group-inputs-ass" [formGroupName]="i">
-						<div class="col-sm-12">
-							<div class="header-associate">
-								<span class="associated-title">{{ vida.value.is_titular == 1 ? "Titular" : "Dependente "+i }}</span>
-								<span class="add-address" *ngIf="vida.value.is_titular != 1" (click)="openModalEndereco(i)">Adicionar informações obrigatórias<mat-icon>add_circle</mat-icon></span>
-							</div>
-							<div class="row row-group">
-								<div class="item item-radius-bl-lg-min item-radius-tr-md-max col-sm-12 col-lg-4">
-									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Nome<b class="inputRequired">*</b></mat-label>
-										<input matInput formControlName="nome" [readonly]="vida.value.is_titular == 1 ? true : false">
-										<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.required">Nome não foi preenchido.</mat-error>
-										<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
-									</mat-form-field>
+					<div class="col-lg-12" *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas" [ngClass]="vida.value.is_titular == 1 ? 'titular' : 'dependent'">
+						<div class="row group-inputs-ass" [formGroupName]="i">
+							<div class="col-sm-12">
+								<div class="header-associate">
+									<span class="associated-title">{{ vida.value.is_titular == 1 ? "Titular" : "Dependente "+i }}</span>
+									<span class="add-address" *ngIf="vida.value.is_titular != 1" (click)="openModalEndereco(i)">
+										Adicionar informações obrigatórias
+										<mat-icon>add_circle</mat-icon>
+									</span>
 								</div>
-								<div class="item item-margin-md-max item-border-lg col-sm-6 col-lg-2">
-									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>CPF<b class="inputRequired">*</b></mat-label>
-										<input matInput formControlName="cpf" mMarkInputs="999.999.999-99" [readonly]="vida.value.is_titular == 1 ? true : false">
-										<mat-error *ngIf="vidas.controls[i].get('cpf').errors !== null && vidas.controls[i].get('cpf').errors.required">CPF não foi preenchido.</mat-error>
-									</mat-form-field>
-								</div>
-								<div class="item item-margin-md-max item-border-sm col-sm-6 col-lg-2">
-									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Sexo<b class="inputRequired">*</b></mat-label>
-										<mat-select placeholder="Escolha a opção" formControlName="sexo" [disableControl]="vida.value.is_titular == 1 ? true : false">
-											<mat-option value="Masculino">
-												M
-											</mat-option>
-											<mat-option value="Feminino">
-												F
-											</mat-option>
-										</mat-select>
-										<mat-error *ngIf="vidas.controls[i].get('sexo').errors !== null && vidas.controls[i].get('sexo').errors.required">Sexo não foi preenchido.</mat-error>
-									</mat-form-field>
-								</div>
-								<div class="item item-margin-md-max item-border-lg  item-radius-bl-md  item-radius-bl-sm col-sm-6 col-lg-2">
-									<mat-form-field appearance="outline" class="m-inputs" (click)="data_nasc.open()">
-										<mat-label>Data Nasc<b class="inputRequired">*</b></mat-label>
-										<input matInput [matDatepicker]="data_nasc" [min]="data_minima" [max]="data_maxima" formControlName="data_nascimento" [disableControl]="vida.value.is_titular == 1 ? true : false">
-										<mat-datepicker-toggle matSuffix [for]="data_nasc"></mat-datepicker-toggle>
-										<mat-datepicker #data_nasc></mat-datepicker>
-										<mat-error *ngIf="vidas.controls[i].get('data_nascimento').errors !== null && vidas.controls[i].get('data_nascimento').errors.required">Data de nascimento não foi preenchida.</mat-error>
-									</mat-form-field>
-								</div>
-								<div class="item item-margin-md-max item-border-sm item-radius-tr-lg-min item-radius-br-all item-radius-bl-xs-max col-sm-6 col-lg-2 block-remove">
-									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Valor</mat-label>
-										<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
-									</mat-form-field>
-									<button type="button" class="remove-dependent btn" *ngIf="vida.value.is_titular != 1" (click)="removeDependented(vida.value.id)" >
-										<mat-icon>remove_circle</mat-icon>
-									</button>
+								<div class="row row-group">
+									<div class="item item-radius-bl-lg-min item-radius-tr-md-max col-sm-12 col-lg-4">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+											<input matInput formControlName="nome" [readonly]="vida.value.is_titular == 1 ? true : false">
+											<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.required">Nome não foi preenchido.</mat-error>
+											<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-lg col-sm-6 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>CPF<b class="inputRequired">*</b></mat-label>
+											<input matInput formControlName="cpf" mMarkInputs="999.999.999-99" [readonly]="vida.value.is_titular == 1 ? true : false">
+											<mat-error *ngIf="vidas.controls[i].get('cpf').errors !== null && vidas.controls[i].get('cpf').errors.required">CPF não foi preenchido.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-sm col-sm-6 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Sexo<b class="inputRequired">*</b></mat-label>
+											<mat-select placeholder="Escolha a opção" formControlName="sexo" [disableControl]="vida.value.is_titular == 1 ? true : false">
+												<mat-option value="Masculino">
+													M
+												</mat-option>
+												<mat-option value="Feminino">
+													F
+												</mat-option>
+											</mat-select>
+											<mat-error *ngIf="vidas.controls[i].get('sexo').errors !== null && vidas.controls[i].get('sexo').errors.required">Sexo não foi preenchido.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-lg  item-radius-bl-md  item-radius-bl-sm col-sm-6 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs" (click)="data_nasc.open()">
+											<mat-label>Data Nasc<b class="inputRequired">*</b></mat-label>
+											<input matInput [matDatepicker]="data_nasc" [min]="data_minima" [max]="data_maxima" formControlName="data_nascimento" [disableControl]="vida.value.is_titular == 1 ? true : false">
+											<mat-datepicker-toggle matSuffix [for]="data_nasc"></mat-datepicker-toggle>
+											<mat-datepicker #data_nasc></mat-datepicker>
+											<mat-error *ngIf="vidas.controls[i].get('data_nascimento').errors !== null && vidas.controls[i].get('data_nascimento').errors.required">Data de nascimento não foi preenchida.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-sm item-radius-tr-lg-min item-radius-br-all item-radius-bl-xs-max col-sm-6 col-lg-2 block-remove">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Valor</mat-label>
+											<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
+										</mat-form-field>
+										<button type="button" class="remove-dependent btn" *ngIf="vida.value.is_titular != 1" (click)="removeDependented(vida.value.id)" >
+											<mat-icon>remove_circle</mat-icon>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</ng-container>
+				<ng-container *ngIf="form.get('tipo_pessoa').value == '1'">
+					<div class="col-lg-12 dependent" *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas">
+						<div class="row group-inputs-ass" [formGroupName]="i">
+							<div class="col-sm-12">
+								<div class="header-associate">
+									<span class="associated-title">{{ "Dependente "+i }}</span>
+								</div>
+								<div class="row row-group">
+									<div class="item item-radius-bl-lg-min item-radius-tr-md-max col-sm-12 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Nome<b class="inputRequired">*</b></mat-label>
+											<input matInput formControlName="nome">
+											<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.required">Nome não foi preenchido.</mat-error>
+											<mat-error *ngIf="vidas.controls[i].get('nome').errors !== null && vidas.controls[i].get('nome').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-lg col-sm-6 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>CPF<b class="inputRequired">*</b></mat-label>
+											<input matInput formControlName="cpf" mMarkInputs="999.999.999-99">
+											<mat-error *ngIf="vidas.controls[i].get('cpf').errors !== null && vidas.controls[i].get('cpf').errors.required">CPF não foi preenchido.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-sm col-sm-6 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>E-mail</mat-label>
+											<input matInput type="email" formControlName="pj_email" >
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-lg  item-radius-bl-md  item-radius-bl-sm col-sm-4 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Telefone</mat-label>
+											<input matInput formControlName="pj_telefone" ngxPhoneMaskBr>
+											<mat-error *ngIf="form.get('pj_telefone').errors !== null && form.get('pj_telefone').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-sm col-sm-4 col-lg-2">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Cargo</mat-label>
+											<input matInput formControlName="pj_cargo" >
+										</mat-form-field>
+									</div>
+									<div class="item item-margin-md-max item-border-sm item-radius-tr-lg-min item-radius-br-all item-radius-bl-xs-max col-sm-4 col-lg-2 block-remove">
+										<mat-form-field appearance="outline" class="m-inputs">
+											<mat-label>Valor</mat-label>
+											<input matInput formControlName="valor" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [readonly]="true">
+										</mat-form-field>
+										<button type="button" class="remove-dependent btn"  (click)="removeDependented(vida.value.id)" >
+											<mat-icon>remove_circle</mat-icon>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
 				<button class="btn btn-add-dependent" type="button" (click)="addDepented()">
 					<mat-icon>add_circle</mat-icon>
 					<span>Adicionar Dependente</span>
