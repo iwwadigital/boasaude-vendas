@@ -133,18 +133,25 @@ export class Proposta{
 	public pj_endereco_uf:string = null;
 	public pj_fax:string = null;
 	public pj_telefone:string = null;
-	public pj_cobranca_endereco_rua:string = null;
-	public pj_cobranca_endereco_complemento:string = null;
-	public pj_cobranca_endereco_bairro:string = null;
+	public pj_cobranca_endereco_mesmo_endereco:string = "0";
 	public pj_cobranca_endereco_cep:string = null;
+	public pj_cobranca_endereco_rua:string = null;
+	public pj_cobranca_endereco_bairro:string = null;
 	public pj_cobranca_endereco_cidade:string = null;
 	public pj_cobranca_endereco_uf:string = null;
+	public pj_cobranca_endereco_complemento:string = null;
 	public pj_cobranca_telefone:string = null;
 	public pj_cobranca_fax:string = null;
+	public pj_outra_pessoa_cobranca:number = 0;
 	public titular_urgencia_cpf:string = null;
 	public titular_urgencia_rg:string = null;
 	public titular_email:string = null;
 	public tipo_pessoa:number = null;
+	public pj_reponsavel_nome:string = null;
+	public pj_responsavel_cpf:string = null;
+	public pj_responsavel_cargo:string = null;
+	public pj_responsavel_telefone:string = null;
+	public pj_responsavel_email:string = null;
 
 
 	public constructor(init?: Partial<any>) {
@@ -203,6 +210,20 @@ export class Proposta{
 			pj_fax:this.pj_fax,
 			pj_telefone:this.pj_telefone,
 			pj_endereco_referencia:this.pj_endereco_referencia,
+			pj_reponsavel_nome: this.pj_reponsavel_nome,
+			pj_responsavel_cpf: this.pj_responsavel_cpf,
+			pj_responsavel_cargo: this.pj_responsavel_cargo,
+			pj_responsavel_telefone: this.pj_responsavel_telefone,
+			pj_responsavel_email: this.pj_responsavel_email,
+			pj_cobranca_endereco_mesmo_endereco:this.pj_cobranca_endereco_mesmo_endereco,
+			pj_cobranca_endereco_cep:this.pj_cobranca_endereco_cep,
+			pj_cobranca_endereco_rua:this.pj_cobranca_endereco_rua,
+			pj_cobranca_endereco_bairro:this.pj_cobranca_endereco_bairro,
+			pj_cobranca_endereco_cidade:this.pj_cobranca_endereco_cidade,
+			pj_cobranca_endereco_uf:this.pj_cobranca_endereco_uf,
+			pj_cobranca_endereco_complemento:this.pj_cobranca_endereco_complemento,
+			pj_cobranca_telefone:this.pj_cobranca_telefone,
+			pj_cobranca_fax:this.pj_cobranca_fax,
 		};
 	}
 
@@ -371,6 +392,83 @@ export class Proposta{
 			},
 			{
 				key: "pj_endereco_cep",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_complemento",
+				validators : [
+					Validators.required,
+					Validators.maxLength(20)
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_bairro",
+				validators : [
+					Validators.required,
+					Validators.maxLength(50)
+				]
+			},
+			{
+				key: "pj_endereco_cidade",
+				validators : [
+					Validators.required,
+					Validators.maxLength(50)
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_uf",
+				validators : [
+					Validators.required,
+					Validators.maxLength(20)
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_rua",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_cidade",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_cobranca_endereco_cep",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_responsavel_cpf",
+				validators : [
+					Validators.required,
+					validateCpf
+				]
+			},
+			{
+				key: "pj_reponsavel_nome",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_responsavel_cargo",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_responsavel_telefone",
+				validators : [
+					Validators.required
+				]
+			},
+			{
+				key: "pj_responsavel_email",
 				validators : [
 					Validators.required
 				]

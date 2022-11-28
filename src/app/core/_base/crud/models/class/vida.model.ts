@@ -46,11 +46,6 @@ export class Vida{
 	public idade:number = null;
 	public codigo_carencia:string = null;
 	public carteira_sus:string = null;
-	public pj_nome_responsavel:string = null;
-	public pj_cpf:string = null;
-	public pj_cargo:string = null;
-	public pj_telefone:string = null;
-	public pj_email:string = null;
 	public e_endereco_titular:string = null;
 
 
