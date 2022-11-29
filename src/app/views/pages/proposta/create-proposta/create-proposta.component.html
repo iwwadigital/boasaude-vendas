@@ -1274,14 +1274,20 @@
 					<div class="row row-group">
 						<div class="item item-pagamento item-margin-xs-min col-sm-12 col-lg-10">
 							<span>Responsável pela cobrança:</span>
-							
 							<mat-radio-group formControlName="correspondencia" (change)="changeCorrespondencia($event)">
-								<mat-radio-button value="titular">
-									Titular
-								</mat-radio-button>
-								<mat-radio-button value="outra_pessoa">
-									Outra pessoa
-								</mat-radio-button>
+								<ng-container *ngIf="form.get('tipo_pessoa').value == '0'">
+									<mat-radio-button value="titular">
+										Titular
+									</mat-radio-button>
+									<mat-radio-button value="outra_pessoa">
+										Outra pessoa
+									</mat-radio-button>
+								</ng-container>
+								<ng-container *ngIf="form.get('tipo_pessoa').value == '1'">
+									<mat-radio-button value="empresa">
+										Empresa
+									</mat-radio-button>
+								</ng-container>
 								<mat-error *ngIf="form.controls.mensalidade.get('correspondencia').errors !== null && form.controls.mensalidade.get('correspondencia').errors.required">Responsável pela cobrança não foi escolhido.</mat-error>
 							</mat-radio-group>
 							<ng-container @hide *ngIf="form.get('mensalidade').value.correspondencia === 'outra_pessoa'">

@@ -47,7 +47,7 @@
 			<ng-container matColumnDef="cliente">
 				<mat-header-cell *matHeaderCellDef> Cliente </mat-header-cell>
 				<mat-cell *matCellDef="let element">
-					{{element.titular_nome }}
+					{{ element.tipo_pessoa == 0 ? element.titular_nome : element.pj_nome_fantasia}}
 				</mat-cell>
 			</ng-container>
 			<ng-container matColumnDef="data_aprovacao">

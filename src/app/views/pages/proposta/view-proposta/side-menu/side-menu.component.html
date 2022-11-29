@@ -21,7 +21,7 @@
     <ng-container>
         <div class="option">
             <h3 class="sub-title h3">Assinatura</h3>
-            <span class="sing" *ngIf="proposta.is_assinatura_presencial == 1">Assinatura do tipo impressa.</span>
+            <span class="sing" *ngIf="proposta.e_assinatura_presencial == 1">Assinatura do tipo impressa.</span>
             <kt-btn-rectangle  (click)="showAssinatura()" routerLinkActive="router-link-active"  *ngIf="proposta.comprovante" [setBtnConfig]="btn_assinatura"></kt-btn-rectangle>
             <kt-btn-rectangle  (click)="createAssinatura()" routerLinkActive="router-link-active"  *ngIf="proposta.status != 'Aprovado' && proposta.status != 'Recusado' && (functions.verificarTipoUsuario([1,2,4,5,8]) || functions.verificarPermissao(['assinatura-proposta-cadastrar']))" [setBtnConfig]="btn_assinatura_create"></kt-btn-rectangle>
         </div>

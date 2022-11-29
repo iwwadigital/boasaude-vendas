@@ -172,7 +172,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	public refreshPayment:boolean = false;
     constructor(
 		private formBuilder:FormBuilder,
-		private functions:FunctionsService,
+		public functions:FunctionsService,
 		private _http:HttpService,
 		private dialog:MatDialog,
 		private route:ActivatedRoute,
@@ -380,12 +380,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 					if(typeof value === 'object' && !this.functions.isEmptyObj(value)){
 						if(this.list_tipo_servico_ids.includes(value.id) || value.id === this.tipo_servico_trt){
 							if(this.list_tipo_servico_ids.includes(value.id)){
-								this.form.get("adesao").patchValue({
-									valor : 0,
-									pagamento_tipo_id : 1
-								})
 								this.is_desc_folha = true;
-								
 								this.form.get("mensalidade").patchValue({
 									pagamento_data_vencimento : 2
 								});
@@ -437,7 +432,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 							this.form.get(el.key).setValidators(el.validators);
 						});
 					}
-					console.log(this.form);
 					return of(value);
 				})
 			)
@@ -537,11 +531,53 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		);
 	}
 
+	private verificaEColocaValorFormularioEnderecoEmpresa(campo:string,valor:string){
+		if(!this.functions.isEmpty(this.form.value.pj_cobranca_endereco_mesmo_endereco) && this.form.value.pj_cobranca_endereco_mesmo_endereco == "1"){
+			this.form.get(campo).setValue(valor);
+		}
+	}
+
 	private iniciaMudancaValoresEmpresa(){
+		let camposEnderecoEmpresa = [
+			{
+				"campo" : "pj_endereco_rua",
+				"cobranca" : "pj_cobranca_endereco_rua"
+			},
+			{
+				"campo" : "pj_endereco_bairro",
+				"cobranca" : "pj_cobranca_endereco_bairro"
+			},
+			{
+				"campo" : "pj_endereco_cidade",
+				"cobranca" : "pj_cobranca_endereco_cidade"
+			},
+			{
+				"campo" : "pj_endereco_uf",
+				"cobranca" : "pj_cobranca_endereco_uf"
+			},
+			{
+				"campo" : "pj_endereco_complemento",
+				"cobranca" : "pj_cobranca_endereco_complemento"
+			},
+		];
+			
+		camposEnderecoEmpresa.map(el => {
+			this.subs.add(
+				this.form.get(el.campo).valueChanges.pipe(
+					debounceTime(250),
+					switchMap((valor:string) => {
+						this.verificaEColocaValorFormularioEnderecoEmpresa(el.cobranca,valor)
+						return of(valor);
+					})
+				).subscribe()
+			)
+		})
+		
 		this.subs.add(
 			this.form.get('pj_endereco_cep').valueChanges.pipe(
 				debounceTime(250),
 				switchMap((value:string) =>{
+					this.verificaEColocaValorFormularioEnderecoEmpresa("pj_cobranca_endereco_cep",value);
 					if(!this.functions.isEmpty(value) && typeof value === 'string' && value.length === 8){
 						this.isLoading = true;
 						this.cdr.detectChanges();
@@ -1221,7 +1257,14 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			}else{
 				this.colocaValidacaoPagamento();
 			}
-			if(this.is_desc_folha && (this.current + 1 == 4)){
+			if(
+				(this.is_desc_folha || this.form.get("tipo_pessoa").value == "1") && 
+				(this.current + 1 == 4)
+			){
+				this.form.get("adesao").patchValue({
+					valor : 0,
+					pagamento_tipo_id : 1
+				});
 				this.current = 5;
 			}else{
 				this.current++;
