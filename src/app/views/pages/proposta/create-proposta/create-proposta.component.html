@@ -738,13 +738,13 @@
 							<div class="row row-group">
 								<div class="item item-radius-tl-all item-radius-tr-xs-max col-sm-6 col-lg-8">
 									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Nome do Responsável</mat-label>
+										<mat-label>Nome do Responsável<b class="inputRequired">*</b></mat-label>
 										<input matInput formControlName="pj_reponsavel_nome" >
 									</mat-form-field>
 								</div>
 								<div class="item item-radius-tr-sm-min  item-border-sm col-sm-6 col-lg-4">
 									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>CPF do responsável</mat-label>
+										<mat-label>CPF do responsável<b class="inputRequired">*</b></mat-label>
 										<input matInput  formControlName="pj_responsavel_cpf"  >
 									</mat-form-field>
 								</div>
@@ -754,20 +754,20 @@
 							<div class="row row-group">
 								<div class="item remove-arrow item-radius-bl-md item-radius-bl-sm item-radius-bl-lg-min item-margin-xs-min item-radius-bottom-left-sm col-sm-4">
 									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Cargo</mat-label>
+										<mat-label>Cargo<b class="inputRequired">*</b></mat-label>
 										<input matInput formControlName="pj_responsavel_cargo"  >
 									</mat-form-field>
 								</div>
 								<div class="item item-margin-sm-min item-border-sm col-sm-4 ">
 									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>Telefone</mat-label>
+										<mat-label>Telefone<b class="inputRequired">*</b></mat-label>
 										<input matInput formControlName="pj_responsavel_telefone" ngxPhoneMaskBr>
 										<mat-error *ngIf="form.get('pj_responsavel_telefone').errors !== null && form.get('pj_responsavel_telefone').errors.maxlength">Qtd de caracteres excedeu seu limite.</mat-error>
 									</mat-form-field>
 								</div>
 								<div class="item item-radius-bl-xs-max item-radius-br-all item-margin-sm-min item-border-sm item-radius-bottom-right-sm col-sm-4">
 									<mat-form-field appearance="outline" class="m-inputs">
-										<mat-label>E-mail</mat-label>
+										<mat-label>E-mail<b class="inputRequired">*</b></mat-label>
 										<input matInput formControlName="pj_responsavel_email" >
 									</mat-form-field>
 								</div>

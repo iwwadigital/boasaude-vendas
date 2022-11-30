@@ -148,10 +148,7 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 		this.route.params.subscribe((params:any) =>{
 			if(!this.functions.isEmpty(params.id)){
 				if(!this.functions.isEmpty(this.form)){
-					// this.proposta = new Proposta();
 					this.form.reset();
-					// this.form.removeControl("adesao");
-					// this.form.removeControl("mensalidade");
 					while(this.vidas.length !== 0){
 						this.vidas.removeAt(0);
 					}
@@ -159,8 +156,7 @@ export class ViewPropostaComponent implements OnInit, OnDestroy{
 				this.show(params.id);
 				
 			}else{
-				this.functions.printSnackBar("Identificador da proposta não foi passado.")
-				// this.router.navigate(['/dashboard']);
+				this.functions.printSnackBar("Identificador da proposta não foi passado.");
 			}
 		})
 		this.getTipoServicoSaeb();

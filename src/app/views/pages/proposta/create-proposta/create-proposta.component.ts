@@ -1146,6 +1146,11 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		if(this.current == 2){
 			this.can_load_data = false;
 		}
+		if(this.current == 5 && this.form.value.tipo_pessoa == "1"){
+			this.current = 3;
+			return;
+		}
+
         if(this.current - 1 < 1){
             this.current = 1
         }else{
@@ -1231,11 +1236,14 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 
 		if(this.current + 1 === 3){
 			let vida:Vida;
-			if(this.form.value.tipo_pessoa == "0"){
-				vida = Vida.returnVidaTitular(this.form);
-				this.vidas.push(this.formBuilder.group(vida)) // Adiciono o titular
-			}else{
-				this.addDepented();
+			console.log(this.vidas.length)
+			if(this.vidas.length == 0){
+				if(this.form.value.tipo_pessoa == "0"){
+					vida = Vida.returnVidaTitular(this.form);
+					this.vidas.push(this.formBuilder.group(vida)) // Adiciono o titular
+				}else{
+					this.addDepented();
+				}
 			}
 			this.applyDesconto();
 			this.colocaObrigatoriedadeDependenteValor(0);
