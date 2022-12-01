@@ -189,8 +189,12 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		this.iniciaMudancaValoresEmpresa();
 		this.iniciaMudancaValoresFormulario();
 		this.verificaNumeroSerieNaUrl();
+		this.setPessoaFisica("0");
 		// this.iniciaMudancaDeFiliais();
     }
+
+	
+
 
 	private adicionaCamposNoFormulario(){
 		this.form = this.formBuilder.group(new Proposta);
@@ -264,6 +268,53 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		this.getTipoServicoSaeb();
 		// GET CANAL VENDAS
 		this.getCanalVendas();
+	}
+
+	private retirarValidacaoFormularioInclusao(retire:boolean = true){
+		let arr = [
+			"titular_nome",
+			"titular_cpf",
+			"titular_sexo",
+			"titular_estado_civil",
+			"titular_data_nascimento",
+			"titular_cep",
+			"titular_endereco_rua",
+			'titular_numero',
+			'titular_endereco_referencia',
+			"titular_endereco_bairro",
+			"titular_cidade",
+			"titular_uf",
+			'titular_endereco_complemento',
+			"titular_tel_residencial",
+			"titular_urgencia_email",
+		];
+		//RETIRA AS VALIDAÇOES ANTERIORES
+	
+			arr.map(el => {
+				if(retire){
+					this.form.get(el).clearValidators();
+					this.form.get(el).updateValueAndValidity();
+					//LIMPAR VALORES DOS OUTROS CAMPOS
+					this.form.get(el).patchValue(null);
+				}else{
+					this.form.get(el).setValidators([Validators.required]);
+				}
+			});
+		
+	}
+
+	private clear(){
+		if(this.is_matricula_titular){
+			this.form.patchValue(new Proposta({filial: this.form.value.filial}));
+			this.form.patchValue({
+				tabela: null,
+				tabela_matricula_titular: null,
+				canal_vendas: null,
+				tipo_servico: null,
+			})
+			this.form.get("tabela").enable();
+			this.cdr.detectChanges();
+		}
 	}
 
 	private iniciaMudancaValoresDadosGerais(){
@@ -878,6 +929,10 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		})
 	}
 
+	private setPessoaFisica(valor:string){
+		this.form.get("tipo_pessoa").setValue(valor)
+	}
+
 	public getTabela(parameter?:any){
 		this._http.get("tabela",parameter).pipe(
 			catchError((err,caught)=>{
@@ -1166,6 +1221,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			this.vidas.controls[indice].get("valor").updateValueAndValidity();
 		}
 	}
+
 	private colocaValorSeNaoForDescontoFolha(){
 		if(!this.is_desc_folha){
 			this.form.get("adesao").patchValue({
@@ -1236,7 +1292,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 
 		if(this.current + 1 === 3){
 			let vida:Vida;
-			console.log(this.vidas.length)
 			if(this.vidas.length == 0){
 				if(this.form.value.tipo_pessoa == "0"){
 					vida = Vida.returnVidaTitular(this.form);
@@ -1460,7 +1515,6 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			this.vidas.controls[i].patchValue(dados);
 		});
 	}
-
 
 	public verificaCpfWebServiceVidas(){
 		let is_cpf_exist = false;
@@ -1836,6 +1890,12 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 		localStorage.setItem("lista_rascunho",JSON.stringify(lista_rascunho));
 	}
 
+	public savePropostaRascunho(){
+		this.is_rascunho = true;
+		this.create();
+	}
+
+	// MEDIA -----------------------------------------------------------------------------------------------
 	//Evento do botão escolha um arquivo ************************************************
 	public addFile(event){
 		// this.isLoading = true;
@@ -1869,63 +1929,14 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 	}
 
 
-	public savePropostaRascunho(){
-		this.is_rascunho = true;
-		this.create();
-	}
-
 	public removeMidia(i){
 		this.midias.splice(i,1);
 		this.cdr.detectChanges();
 	}
 
-	public clear(){
-		if(this.is_matricula_titular){
-			this.form.patchValue(new Proposta({filial: this.form.value.filial}));
-			this.form.patchValue({
-				tabela: null,
-				tabela_matricula_titular: null,
-				canal_vendas: null,
-				tipo_servico: null,
-			})
-			this.form.get("tabela").enable();
-			this.cdr.detectChanges();
-		}
-	}
-
-	public retirarValidacaoFormularioInclusao(retire:boolean = true){
-		let arr = [
-			"titular_nome",
-			"titular_cpf",
-			"titular_sexo",
-			"titular_estado_civil",
-			"titular_data_nascimento",
-			"titular_cep",
-			"titular_endereco_rua",
-			'titular_numero',
-			'titular_endereco_referencia',
-			"titular_endereco_bairro",
-			"titular_cidade",
-			"titular_uf",
-			'titular_endereco_complemento',
-			"titular_tel_residencial",
-			"titular_urgencia_email",
-		];
-		//RETIRA AS VALIDAÇOES ANTERIORES
 	
-			arr.map(el => {
-				if(retire){
-					this.form.get(el).clearValidators();
-					this.form.get(el).updateValueAndValidity();
-					//LIMPAR VALORES DOS OUTROS CAMPOS
-					this.form.get(el).patchValue(null);
-				}else{
-					this.form.get(el).setValidators([Validators.required]);
-				}
-			});
-		
-	}
 
+	
 
 	public changeTipoPessoaCobranca(event){
 		Pagamento.changeTipoPessoaCobranca(event,this.form);

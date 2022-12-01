@@ -60,9 +60,9 @@
                                 </mat-form-field>
 							</div>
 							<div class="item  item-radius-tr-md item-border-sm  item-radius-tr-sm item-radius-tr-lg-min col-sm-6">
-								<mat-form-field appearance="outline" class="m-inputs">
+								<!-- <mat-form-field appearance="outline" class="m-inputs">
 									<mat-label>Tipo pessoa<b class="inputRequired">*</b></mat-label>
-									<mat-select formControlName="tipo_pessoa" placeholder="Escolha a opção">
+									<mat-select formControlName="tipo_pessoa" placeholder="Escolha a opção" [disableControl]="true">
 										<mat-option value="0">
 											Pessoa Física
 										</mat-option>
@@ -70,9 +70,14 @@
 											Pessoa Jurídica
 										</mat-option>
 									</mat-select>
-								</mat-form-field>
+								</mat-form-field> -->
+								<mat-form-field appearance="outline" class="m-inputs" matTooltip="Insira o número de matricula caso seja um titular pré existente">
+									<mat-label>Matricula do titular</mat-label>
+									<input matInput type="number" formControlName="matricula_titular" >
+                                </mat-form-field>
 							</div>
-                            <div class="item item-margin-sm-min item-radius-bl-lg-min  col-sm-6 col-lg-4">
+                            <!-- <div class="item item-margin-sm-min item-radius-bl-lg-min  col-sm-6 col-lg-4"> -->
+                            <div class="item item-margin-sm-min item-radius-bl-sm-min  col-sm-6 col-lg-6">
                                 <mat-form-field appearance="outline" class="m-inputs">
 									<mat-label>Tipo de serviço<b class="inputRequired">*</b></mat-label>
 									<input type="text" placeholder="Escolha um tipo de serviço" formControlName="tipo_servico" aria-label="Number" matInput  [matAutocomplete]="tipo_serv">
@@ -84,13 +89,14 @@
 									<mat-error *ngIf="form.get('tipo_servico').errors !== null && form.get('tipo_servico').errors.required">Tipo de serviço não foi escolhida.</mat-error>
 								</mat-form-field>
 							</div>
-                            <div class="item  remove-arrow item-margin-sm-min item-border-sm  col-sm-6 col-lg-4">
+                            <!-- <div class="item  remove-arrow item-margin-sm-min item-border-sm  col-sm-6 col-lg-4">
 								<mat-form-field appearance="outline" class="m-inputs" matTooltip="Insira o número de matricula caso seja um titular pré existente">
 									<mat-label>Matricula do titular</mat-label>
 									<input matInput type="number" formControlName="matricula_titular" >
                                 </mat-form-field>
-							</div>
-                            <div class="item item-margin-sm-min item-radius-bl-md-max item-border-lg item-radius-bl-xs-max item-radius-br-xs-max  item-radius-br-sm-min col-sm-12 col-lg-4">
+							</div> -->
+                            <!-- <div class="item item-margin-sm-min item-radius-bl-md-max item-border-lg item-radius-bl-xs-max item-radius-br-xs-max  item-radius-br-sm-min col-sm-12 col-lg-4"> -->
+                            <div class="item item-margin-sm-min item-radius-bl-xs-max item-border-sm item-radius-bl-xs-max item-radius-br-xs-max  item-radius-br-sm-min col-sm-6 col-lg-6">
 								<mat-form-field appearance="outline" class="m-inputs">
 									<mat-label>Tabela de Preço<b class="inputRequired">*</b></mat-label>
 									<input type="text" placeholder="Escolha uma tabela" formControlName="tabela" aria-label="Number" matInput  [matAutocomplete]="auto">
