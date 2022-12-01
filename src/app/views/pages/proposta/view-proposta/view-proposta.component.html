@@ -767,7 +767,7 @@
 								<h5 class="h5">Nenhum depentente inserido.</h5>
 							</ng-container>
 							<ng-container  *ngIf="vidas && vidas.controls.length > 0">
-								<div *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas">
+								<div class="vida-item" *ngFor="let vida of vidas.controls;let i=index" formArrayName="vidas">
 									<div class="content" [formGroupName]="i" >
 										<div class="block-info">
 											<span class="info-title">{{ vida.value.is_titular == 1 ? 'Titular'  : 'Dependente '+(i+1) }}</span>
@@ -1004,10 +1004,17 @@
 									</div>
 								</div>
 							</ng-container>
-							<button type="button" class="btn btn-associate" [ngClass]="vidas && vidas.controls.length == 0 ? 'btn-not-dependent': '' " *ngIf="!is_ready_input" (click)="!is_ready_input ? addDepented() : null">
-								<mat-icon>add_circle</mat-icon>
-								<span>Adicionar dependente</span>
-							</button>
+							<div class="content-btn d-flex justify-content-end" *ngIf="!is_ready_input" >
+								<button 
+									type="button" 
+									class="btn btn-associate" 
+									[ngClass]="vidas && vidas.controls.length == 0 ? 'btn-not-dependent': '' "  
+									(click)="!is_ready_input ? addDepented() : null" 
+									[ngStyle]="vidas.controls.length == 0 ? {'position':'absolute'} : {}">
+									<mat-icon>add_circle</mat-icon>
+									<span>Adicionar dependente</span>
+								</button>
+							</div>
 						</div>
 						<div class="separate" formGroupName="adesao" *ngIf="proposta.pagamentos.length > 0 && form.getRawValue().adesao">
 							<h3 class="sub-title h3">Autorização para Adesão</h3>
