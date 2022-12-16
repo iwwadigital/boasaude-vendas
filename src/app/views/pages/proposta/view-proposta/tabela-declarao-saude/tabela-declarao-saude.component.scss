@@ -1,0 +1,26 @@
+.table{
+    padding: 0;
+}
+.sub-title{
+    font-weight: bold;
+}
+.btn-success{
+    min-width: auto;
+    padding: 8px 13px;
+    border-radius: 0.25rem;
+}
+.btn-danger{
+    background: var(--color-red);
+}
+.btn-pilula{
+    border-radius: 20px;
+    cursor: auto;
+}
+.loading-out{
+    position: absolute;
+    background: rgba(0,0,0,.1);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

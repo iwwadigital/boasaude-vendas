@@ -3,6 +3,12 @@ export class TableActionsConfig{
 	public icon_edit:string;
 	public icon_delete:string;
 
+	public exibir_btn:any = {
+		view: true,
+		edit: true,
+		delete: true
+	}
+
 	//Class
 	public class_view:string[];
 	public class_edit:string[];

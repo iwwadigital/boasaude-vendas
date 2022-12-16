@@ -58,6 +58,7 @@ import { ModalAdesaoOnlineComponent } from './components/modal-adesao-online/mod
 import { ModalSelectFilialComponent } from './components/modal-select-filial/modal-select-filial.component';
 import { BtnPaymentOnlineComponent } from './components/btn-payment-online/btn-payment-online.component';
 import { ModalRegridirDataComponent } from './components/modal-regridir-data/modal-regridir-data.component';
+import { ModalConfirmacaoComponent } from './components/modal-confirmacao/modal-confirmacao.component';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { ModalRegridirDataComponent } from './components/modal-regridir-data/mod
 		ModalAdesaoOnlineComponent,
 		ModalSelectFilialComponent,
 		BtnPaymentOnlineComponent,
-		ModalRegridirDataComponent
+		ModalRegridirDataComponent,
+		ModalConfirmacaoComponent
 	],
 	exports: [
 		BtnRectangleComponent,
@@ -116,7 +118,8 @@ import { ModalRegridirDataComponent } from './components/modal-regridir-data/mod
 		FichaVisitaComponent,
 		MarkInputsDirective,
 		BtnPaymentOnlineComponent,
-		ModalRegridirDataComponent
+		ModalRegridirDataComponent,
+		ModalConfirmacaoComponent
 	],
 	imports: [
 		CommonModule,
@@ -154,7 +157,8 @@ import { ModalRegridirDataComponent } from './components/modal-regridir-data/mod
 		ModalFichaVisitaComponent,
 		ModalAdesaoOnlineComponent,
 		ModalSelectFilialComponent,
-		ModalRegridirDataComponent
+		ModalRegridirDataComponent,
+		ModalConfirmacaoComponent
 	],
 	providers: [
 		{provide: MatPaginatorIntl, useValue:changePaginator()},

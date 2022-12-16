@@ -43,6 +43,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ModalEnderecoVidaComponent } from './create-proposta/modal-endereco/modal-endereco.component';
 import { ModalLogHistoryComponent } from './modal-log-history/modal-log-history.component';
 import { SideMenuComponent } from './view-proposta/side-menu/side-menu.component';
+import { TabelaDeclaracaoSaudeComponent } from './view-proposta/tabela-declarao-saude/tabela-declarao-saude.component';
 
 
 const routes: Routes = [
@@ -94,6 +95,7 @@ const routes: Routes = [
 		ModalEnderecoVidaComponent,
 		ModalLogHistoryComponent,
 		SideMenuComponent,
+		TabelaDeclaracaoSaudeComponent
     ],
     imports: [
 		PartialsModule,

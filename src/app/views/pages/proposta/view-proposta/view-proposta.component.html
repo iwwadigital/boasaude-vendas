@@ -192,6 +192,7 @@
 							</div>
 						</div>
 						<input type="hidden" formControlName="id">
+						<m-tabela-declaracao-saude [dependentes]="proposta.vidas"></m-tabela-declaracao-saude>
 						<ng-container *ngIf="proposta.tipo_pessoa == '0';else pj">
 							<div class="separate">
 								<h3 class="sub-title h3">Titular</h3>

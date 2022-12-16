@@ -17,8 +17,8 @@ import { ModalFilialComponent } from '../modal-filial/modal-filial.component';
 export class PageFilialComponent implements OnInit, OnDestroy{
 	private subs:Subscription = new Subscription();
     public table_config:TableGeral;
-	public columns:string[] = ["nome","slug","edit","delete"];
-	public titles:string[] = ["Filial","Slug","Editar","Deletar"];
+	public columns:string[] = ["nome","slug","edit"];
+	public titles:string[] = ["Filial","Slug","Editar"];
 	public actionConfig:TableActionsConfig;
 	public search:any = {};
 	public is_refresh = false;

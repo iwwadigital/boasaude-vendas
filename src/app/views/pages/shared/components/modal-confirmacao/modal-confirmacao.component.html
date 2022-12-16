@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+	<h6 class="msg" [innerHTML]="data.msg"></h6>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-between">
+	<button mat-button class="btn" (click)="onNoClick()">Não</button>
+	<button mat-button class="btn text-success" (click)="setResponse({success:true})" cdkFocusInitial>Sim</button>
+</div>
+<button mat-button type="button" class="btn btn-close-modal" (click)="onNoClick()">
+	<mat-icon>close</mat-icon>
+</button>

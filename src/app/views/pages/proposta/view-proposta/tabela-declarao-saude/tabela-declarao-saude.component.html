@@ -1,0 +1,85 @@
+<div class="loading loading-out" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>
+<ng-container *ngIf="_dependentes.length > 0">
+    <h3 class="sub-title h3">{{ titulo }}</h3>
+    <div class="table">
+        <mat-table  #table [dataSource]="_dependentes">
+            <ng-container  matColumnDef="tipo">
+                <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    {{element.is_titular == 1 ? "Titular" : "Dependente"}}
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="nome">
+                <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    {{ element.nome }}
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="enviar_whatsapp">
+                <mat-header-cell *matHeaderCellDef> Enviar Whatsapp </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    <button 
+                        *ngIf="element.tel_celular;else semCelular"
+                        class="btn btn-success" 
+                        type="button" 
+                        (click)="enviarWhatsApp(element)"
+                    >
+                        Enviar
+                    </button>
+                    <ng-template #semCelular>
+                        <span>Não tem celular</span>
+                    </ng-template>
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="enviar_email">
+                <mat-header-cell *matHeaderCellDef> Enviar E-mail </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    <button 
+                        *ngIf="element.email;else semEmail"
+                        class="btn btn-success" 
+                        type="button"  
+                        (click)="btnEnviarEmail(element)"
+                    >
+                        Enviar
+                    </button>
+                    <ng-template #semEmail>
+                        <span>Não tem E-mail</span>
+                    </ng-template>
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="baixar_pdf">
+                <mat-header-cell *matHeaderCellDef> Baixar PDF </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    <button 
+                        *ngIf="element.dados_clinicos.length > 0;else semDadosClinicos"
+                        class="btn btn-warning" 
+                        type="button" 
+                        (click)="baixarPdf(element)"
+                    >
+                        Baixar
+                    </button>
+                    <ng-template #semDadosClinicos>
+                        <span>Não foi preenchido</span>
+                    </ng-template>
+                </mat-cell>
+            </ng-container>
+            <ng-container  matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell  *matCellDef="let element">
+                    <div class="btn btn-success btn-pilula" *ngIf="element.dados_clinicos.length > 0;else naoPreenchido" >
+                        Preenchido
+                    </div>
+                    <ng-template #naoPreenchido>
+                        <div class="btn btn-danger btn-pilula" >
+                            Não Preenchido
+                        </div>
+                    </ng-template>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="colunas"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: colunas;"></mat-row>
+        </mat-table>
+    </div>
+</ng-container>

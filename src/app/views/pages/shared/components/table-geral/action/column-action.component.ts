@@ -26,6 +26,7 @@ export class ColumnActionComponent implements OnInit{
 		private cdr:ChangeDetectorRef
 	){}
  	ngOnInit(){
+		console.log(this.config)
 		switch(this.type){
 			case "view":{
 				this.icon = 'remove_red_eye';
@@ -72,6 +73,8 @@ export class ColumnActionComponent implements OnInit{
 			}
 		}
 	}
+
+	
 
 	public openModal(class_panel?:any){
 		let modal_config:MatDialogConfig = new MatDialogConfig();
