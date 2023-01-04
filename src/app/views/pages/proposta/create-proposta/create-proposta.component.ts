@@ -1916,7 +1916,7 @@ export class CreatePropostaComponent implements OnInit, OnDestroy{
 			for(let i = 0; i < this.midias.length; i++){
 				midia.append("media[]",this.midias[i]);
 			}
-			midia.append("proposta_id","46");
+			midia.append("proposta_id",String(this.proposta_id));
 			midia.append("is_anexo","1");
 			this._http.post("comprovante",midia).subscribe((resp:any) =>{
 				this.functions.printSnackBar("Comprovantes anexados com sucesso.");
